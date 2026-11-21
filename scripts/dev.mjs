@@ -2,7 +2,7 @@ import http from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { compareMed } from '../shared/compare.js';
+import { compareMed, searchProducts } from '../shared/compare.js';
 import { medById } from '../shared/meds.js';
 import { fetchNearby } from '../shared/nearby.js';
 
@@ -26,6 +26,7 @@ const MIME = {
 
 const compareCache = new Map();
 const nearbyCache = new Map();
+const searchCache = new Map();
 
 function sendJson(res, value, status = 200) {
   res.writeHead(status, {
@@ -86,6 +87,19 @@ async function handleNearby(res, url) {
   sendJson(res, value);
 }
 
+async function handleSearch(res, url) {
+  const query = String(url.searchParams.get('q') || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+  if (query.length < 2) return sendJson(res, { error: 'Escribe al menos dos letras.' }, 400);
+  const key = query.toLowerCase();
+  const hit = searchCache.get(key);
+  if (hit && Date.now() - hit.time < 5 * 60 * 1000) return sendJson(res, hit.value);
+  console.log(`[buscar] ${query}`);
+  const value = await searchProducts(query);
+  searchCache.set(key, { time: Date.now(), value });
+  console.log('[buscar]', value.offers.length, 'resultados');
+  sendJson(res, value);
+}
+
 async function serveStatic(req, res, url) {
   const pathname = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
   const filePath = path.resolve(ROOT, `.${pathname}`);
@@ -113,6 +127,7 @@ const server = http.createServer(async (req, res) => {
   try {
     if (req.method === 'POST' && url.pathname === '/api/compare') return await handleCompare(req, res, url);
     if (req.method === 'GET' && url.pathname === '/api/nearby') return await handleNearby(res, url);
+    if (req.method === 'GET' && url.pathname === '/api/search') return await handleSearch(res, url);
     if (url.pathname === '/api/health') {
       return sendJson(res, { ok: true, time: new Date().toISOString() });
     }

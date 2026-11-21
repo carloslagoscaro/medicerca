@@ -1,5 +1,5 @@
 import { CATEGORIES, MEDS, medById, searchMeds } from '../shared/meds.js';
-import { CHAINS, chainByKey, detectChain } from '../shared/chains.js';
+import { CHAINS, LIVE_CHAINS, chainByKey, detectChain } from '../shared/chains.js';
 import { distanceKm, formatDistance } from '../shared/geo.js';
 import * as ui from './ui.js';
 import * as store from './store.js';
@@ -33,7 +33,7 @@ const MANUAL_CHAIN_KEYS = [
   'knop',
   'farmex'
 ];
-const PENDING_CHAIN_KEYS = ['cruzverde', 'salcobrand', 'knop'];
+const PENDING_CHAIN_KEYS = ['cruzverde'];
 
 const state = {
   navToken: 0,
@@ -84,6 +84,7 @@ function parseRoute() {
   const params = new URLSearchParams(queryPart);
   if (parts[0] === 'med' && parts[1]) return { name: 'med', id: parts[1], params };
   if (parts[0] === 'mapa') return { name: 'map', params };
+  if (parts[0] === 'online') return { name: 'online', query: params.get('q') || '', params };
   if (parts[0] === 'precios') return { name: 'prices', params };
   if (parts[0] === 'info') return { name: 'info', params };
   return { name: 'home', params };
@@ -119,6 +120,7 @@ function renderRoute() {
   try {
     if (route.name === 'home') renderHome(main, token);
     else if (route.name === 'med') renderDetail(main, route, token);
+    else if (route.name === 'online') renderOnline(main, route, token);
     else if (route.name === 'map') renderMap(main, token);
     else if (route.name === 'prices') renderPrices(main, token);
     else renderInfo(main, token);
@@ -161,6 +163,14 @@ function renderTopbar(route) {
         <span class="topbar-title">${h(med ? `${med.name} ${med.strength}` : 'Medicamento')}</span>
       </div>
       <button class="icon-btn" type="button" data-refresh-detail aria-label="Actualizar precios">${icon('refresh')}</button>
+    </div>`;
+  } else if (route.name === 'online') {
+    bar.innerHTML = `<div class="topbar-inner">
+      <button class="icon-btn topbar-back" type="button" data-back aria-label="Volver al buscador">${icon('arrow-left')}</button>
+      <div class="topbar-title-wrap">
+        <span class="topbar-kicker">Buscador online</span>
+        <span class="topbar-title">${h(route.query || 'Medicamento')}</span>
+      </div>
     </div>`;
   } else if (route.name === 'prices') {
     bar.innerHTML = `<div class="topbar-inner">
@@ -263,7 +273,7 @@ function homeTemplate() {
             <h1>El mismo remedio.<br /><span class="accent">Donde cuesta menos.</span></h1>
             <p class="hero-lead">Compara <strong>precios reales</strong> entre farmacias online y las farmacias de tu barrio. Revisa el precio por unidad y encuentra la más cercana a ti.</p>
             <div class="hero-notes">
-              <span class="hero-note">${icon('check')} 4 farmacias online</span>
+              <span class="hero-note">${icon('check')} ${LIVE_CHAINS.length} farmacias online</span>
               <span class="hero-note">${icon('map')} Mapa con GPS</span>
               <span class="hero-note">${icon('shield')} Sin registro</span>
             </div>
@@ -278,14 +288,14 @@ function homeTemplate() {
                 )}</button>
               </div>
               <div class="search-results" id="search-results" role="listbox" aria-label="Medicamentos encontrados"></div>
-              <p class="search-hint">Ej: paracetamol, omeprazol, loratadina. Presiona Enter para comparar.</p>
+              <p class="search-hint">Ej: paracetamol, omeprazol, loratadina. Si no está en el catálogo, Enter lo busca en las farmacias online.</p>
             </form>
           </div>
           <aside class="compare-preview on-dark" id="featured-preview" aria-label="Comparación destacada"></aside>
         </div>
         <div class="hero-stats">
-          <div class="hero-stat"><strong>4</strong><span>farmacias online<br />con precio en vivo</span></div>
-          <div class="hero-stat"><strong id="stat-nearby">${h(String(nearbyCount))}</strong><span>farmacias<br />en tu mapa</span></div>
+          <div class="hero-stat"><strong>${LIVE_CHAINS.length}</strong><span>farmacias online<br />con precio en vivo</span></div>
+          <div class="hero-stat"><strong id="stat-nearby">${h(String(nearbyCount))}</strong><span>farmacias<br />en todo Chile</span></div>
           <div class="hero-stat"><strong>${MEDS.length}</strong><span>medicamentos<br />para comparar</span></div>
         </div>
       </section>
@@ -295,7 +305,7 @@ function homeTemplate() {
           <div class="section-title-wrap">
             <span class="section-kicker">Catálogo</span>
             <h2 class="section-title" id="popular-title">Más buscados</h2>
-            <p class="section-sub" id="popular-sub">Precios reales en cuatro farmacias online.</p>
+            <p class="section-sub" id="popular-sub">Precios reales en ${LIVE_CHAINS.length} farmacias online.</p>
           </div>
           <select class="category-select" id="category-filter" aria-label="Filtrar medicamentos por categoría">
             <option value="__popular">Más buscados</option>
@@ -311,7 +321,7 @@ function homeTemplate() {
           <div class="section-title-wrap">
             <span class="section-kicker">Cerca de ti</span>
             <h2 class="section-title" id="nearby-home-title">Farmacias a tu alrededor</h2>
-            <p class="section-sub" id="home-nearby-source">Cerca de tu referencia en Huechuraba · OpenStreetMap</p>
+            <p class="section-sub" id="home-nearby-source">Farmacias en todo Chile · OpenStreetMap</p>
           </div>
           <a class="section-link" href="#/mapa">Ver mapa ${icon('arrow-right')}</a>
         </div>
@@ -382,7 +392,7 @@ function renderPopular(main) {
   } else {
     list = MEDS.filter((med) => med.popular);
     title.textContent = 'Más buscados';
-    sub.textContent = 'Precios reales en cuatro farmacias online.';
+    sub.textContent = `Precios reales en ${LIVE_CHAINS.length} farmacias online.`;
   }
 
   grid.innerHTML = list.length
@@ -517,8 +527,8 @@ function renderNearbyPreview(token) {
   if (source) {
     source.textContent =
       location.source === 'gps'
-        ? 'Ordenadas desde tu ubicación · OpenStreetMap'
-        : 'Cerca de tu referencia en Huechuraba · OpenStreetMap';
+        ? 'Ordenadas desde tu GPS · OpenStreetMap'
+        : 'Ejemplo: Huechuraba. Activa tu GPS para tu comuna · OpenStreetMap';
   }
 
   nearbyData.preloadBundled().then(() => {
@@ -535,8 +545,8 @@ function renderNearbyPreview(token) {
       if (note) {
         note.textContent =
           location.source === 'gps'
-            ? 'Ordenadas desde tu ubicación · OpenStreetMap'
-            : 'Cerca de tu referencia en Huechuraba · OpenStreetMap';
+            ? 'Ordenadas desde tu GPS · OpenStreetMap'
+            : 'Ejemplo: Huechuraba. Activa tu GPS para tu comuna · OpenStreetMap';
       }
       return;
     }
@@ -559,7 +569,7 @@ function renderNearbyPreview(token) {
             .map((pharmacy, index) => nearbyCardMarkup(pharmacy, index))
             .join('');
           const note = $('#home-nearby-source');
-          if (note) note.textContent = 'Ordenadas desde tu ubicación · OpenStreetMap';
+          if (note) note.textContent = 'Ordenadas desde tu GPS · OpenStreetMap';
         } else {
           liveTarget.innerHTML = `<div class="map-empty"><span>${icon(
             'map'
@@ -576,6 +586,17 @@ function renderNearbyPreview(token) {
         }
       });
   });
+}
+
+function onlineSearchMarkup(query) {
+  return `<a class="search-result search-online" href="#/online?q=${encodeURIComponent(query)}">
+    <span class="med-icon" style="background:rgba(22,101,184,.12);color:#1665b8">${icon('search')}</span>
+    <span class="med-info">
+      <span class="med-name">Buscar “${h(query)}” en farmacias online</span>
+      <span class="med-meta">Precios de ${LIVE_CHAINS.length} cadenas, sin entrar a cada web</span>
+    </span>
+    <span class="med-go">${icon('chevron')}</span>
+  </a>`;
 }
 
 function bindHomeSearch(main) {
@@ -601,9 +622,13 @@ function bindHomeSearch(main) {
     if (!meds.length) {
       results.innerHTML = `<div class="search-empty"><strong>No encontramos “${h(
         query.trim()
-      )}” en el catálogo.</strong><br />Prueba con el nombre genérico, por ejemplo “paracetamol”, “omeprazol” o “loratadina”.</div>`;
+      )}” en el catálogo.</strong><br />Prueba con el nombre genérico o búscalo directo en las farmacias online.</div>${onlineSearchMarkup(
+        query.trim()
+      )}`;
     } else {
-      results.innerHTML = meds.map((med) => searchResultMarkup(med)).join('');
+      results.innerHTML = `${meds.map((med) => searchResultMarkup(med)).join('')}${onlineSearchMarkup(
+        query.trim()
+      )}`;
     }
     results.classList.add('is-open');
     input.setAttribute('aria-expanded', 'true');
@@ -657,7 +682,7 @@ function bindHomeSearch(main) {
     if (first) {
       routeHash(`/med/${encodeURIComponent(first.id)}`);
     } else {
-      showResults([], query);
+      routeHash(`/online?q=${encodeURIComponent(query)}`);
     }
   });
 
@@ -666,6 +691,148 @@ function bindHomeSearch(main) {
   };
   document.addEventListener('pointerdown', outside);
   addCleanup(() => document.removeEventListener('pointerdown', outside));
+}
+
+/* ---------- Online search ---------- */
+
+function onlineTemplate(query) {
+  return `<div class="page online-page">
+    <div class="container">
+      <section class="online-head">
+        <span class="eyebrow">Buscador en farmacias online</span>
+        <h1 class="online-title">“${h(query)}”</h1>
+        <p class="online-sub">Buscamos el nombre tal como lo escribiste en ${LIVE_CHAINS.length} farmacias con precio público. No necesitas entrar a cada web.</p>
+        <form class="online-form" id="online-form" role="search">
+          <label class="sr-only" for="online-query">Buscar otro medicamento</label>
+          <div class="search-box">
+            ${icon('search')}
+            <input class="search-input" id="online-query" type="search" value="${h(
+              query
+            )}" placeholder="Otro medicamento o marca…" enterkeyhint="search" autocomplete="off" spellcheck="false" />
+            <button class="btn btn-primary btn-sm" type="submit">Buscar</button>
+          </div>
+        </form>
+        <div class="online-meta" id="online-meta">${icon('clock')} Consultando farmacias…</div>
+      </section>
+      <div id="online-status"></div>
+      <div id="online-results">${Array.from(
+        { length: 3 },
+        () => `<div class="skeleton-card skeleton-stack" style="margin-bottom:8px"><span class="skeleton" style="width:30%"></span><span class="skeleton" style="width:76%"></span><span class="skeleton" style="width:46%"></span></div>`
+      ).join('')}</div>
+      <p class="disclaimer">Los resultados son los que publica el buscador de cada farmacia. Revisa dosis, forma y presentación antes de comprar. Los precios pueden cambiar al pagar.</p>
+    </div>
+  </div>`;
+}
+
+function onlineOfferMarkup(offer, index) {
+  const chain = chainByKey(offer.chain);
+  const pack = offer.packCount ? `${offer.packCount} ${offer.packUnit}` : 'Presentación según el nombre';
+  const unit = offer.unitPrice
+    ? `${formatUnitPrice(offer.unitPrice)} / ${unitNoun(offer.packUnit)}`
+    : 'Precio por caja';
+  const href = safeUrl(offer.url) || safeUrl(chain.searchUrl?.(offer.productName)) || safeUrl(chain.site);
+  const content = `<div class="offer-top">
+      <span class="offer-chain">${chainDot(chain)} ${h(chain.short)}${
+        index === 0 ? '<span class="best-flag">Menor por unidad</span>' : ''
+      }</span>
+      <span class="offer-price">${h(formatClp(offer.price))}<small>${h(unit)}</small></span>
+    </div>
+    <p class="offer-name">${h(offer.productName || chain.name)}</p>
+    <div class="offer-foot">
+      <span>${h(pack)}${
+        offer.listPrice ? ` · Antes ${h(formatClp(offer.listPrice))}` : ''
+      }</span>
+      <span class="offer-foot-right">Ver producto ${icon('external')}</span>
+    </div>`;
+
+  return href
+    ? `<a class="offer-card${index === 0 ? ' is-best' : ''}" href="${h(href)}" target="_blank" rel="noopener noreferrer">${content}</a>`
+    : `<div class="offer-card">${content}</div>`;
+}
+
+function renderOnline(main, route, token) {
+  const query = String(route.query || '').trim();
+  main.innerHTML = onlineTemplate(query || 'Medicamento');
+  const form = $('#online-form', main);
+  const input = $('#online-query', main);
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const next = input?.value.trim();
+    if (!next) {
+      input?.focus();
+      return;
+    }
+    routeHash(`/online?q=${encodeURIComponent(next)}`);
+  });
+
+  if (query.length < 2) {
+    $('#online-results', main).innerHTML = `<div class="empty-state"><span class="empty-art">${icon(
+      'search'
+    )}</span><strong>Escribe un medicamento</strong><p>Usa el nombre genérico o de marca, por ejemplo “omeprazol” o “Kitadol”.</p></div>`;
+    const meta = $('#online-meta', main);
+    if (meta) meta.innerHTML = `${icon('info')} Mínimo dos letras.`;
+    return;
+  }
+
+  api
+    .searchOnline(query)
+    .then((value) => {
+      if (!isToken(token)) return;
+      const offers = [...(value.offers || [])].sort(
+        (a, b) => (a.unitPrice ?? a.price) - (b.unitPrice ?? b.price) || a.price - b.price
+      );
+      const meta = $('#online-meta', main);
+      const failed = (value.sources || [])
+        .filter((source) => source.status === 'error')
+        .map((source) => chainByKey(source.chain).short);
+
+      if (meta) {
+        const shown = offers.length;
+        const total = Number(value.total) || shown;
+        meta.innerHTML = `${icon('receipt')} ${shown} ${
+          shown === 1 ? 'resultado' : 'resultados'
+        }${total > shown ? ` de ${total}` : ''} · ${h(formatDateTime(value.checkedAt))}${
+          failed.length ? ` · Sin respuesta de ${h(failed.join(', '))}` : ''
+        }`;
+      }
+
+      const status = $('#online-status', main);
+      if (status) {
+        status.innerHTML = value.offers?.length
+          ? `<div class="note-strip">${icon(
+              'info'
+            )}<span>Ordenado por <strong>precio por unidad</strong>. El nombre y la presentación son los que publica cada farmacia.</span></div>`
+          : '';
+      }
+
+      const results = $('#online-results', main);
+      if (!results) return;
+      if (!offers.length) {
+        results.innerHTML = `<div class="empty-state"><span class="empty-art">${icon(
+          'receipt'
+        )}</span><strong>No encontramos “${h(query)}” con precio público</strong><p>Prueba con el nombre genérico, sin marca ni dosis. Cruz Verde no entrega precios abiertos sin elegir comuna, por eso no aparece en esta búsqueda.</p><a class="btn btn-ghost btn-sm" href="#/">Volver al catálogo</a></div>`;
+        return;
+      }
+      results.innerHTML = `<div class="offers-list">${offers
+        .map((offer, index) => onlineOfferMarkup(offer, index))
+        .join('')}</div>`;
+    })
+    .catch((error) => {
+      if (!isToken(token)) return;
+      const meta = $('#online-meta', main);
+      if (meta) meta.innerHTML = `${icon('alert')} No pudimos consultar las farmacias.`;
+      const results = $('#online-results', main);
+      if (results) {
+        results.innerHTML = `<div class="empty-state"><span class="empty-art">${icon(
+          'alert'
+        )}</span><strong>Búsqueda no disponible</strong><p>${h(
+          error.message || 'Revisa tu conexión e intenta otra vez.'
+        )}</p><button class="btn btn-ghost btn-sm" type="button" data-online-retry>${icon(
+          'refresh'
+        )} Reintentar</button></div>`;
+        $('[data-online-retry]', results)?.addEventListener('click', () => renderOnline(main, route, token));
+      }
+    });
 }
 
 /* ---------- Detail ---------- */
@@ -733,7 +900,7 @@ function detailTemplate(med) {
             <div class="section-title-wrap">
               <span class="section-kicker">Sin precio abierto</span>
               <h2 class="section-title" id="pending-title">Revisa tú mismo</h2>
-              <p class="section-sub">Estas farmacias no entregan precios abiertos; te dejamos el enlace directo.</p>
+              <p class="section-sub">Cruz Verde solo muestra precios después de elegir comuna y sesión. Te dejamos el enlace directo.</p>
             </div>
           </div>
           <div class="pending-list" id="pending-slot"></div>
@@ -766,7 +933,7 @@ function renderDetailSkeleton(main) {
 
 function bestCardMarkup(med, offers) {
   if (!offers.length) {
-    return `<div class="best-card"><div class="best-grid"><div><span class="best-label">Sin precio online</span><div class="best-price" style="font-size:clamp(26px,6vw,38px)">Revisa tu barrio</div><p class="best-saving-line">Hoy no encontramos esta presentación en las farmacias online. Puedes anotar el precio de tu farmacia de barrio o revisar las cadenas sin precio abierto.</p></div><div class="best-side"><button class="btn btn-primary" type="button" data-add-manual>${icon(
+    return `<div class="best-card"><div class="best-grid"><div><span class="best-label">Sin precio online</span><div class="best-price" style="font-size:clamp(26px,6vw,38px)">Revisa tu barrio</div><p class="best-saving-line">Hoy no encontramos esta presentación en las farmacias online. Puedes anotar el precio de tu farmacia de barrio o revisar Cruz Verde.</p></div><div class="best-side"><button class="btn btn-primary" type="button" data-add-manual>${icon(
       'plus'
     )} Anotar precio de barrio</button></div></div></div>`;
   }
@@ -878,7 +1045,7 @@ function statusMarkup(value, origin) {
     )}. Los demás precios están actualizados.</span></div>`);
   }
   if (!value.offers?.length) {
-    parts.push(`<div class="note-strip is-error">${icon('alert')}<span>Hoy no encontramos precios online para esta presentación. Revisa las cadenas sin precio abierto o anota el precio de tu barrio.</span></div>`);
+    parts.push(`<div class="note-strip is-error">${icon('alert')}<span>Hoy no encontramos precios online para esta presentación. Revisa Cruz Verde o anota el precio de tu barrio.</span></div>`);
   }
   return parts.join('');
 }
@@ -906,7 +1073,7 @@ function paintComparison(main, med, value, origin) {
           .join('')}</div>`
       : `<div class="empty-state"><span class="empty-art">${icon(
           'receipt'
-        )}</span><strong>Sin ofertas online ahora</strong><p>Prueba actualizar en unos minutos o revisa las farmacias sin precio abierto.</p><button class="btn btn-ghost btn-sm" type="button" data-retry>${icon(
+        )}</span><strong>Sin ofertas online ahora</strong><p>Prueba actualizar en unos minutos o revisa Cruz Verde.</p><button class="btn btn-ghost btn-sm" type="button" data-retry>${icon(
           'refresh'
         )} Reintentar</button></div>`;
   }
@@ -935,7 +1102,7 @@ function renderPendingChains(main, med) {
     const chain = chainByKey(key);
     const url = safeUrl(chain.searchUrl?.(med.query));
     return `<div class="pending-row">
-      <div class="pending-chain">${chainDot(chain)}<div style="min-width:0"><span>${h(chain.short)}</span><div class="pending-note">No publica precios abiertos</div></div></div>
+      <div class="pending-chain">${chainDot(chain)}<div style="min-width:0"><span>${h(chain.short)}</span><div class="pending-note">Requiere elegir comuna</div></div></div>
       ${
         url
           ? `<a class="pending-link" href="${h(url)}" target="_blank" rel="noopener noreferrer">Revisar ${icon(
@@ -1213,7 +1380,7 @@ function mapTemplate(location, radius) {
           <span class="section-kicker">GPS + OpenStreetMap</span>
           <h1 class="section-title">Farmacias cerca de ti</h1>
           <p class="section-sub">Activa tu ubicación para ordenar las farmacias por distancia. ${
-            location.source === 'gps' ? 'Estás usando tu GPS.' : 'Ahora ves la referencia de Huechuraba.'
+            location.source === 'gps' ? 'Estás usando tu GPS.' : 'Ves Huechuraba como ejemplo; activa tu GPS para tu comuna de Chile.'
           }</p>
         </div>
         <button class="btn btn-ghost btn-sm" type="button" id="map-refresh">${icon(
@@ -1294,7 +1461,7 @@ function mapEmptyMarkup(location, error) {
     <p>${
       error
         ? 'Revisa tu conexión e intenta de nuevo. Tus datos guardados siguen disponibles.'
-        : 'Prueba con un radio más amplio, activa tu GPS o explora la referencia de Huechuraba.'
+        : 'Prueba con un radio más amplio o activa tu GPS en cualquier comuna de Chile.'
     }</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
       <button class="btn btn-ghost btn-sm" type="button" data-map-retry>${icon('refresh')} Reintentar</button>
@@ -1707,7 +1874,7 @@ function renderInfo(main, token) {
         <section class="info-card">
           <div class="info-card-head"><span class="info-card-icon">${icon('map')}</span><h2>Tu ubicación y el mapa</h2></div>
           <p>La ubicación se usa solo para buscar farmacias cercanas. Enviamos las coordenadas a nuestro servicio y a OpenStreetMap para responder la consulta; no guardamos tu ubicación en una base de datos.</p>
-          <p>Si no activas el GPS, puedes usar Huechuraba como referencia. El mapa puede tener farmacias faltantes o desactualizadas.</p>
+          <p>Si no activas el GPS, ves Huechuraba como ejemplo. El mapa incluye farmacias de todo Chile según OpenStreetMap y puede tener locales faltantes o desactualizados.</p>
           <button class="btn btn-ghost btn-sm" type="button" data-location-info>${icon(
             'locate'
           )} Cambiar ubicación</button>
@@ -2050,7 +2217,7 @@ function openLocationSheet() {
         <p>${
           location.source === 'gps'
             ? 'Ordenaremos las farmacias desde donde estás.'
-            : 'El Sauce 1850, Huechuraba. Puedes activar el GPS para ver lo que tienes alrededor.'
+            : 'El Sauce 1850, Huechuraba. Es solo un ejemplo: activa tu GPS para ver farmacias de tu comuna.'
         }</p>
       </div>
     </div>

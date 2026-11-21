@@ -119,7 +119,11 @@ export function mountMap(container, options) {
   userMarker.bindPopup(
     `<strong class="popup-title">${
       options.location.source === 'gps' ? 'Estás aquí' : 'Ubicación de referencia'
-    }</strong><div class="popup-address">Huechuraba, referencia El Sauce 1850</div>`,
+    }</strong><div class="popup-address">${
+      options.location.source === 'gps'
+        ? 'Ubicación entregada por tu teléfono'
+        : 'El Sauce 1850, Huechuraba (ejemplo)'
+    }</div>`,
     { closeButton: false, maxWidth: 220 }
   );
 
@@ -159,7 +163,9 @@ export function mountMap(container, options) {
         `<strong class="popup-title">${
           next.location.source === 'gps' ? 'Estás aquí' : 'Ubicación de referencia'
         }</strong><div class="popup-address">${
-          next.location.source === 'gps' ? 'Ubicación entregada por tu teléfono' : 'Huechuraba, referencia El Sauce 1850'
+          next.location.source === 'gps'
+            ? 'Ubicación entregada por tu teléfono'
+            : 'El Sauce 1850, Huechuraba (ejemplo)'
         }</div>`
       );
       const moved =

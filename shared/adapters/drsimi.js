@@ -19,7 +19,7 @@ export async function search(query) {
       name: product.productName || item?.name || '',
       price,
       listPrice: Number.isFinite(listPrice) && listPrice > price ? listPrice : null,
-      url: product.link ? `${product.link}/p` : null,
+      url: product.link ? (product.link.endsWith('/p') ? product.link : `${product.link}/p`) : null,
       image: item?.images?.[0]?.imageUrl || null,
       available: seller?.commertialOffer?.IsAvailable !== false
     });

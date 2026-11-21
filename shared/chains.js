@@ -49,14 +49,14 @@ export const CHAINS = {
     live: false,
     color: '#008a5a',
     site: 'https://www.cruzverde.cl',
-    searchUrl: (q) => `https://www.cruzverde.cl/search?q=${encodeURIComponent(q)}`
+    searchUrl: (q) => `https://www.cruzverde.cl/search?query=${encodeURIComponent(q)}`
   },
   salcobrand: {
     key: 'salcobrand',
     name: 'Salcobrand',
     short: 'Salcobrand',
     type: 'cadena',
-    live: false,
+    live: true,
     color: '#2356a8',
     site: 'https://salcobrand.cl',
     searchUrl: (q) => `https://salcobrand.cl/search_result?query=${encodeURIComponent(q)}`,
@@ -67,10 +67,10 @@ export const CHAINS = {
     name: 'Farmacia Knop',
     short: 'Knop',
     type: 'cadena',
-    live: false,
+    live: true,
     color: '#7752a8',
-    site: 'https://www.farmaciasknop.cl',
-    searchUrl: (q) => `https://www.farmaciasknop.cl/search?q=${encodeURIComponent(q)}`
+    site: 'https://www.farmaciasknop.com',
+    searchUrl: (q) => `https://www.farmaciasknop.com/search?q=${encodeURIComponent(q)}`
   },
   farmex: {
     key: 'farmex',
@@ -102,7 +102,7 @@ export const CHAINS = {
 };
 
 export const LIVE_CHAINS = Object.values(CHAINS).filter((chain) => chain.live);
-export const OFFER_ORDER = ['ahumada', 'drsimi', 'ecofarmacias', 'araucomed'];
+export const OFFER_ORDER = ['ahumada', 'drsimi', 'salcobrand', 'ecofarmacias', 'araucomed', 'knop'];
 
 export function chainByKey(key) {
   return CHAINS[key] || CHAINS.barrio;

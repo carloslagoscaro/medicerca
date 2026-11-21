@@ -53,6 +53,17 @@ export async function fetchNearby(lat, lon, radius = 5000) {
   return value;
 }
 
+export async function searchOnline(query) {
+  const url = `/api/search?q=${encodeURIComponent(query)}`;
+  const response = await request(url, { method: 'GET' }, COMPARE_TIMEOUT);
+  if (!response.ok) throw new Error(await readError(response));
+  const value = await response.json();
+  if (!value || !Array.isArray(value.offers) || !Array.isArray(value.sources)) {
+    throw new Error('Respuesta de búsqueda incompleta.');
+  }
+  return value;
+}
+
 let snapshotPromise = null;
 
 export function loadSnapshot() {

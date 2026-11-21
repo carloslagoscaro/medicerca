@@ -57,14 +57,14 @@ var CHAINS = {
     live: false,
     color: "#008a5a",
     site: "https://www.cruzverde.cl",
-    searchUrl: (q) => `https://www.cruzverde.cl/search?q=${encodeURIComponent(q)}`
+    searchUrl: (q) => `https://www.cruzverde.cl/search?query=${encodeURIComponent(q)}`
   },
   salcobrand: {
     key: "salcobrand",
     name: "Salcobrand",
     short: "Salcobrand",
     type: "cadena",
-    live: false,
+    live: true,
     color: "#2356a8",
     site: "https://salcobrand.cl",
     searchUrl: (q) => `https://salcobrand.cl/search_result?query=${encodeURIComponent(q)}`,
@@ -75,10 +75,10 @@ var CHAINS = {
     name: "Farmacia Knop",
     short: "Knop",
     type: "cadena",
-    live: false,
+    live: true,
     color: "#7752a8",
-    site: "https://www.farmaciasknop.cl",
-    searchUrl: (q) => `https://www.farmaciasknop.cl/search?q=${encodeURIComponent(q)}`
+    site: "https://www.farmaciasknop.com",
+    searchUrl: (q) => `https://www.farmaciasknop.com/search?q=${encodeURIComponent(q)}`
   },
   farmex: {
     key: "farmex",
@@ -345,9 +345,53 @@ async function search2(query) {
       name: product.productName || item?.name || "",
       price,
       listPrice: Number.isFinite(listPrice) && listPrice > price ? listPrice : null,
-      url: product.link ? `${product.link}/p` : null,
+      url: product.link ? product.link.endsWith("/p") ? product.link : `${product.link}/p` : null,
       image: item?.images?.[0]?.imageUrl || null,
       available: seller?.commertialOffer?.IsAvailable !== false
+    });
+  }
+  return offers;
+}
+
+// shared/adapters/salcobrand.js
+var salcobrand_exports = {};
+__export(salcobrand_exports, {
+  search: () => search3
+});
+var APP_ID = "GM3RP06HJG";
+var SEARCH_KEY = "0259fe250b3be4b1326eb85e47aa7d81";
+var INDEX = "sb_variant_production";
+var BASE2 = "https://salcobrand.cl";
+async function search3(query) {
+  const data = await fetchJson(
+    `https://${APP_ID.toLowerCase()}-dsn.algolia.net/1/indexes/${INDEX}/query`,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-algolia-api-key": SEARCH_KEY,
+        "x-algolia-application-id": APP_ID,
+        referer: `${BASE2}/`,
+        origin: BASE2
+      },
+      body: JSON.stringify({ query, hitsPerPage: 24 })
+    }
+  );
+  if (!Array.isArray(data?.hits)) return [];
+  const offers = [];
+  for (const hit of data.hits) {
+    if (hit.has_stock === false) continue;
+    const normal = Number(hit.normal_price);
+    const discounted = Number(hit.direct_discount);
+    const price = Number.isFinite(discounted) && discounted > 0 ? discounted : normal;
+    if (!Number.isFinite(price) || price <= 0) continue;
+    offers.push({
+      name: hit.name || "",
+      price,
+      listPrice: Number.isFinite(normal) && normal > price ? normal : null,
+      url: hit.slug ? absoluteUrl(`/products/${hit.slug}`, BASE2) : null,
+      image: hit.catalog_image_url || hit.thumbnail_image_url || null,
+      available: true
     });
   }
   return offers;
@@ -356,9 +400,9 @@ async function search2(query) {
 // shared/adapters/ecofarmacias.js
 var ecofarmacias_exports = {};
 __export(ecofarmacias_exports, {
-  search: () => search3
+  search: () => search4
 });
-async function search3(query) {
+async function search4(query) {
   const url = "https://www.ecofarmacias.cl/wp-json/wc/store/v1/products?search=" + encodeURIComponent(query) + "&per_page=24&orderby=price&order=asc";
   const products = await fetchJson(url);
   if (!Array.isArray(products)) return [];
@@ -380,11 +424,11 @@ async function search3(query) {
 // shared/adapters/araucomed.js
 var araucomed_exports = {};
 __export(araucomed_exports, {
-  search: () => search4
+  search: () => search5
 });
-var BASE2 = "https://farmacia.araucomed.com";
-async function search4(query) {
-  const url = `${BASE2}/busqueda?s=${encodeURIComponent(query)}`;
+var BASE3 = "https://farmacia.araucomed.com";
+async function search5(query) {
+  const url = `${BASE3}/busqueda?s=${encodeURIComponent(query)}`;
   const html = await fetchText(url);
   const chunks = html.split('<article class="product-miniature');
   const offers = [];
@@ -397,26 +441,57 @@ async function search4(query) {
     if (!price) continue;
     const name = decodeEntities(String(titleMatch?.[1] || "").replace(/<[^>]*>/g, " "));
     if (!name) continue;
-    const productUrl = absoluteUrl(linkMatch[1], BASE2);
+    const productUrl = absoluteUrl(linkMatch[1], BASE3);
     if (!productUrl) continue;
     const imageMatch = chunk.match(/data-src="([^"]+\.(?:jpg|jpeg|png|webp))"/i);
     offers.push({
       name,
       price,
       url: productUrl,
-      image: imageMatch ? absoluteUrl(imageMatch[1], BASE2) : null
+      image: imageMatch ? absoluteUrl(imageMatch[1], BASE3) : null
+    });
+  }
+  return offers;
+}
+
+// shared/adapters/knop.js
+var knop_exports = {};
+__export(knop_exports, {
+  search: () => search6
+});
+var BASE4 = "https://www.farmaciasknop.com";
+var MAX_RESULTS = 24;
+async function search6(query) {
+  const url = `${BASE4}/products.json?q=${encodeURIComponent(query)}&per_page=${MAX_RESULTS}`;
+  const data = await fetchJson(url);
+  if (!Array.isArray(data?.products)) return [];
+  const offers = [];
+  for (const product of data.products) {
+    const price = Number(product.sale_price ?? product.price);
+    if (!Number.isFinite(price) || price <= 0) continue;
+    if (product.available === false) continue;
+    const regular = Number(product.regular_price ?? product.price);
+    offers.push({
+      name: product.name || "",
+      price,
+      listPrice: Number.isFinite(regular) && regular > price ? regular : null,
+      url: absoluteUrl(product.url || `/products/${product.slug}`, BASE4),
+      image: product.images?.[0]?.src || product.images?.[0]?.url || null,
+      available: true
     });
   }
   return offers;
 }
 
 // shared/compare.js
-var ADAPTERS = { ahumada: ahumada_exports, drsimi: drsimi_exports, ecofarmacias: ecofarmacias_exports, araucomed: araucomed_exports };
+var ADAPTERS = { ahumada: ahumada_exports, drsimi: drsimi_exports, salcobrand: salcobrand_exports, ecofarmacias: ecofarmacias_exports, araucomed: araucomed_exports, knop: knop_exports };
 var ALLOWED_HOSTS = {
   ahumada: ["www.farmaciasahumada.cl"],
   drsimi: ["www.drsimi.cl"],
+  salcobrand: ["salcobrand.cl", "www.salcobrand.cl"],
   ecofarmacias: ["www.ecofarmacias.cl"],
-  araucomed: ["farmacia.araucomed.com"]
+  araucomed: ["farmacia.araucomed.com"],
+  knop: ["www.farmaciasknop.com"]
 };
 function safeProductUrl(chainKey, value) {
   try {
@@ -475,6 +550,66 @@ async function compareMed(med) {
     medId: med.id,
     checkedAt,
     offers: entries.map((entry) => entry.offer).filter(Boolean),
+    sources: entries.map((entry) => entry.source)
+  };
+}
+var MAX_RAW_PER_CHAIN = 12;
+var MAX_RAW_TOTAL = 60;
+function inferPackUnit(name) {
+  const normalized = normalizeText(name);
+  if (/\bcapsulas?\b/.test(normalized)) return "c\xE1psulas";
+  if (/\bcomprimidos?\b|\btabletas?\b|\bgrajeas?\b/.test(normalized)) return "comprimidos";
+  if (/\bml\b|\bcc\b/.test(normalized)) return "ml";
+  if (/\bg\b/.test(normalized)) return "g";
+  if (/\bdosis\b|\bpuff\b|\bdisparos?\b/.test(normalized)) return "dosis";
+  return null;
+}
+async function searchProducts(query) {
+  const checkedAt = (/* @__PURE__ */ new Date()).toISOString();
+  const entries = await Promise.all(
+    Object.entries(ADAPTERS).map(async ([key, adapter]) => {
+      try {
+        const raw = await adapter.search(query);
+        const chain = chainByKey(key);
+        const offers = raw.slice(0, MAX_RAW_PER_CHAIN).map((item) => {
+          const price = Number(item.price);
+          const name = item.name || "";
+          const packUnit = inferPackUnit(name);
+          const packCount = packUnit ? extractPackCount(name, packUnit) : null;
+          return {
+            chain: key,
+            chainName: chain.name,
+            chainShort: chain.short,
+            type: chain.type,
+            productName: name,
+            price,
+            listPrice: item.listPrice || null,
+            packCount,
+            packUnit,
+            unitPrice: unitPrice(price, packCount),
+            url: safeProductUrl(key, item.url),
+            checkedAt,
+            source: "live"
+          };
+        });
+        return {
+          source: { chain: key, status: offers.length ? "ok" : "empty", found: raw.length },
+          offers: offers.filter((offer) => Number.isFinite(offer.price) && offer.price > 0 && offer.url)
+        };
+      } catch (error) {
+        return {
+          source: { chain: key, status: "error", found: 0, message: String(error?.message || "sin respuesta") },
+          offers: []
+        };
+      }
+    })
+  );
+  const allOffers = entries.flatMap((entry) => entry.offers).sort((a, b) => (a.unitPrice ?? a.price) - (b.unitPrice ?? b.price) || a.price - b.price);
+  return {
+    query,
+    checkedAt,
+    total: allOffers.length,
+    offers: allOffers.slice(0, MAX_RAW_TOTAL),
     sources: entries.map((entry) => entry.source)
   };
 }
@@ -1429,13 +1564,57 @@ function json2(value, status = 200, headers = {}) {
   });
 }
 
+// functions/api/search.js
+var memoryCache3 = /* @__PURE__ */ new Map();
+var TTL_MS3 = 5 * 60 * 1e3;
+async function onRequestGet3(context) {
+  const url = new URL(context.request.url);
+  const query = String(url.searchParams.get("q") || "").replace(/\s+/g, " ").trim().slice(0, 80);
+  if (query.length < 2) {
+    return json3({ error: "Escribe al menos dos letras." }, 400);
+  }
+  const key = query.toLowerCase();
+  const now = Date.now();
+  const cached = memoryCache3.get(key);
+  if (cached && now - cached.time < TTL_MS3) {
+    return json3(cached.value, 200, { "cache-control": "public, max-age=120" });
+  }
+  try {
+    const value = await searchProducts(query);
+    memoryCache3.set(key, { time: now, value });
+    if (memoryCache3.size > 80) {
+      const oldest = [...memoryCache3.entries()].sort((a, b) => a[1].time - b[1].time).slice(0, 20);
+      for (const [entry] of oldest) memoryCache3.delete(entry);
+    }
+    return json3(value, 200, { "cache-control": "public, max-age=120" });
+  } catch (error) {
+    return json3(
+      { error: "No pudimos buscar en las farmacias.", detail: String(error?.message || "") },
+      502
+    );
+  }
+}
+async function onRequestPost3() {
+  return json3({ error: "Usa GET /api/search?q=medicamento." }, 405);
+}
+function json3(value, status = 200, headers = {}) {
+  return new Response(JSON.stringify(value), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+      ...headers
+    }
+  });
+}
+
 // worker/index.js
 var SECURITY_HEADERS = {
   "x-content-type-options": "nosniff",
   "referrer-policy": "strict-origin-when-cross-origin",
   "permissions-policy": "geolocation=(self)"
 };
-function json3(value, status = 200) {
+function json4(value, status = 200) {
   return new Response(JSON.stringify(value), {
     status,
     headers: {
@@ -1457,7 +1636,7 @@ var index_default = {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/health") {
-      return json3({ ok: true, time: (/* @__PURE__ */ new Date()).toISOString() });
+      return json4({ ok: true, time: (/* @__PURE__ */ new Date()).toISOString() });
     }
     if (url.pathname === "/api/compare") {
       const context = contextFor(request, env, ctx);
@@ -1469,8 +1648,13 @@ var index_default = {
       const response2 = request.method === "GET" ? await onRequestGet2(context) : await onRequestPost2(context);
       return withSecurityHeaders(response2);
     }
+    if (url.pathname === "/api/search") {
+      const context = contextFor(request, env, ctx);
+      const response2 = request.method === "GET" ? await onRequestGet3(context) : await onRequestPost3(context);
+      return withSecurityHeaders(response2);
+    }
     if (url.pathname.startsWith("/api/")) {
-      return json3({ error: "Ruta no encontrada." }, 404);
+      return json4({ error: "Ruta no encontrada." }, 404);
     }
     const response = await env.ASSETS.fetch(request);
     if (url.pathname.endsWith("/") || url.pathname.endsWith(".html")) {

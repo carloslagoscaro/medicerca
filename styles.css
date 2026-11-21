@@ -3772,3 +3772,80 @@ ol {
   animation: rise-in 0.36s cubic-bezier(0.22, 0.9, 0.24, 1) both;
   animation-delay: calc(var(--i, 0) * 30ms);
 }
+
+/* ---------- Búsqueda directa en farmacias online ---------- */
+
+.search-online {
+  background: #f7fbff;
+  border-top: 1px solid #dce8f5;
+}
+
+.search-online .med-name,
+.search-online .med-meta {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.search-online .med-name {
+  font-size: 12.5px;
+  font-weight: 750;
+}
+
+.search-online .med-meta {
+  color: #4b6a8a;
+}
+
+.online-head {
+  max-width: 760px;
+  padding-bottom: 14px;
+}
+
+.online-title {
+  margin-top: 5px;
+  font-size: clamp(27px, 7vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.online-sub {
+  max-width: 620px;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.online-form {
+  margin-top: 13px;
+}
+
+.online-form .search-box {
+  padding-right: 6px;
+}
+
+.online-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.online-meta .icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--lime-deep);
+}
+
+.online-page .note-strip {
+  margin-bottom: 10px;
+}

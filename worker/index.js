@@ -1,5 +1,6 @@
 import { onRequestGet as compareGet, onRequestPost as comparePost } from '../functions/api/compare.js';
 import { onRequestGet as nearbyGet, onRequestPost as nearbyPost } from '../functions/api/nearby.js';
+import { onRequestGet as searchGet, onRequestPost as searchPost } from '../functions/api/search.js';
 
 const SECURITY_HEADERS = {
   'x-content-type-options': 'nosniff',
@@ -46,6 +47,13 @@ export default {
       const context = contextFor(request, env, ctx);
       const response =
         request.method === 'GET' ? await nearbyGet(context) : await nearbyPost(context);
+      return withSecurityHeaders(response);
+    }
+
+    if (url.pathname === '/api/search') {
+      const context = contextFor(request, env, ctx);
+      const response =
+        request.method === 'GET' ? await searchGet(context) : await searchPost(context);
       return withSecurityHeaders(response);
     }
 

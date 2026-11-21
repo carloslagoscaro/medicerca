@@ -1,4 +1,4 @@
-const VERSION = 'medicerca-v1';
+const VERSION = 'medicerca-v2';
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
@@ -22,8 +22,10 @@ const CORE = [
   './shared/adapters/common.js',
   './shared/adapters/ahumada.js',
   './shared/adapters/drsimi.js',
+  './shared/adapters/salcobrand.js',
   './shared/adapters/ecofarmacias.js',
   './shared/adapters/araucomed.js',
+  './shared/adapters/knop.js',
   './vendor/leaflet/leaflet.js',
   './vendor/leaflet/leaflet.css',
   './assets/fonts/manrope-latin.woff2',
@@ -31,7 +33,7 @@ const CORE = [
   './assets/icon-192.png',
   './assets/icon-512.png',
   './assets/apple-touch-icon.png',
-  './data/nearby-huechuraba.json',
+  './data/pharmacies-chile.json',
   './data/live-prices.json'
 ].map((path) => new URL(path, self.location).href);
 

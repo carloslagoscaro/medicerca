@@ -36,6 +36,7 @@ function normalizePharmacy(pharmacy, location) {
     lon: Number(pharmacy.lon),
     address,
     comuna: pharmacy.comuna || '',
+    region: pharmacy.region || '',
     phone: pharmacy.phone || '',
     hours: pharmacy.hours || '',
     source: pharmacy.source || 'osm',
@@ -53,7 +54,7 @@ function prepareList(list, location) {
 
 export function preloadBundled() {
   if (!bundledPromise) {
-    bundledPromise = fetch('data/nearby-huechuraba.json', { cache: 'force-cache' })
+    bundledPromise = fetch('data/pharmacies-chile.json', { cache: 'force-cache' })
       .then((response) => (response.ok ? response.json() : null))
       .then((data) => {
         bundled = data;
@@ -70,7 +71,6 @@ function bundledRaw() {
 
 export function bundledNearby(location, radius = 5000) {
   if (!bundled) return [];
-  if (distanceKm(location, HOME_LOCATION) > 18) return [];
   return prepareList(bundledRaw(), location).filter((pharmacy) => pharmacy.distance <= radius / 1000);
 }
 
@@ -90,7 +90,6 @@ function isDuplicate(a, b) {
 }
 
 function mergeWithBundled(primary, location, radius) {
-  if (distanceKm(location, HOME_LOCATION) > 18) return primary;
   const merged = [...primary];
   const extras = preparedBundled(location, radius);
   for (const pharmacy of extras) {
