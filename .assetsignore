@@ -6,6 +6,7 @@ node_modules
 .qoder
 worker
 functions
+cloudflare-worker.js
 scripts
 test
 package.json
@@ -14,3 +15,4 @@ wrangler.jsonc
 README.md
 .dev.vars
 .wrangler
+_worker.js

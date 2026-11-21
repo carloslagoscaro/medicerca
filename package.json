@@ -8,6 +8,7 @@
     "start": "node scripts/dev.mjs",
     "test": "node --test test",
     "snapshot": "node scripts/snapshot.mjs",
+    "build:worker": "node scripts/build-worker.mjs",
     "deploy": "wrangler deploy",
     "dev:worker": "wrangler dev"
   },
@@ -15,6 +16,7 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "wrangler": "^4.0.0"
   }
 }

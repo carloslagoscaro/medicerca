@@ -69,6 +69,8 @@ Necesitas una cuenta de GitHub y una cuenta de Cloudflare. El proyecto ya incluy
 4. Anota un precio de prueba en **Anotar precio** y luego bórralo.
 5. Instala la app y ábrela de nuevo desde el ícono.
 
+Si la compilación falla con **"The entry-point file at ... was not found"**, revisa que en la raíz del repositorio de GitHub estén `wrangler.jsonc`, `package.json`, `package-lock.json` y `cloudflare-worker.js`. La carpeta `worker/` no es necesaria para publicar, porque `cloudflare-worker.js` ya contiene el Worker completo.
+
 Solo después de probar la dirección `workers.dev` conviene conectar un dominio propio. Si quieres, ese paso lo revisamos juntos antes de tocar el DNS.
 
 ### Actualizaciones y vuelta atrás
@@ -89,10 +91,13 @@ npm start
 Abre <http://localhost:8790>. Para probar el service worker en local, usa <http://localhost:8790/?sw=1> y luego recarga.
 
 ```bash
-npm test          # pruebas del buscador y del emparejamiento de precios
-npm run snapshot  # actualiza data/live-prices.json con precios reales
-npm run deploy    # publica con Wrangler (requiere npx wrangler login)
+npm test            # pruebas del buscador y del emparejamiento de precios
+npm run snapshot    # actualiza data/live-prices.json con precios reales
+npm run build:worker # regenera cloudflare-worker.js desde worker/index.js
+npm run deploy      # publica con Wrangler (requiere npx wrangler login)
 ```
+
+`cloudflare-worker.js` es el archivo de entrada que Cloudflare usa al publicar. Se genera desde `worker/index.js` y sus dependencias; después de cambiar el motor del servidor hay que ejecutar `npm run build:worker`.
 
 El respaldo `data/live-prices.json` permite mostrar el último precio conocido si una farmacia no responde. No reemplaza la consulta en vivo.
 
@@ -120,7 +125,8 @@ styles.css                 diseño mobile-first
 src/                       navegación, vistas, mapa y hojas modales
 shared/                    catálogo, adaptadores de farmacias, matching y geo
 functions/api/             endpoints para Cloudflare Pages/Workers
-worker/index.js            entrada de Cloudflare Workers + assets
+worker/index.js            código fuente de la entrada de Cloudflare Workers
+cloudflare-worker.js       entrada empaquetada que usa Cloudflare al publicar
 data/                      respaldo de precios y farmacias de Huechuraba
 scripts/dev.mjs            servidor local con las mismas rutas /api
 scripts/snapshot.mjs       generador del respaldo de precios

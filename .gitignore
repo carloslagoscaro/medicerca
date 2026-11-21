@@ -5,3 +5,5 @@ node_modules/
 .qoder/
 *.log
 .DS_Store
+
+_worker.js

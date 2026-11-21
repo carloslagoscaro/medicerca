@@ -1,0 +1,550 @@
+{
+ "center": {
+  "lat": -33.3616,
+  "lon": -70.6704
+ },
+ "generatedAt": "2026-11-21",
+ "license": "© OpenStreetMap contributors (ODbL)",
+ "pharmacies": [
+  {
+   "id": "osm/node/10148497071",
+   "name": "Farmacias del Dr. Simi",
+   "brand": "Farmacias del Dr. Simi",
+   "street": "Avenida Pedro Fontova",
+   "number": "6651",
+   "comuna": "Huechuraba",
+   "lat": -33.3625369,
+   "lon": -70.6701138
+  },
+  {
+   "id": "osm/node/13302541778",
+   "name": "Farmacias Ahumada",
+   "brand": "Farmacias Ahumada",
+   "street": "Avenida Américo Vespucio",
+   "number": "1737",
+   "comuna": "Huechuraba",
+   "lat": -33.364621,
+   "lon": -70.6783661
+  },
+  {
+   "id": "osm/node/11147498358",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "Avenida Américo Vespucio",
+   "number": "1737",
+   "comuna": "Huechuraba",
+   "lat": -33.3663542,
+   "lon": -70.6781077
+  },
+  {
+   "id": "osm/node/13302541786",
+   "name": "SalcoBrand",
+   "brand": "SalcoBrand",
+   "street": "Avenida Américo Vespucio",
+   "number": "1737",
+   "comuna": "Huechuraba",
+   "lat": -33.365975,
+   "lon": -70.6790664
+  },
+  {
+   "id": "osm/node/13302541784",
+   "name": "Farmacias del Dr. Simi",
+   "brand": "Farmacias del Dr. Simi",
+   "street": "Avenida Américo Vespucio",
+   "number": "1737",
+   "comuna": "Huechuraba",
+   "lat": -33.365617,
+   "lon": -70.6795276
+  },
+  {
+   "id": "osm/node/13302541741",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "Avenida Pedro Fontova",
+   "number": "7523",
+   "comuna": "Huechuraba",
+   "lat": -33.3523448,
+   "lon": -70.6698325
+  },
+  {
+   "id": "osm/node/13302541737",
+   "name": "Punto Farma",
+   "brand": "",
+   "street": "Berta Correa",
+   "number": "1654",
+   "comuna": "Huechuraba",
+   "lat": -33.354795,
+   "lon": -70.6783731
+  },
+  {
+   "id": "osm/node/10869063599",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "Santa Marta de Huechuraba",
+   "number": "7300",
+   "comuna": "Huechuraba",
+   "lat": -33.3541839,
+   "lon": -70.6784811
+  },
+  {
+   "id": "osm/node/1666274430",
+   "name": "Farmacias Ahumada",
+   "brand": "Farmacias Ahumada",
+   "street": "Avenida Pedro Fontova",
+   "number": "7571",
+   "comuna": "Huechuraba",
+   "lat": -33.3513985,
+   "lon": -70.6702734
+  },
+  {
+   "id": "osm/node/13302541749",
+   "name": "SalcoBrand",
+   "brand": "SalcoBrand",
+   "street": "",
+   "number": "",
+   "comuna": "",
+   "lat": -33.348368,
+   "lon": -70.6698555
+  },
+  {
+   "id": "osm/node/4436461582",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "",
+   "number": "",
+   "comuna": "",
+   "lat": -33.3474362,
+   "lon": -70.6700873
+  },
+  {
+   "id": "osm/way/1209899014",
+   "name": "Farmacia Popular La Pincoya",
+   "brand": "",
+   "street": "Avenida Pedro Fontova",
+   "number": "7824-B",
+   "comuna": "",
+   "lat": -33.3453164,
+   "lon": -70.6704452
+  },
+  {
+   "id": "osm/node/4432944343",
+   "name": "Farmacias Sana Sana",
+   "brand": "",
+   "street": "",
+   "number": "",
+   "comuna": "",
+   "lat": -33.3708934,
+   "lon": -70.635804
+  },
+  {
+   "id": "osm/node/10780143932",
+   "name": "Farmacias Bicentenario",
+   "brand": "",
+   "street": "Avenida Manuel Antonio Matta",
+   "number": "1414",
+   "comuna": "",
+   "lat": -33.3665985,
+   "lon": -70.7136016
+  },
+  {
+   "id": "osm/node/6702088243",
+   "name": "Farmacia Belén",
+   "brand": "",
+   "street": "Avenida Manuel Antonio Matta",
+   "number": "1231",
+   "comuna": "",
+   "lat": -33.3675548,
+   "lon": -70.7164338
+  },
+  {
+   "id": "osm/node/11382064013",
+   "name": "Farmacias Higia",
+   "brand": "",
+   "street": "Lo Marcoleta",
+   "number": "1052",
+   "comuna": "Quilicura",
+   "lat": -33.3568076,
+   "lon": -70.7173894
+  },
+  {
+   "id": "osm/node/13238257049",
+   "name": "Farmacias Ahumada",
+   "brand": "Farmacias Ahumada",
+   "street": "",
+   "number": "",
+   "comuna": "",
+   "lat": -33.3662246,
+   "lon": -70.7203722
+  },
+  {
+   "id": "osm/node/11382064054",
+   "name": "Farmacias Antonio",
+   "brand": "",
+   "street": "",
+   "number": "",
+   "comuna": "",
+   "lat": -33.3619488,
+   "lon": -70.7207984
+  },
+  {
+   "id": "osm/node/13682226681",
+   "name": "Farmacias del Dr. Simi",
+   "brand": "Farmacias del Dr. Simi",
+   "street": "",
+   "number": "",
+   "comuna": "",
+   "lat": -33.3661977,
+   "lon": -70.7205505
+  },
+  {
+   "id": "osm/node/11229900168",
+   "name": "Farmacia Real",
+   "brand": "",
+   "street": "",
+   "number": "",
+   "comuna": "",
+   "lat": -33.3668398,
+   "lon": -70.7205789
+  },
+  {
+   "id": "osm/way/1286040606",
+   "name": "Farmacia Los Jardines",
+   "brand": "",
+   "street": "Lo Cruzat",
+   "number": "472",
+   "comuna": "Quilicura",
+   "lat": -33.3547717,
+   "lon": -70.7204117
+  },
+  {
+   "id": "osm/node/4434804376",
+   "name": "Farmacia Vecina Los Jardines",
+   "brand": "",
+   "street": "Lo Cruzat",
+   "number": "460",
+   "comuna": "",
+   "lat": -33.3552479,
+   "lon": -70.7205364
+  },
+  {
+   "id": "osm/node/9978723780",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "Avenida Américo Vespucio",
+   "number": "1641",
+   "comuna": "",
+   "lat": -33.3744753,
+   "lon": -70.7188847
+  },
+  {
+   "id": "osm/node/10791380705",
+   "name": "Farmacia DMedical",
+   "brand": "",
+   "street": "Lo Cruzat",
+   "number": "281",
+   "comuna": "",
+   "lat": -33.3583778,
+   "lon": -70.721318
+  },
+  {
+   "id": "osm/node/11337151635",
+   "name": "FarmaTout",
+   "brand": "",
+   "street": "Lo Cruzat",
+   "number": "69",
+   "comuna": "",
+   "lat": -33.3651947,
+   "lon": -70.721394
+  },
+  {
+   "id": "osm/node/11430253533",
+   "name": "Farmacia Genérica",
+   "brand": "",
+   "street": "Ramón Rosales",
+   "number": "1087",
+   "comuna": "Quilicura",
+   "lat": -33.3704719,
+   "lon": -70.7209009
+  },
+  {
+   "id": "osm/node/4435118726",
+   "name": "Farmacia Vecina",
+   "brand": "",
+   "street": "Avenida Manuel Antonio Matta",
+   "number": "928",
+   "comuna": "",
+   "lat": -33.3662437,
+   "lon": -70.7224124
+  },
+  {
+   "id": "osm/node/9045286954",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "Avenida Eduardo Frei Montalva",
+   "number": "9709",
+   "comuna": "Quilicura",
+   "lat": -33.3344333,
+   "lon": -70.7129469
+  },
+  {
+   "id": "osm/node/4434749588",
+   "name": "Farmacias Santa Ana",
+   "brand": "",
+   "street": "Arturo Prat",
+   "number": "340",
+   "comuna": "",
+   "lat": -33.3682673,
+   "lon": -70.7275558
+  },
+  {
+   "id": "osm/node/12388465999",
+   "name": "Farmacias Ahumada",
+   "brand": "Farmacias Ahumada",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "314",
+   "comuna": "Quilicura",
+   "lat": -33.3560217,
+   "lon": -70.7282042
+  },
+  {
+   "id": "osm/node/7235749386",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "358",
+   "comuna": "",
+   "lat": -33.3555646,
+   "lon": -70.7281655
+  },
+  {
+   "id": "osm/node/9948012315",
+   "name": "La Rebaja",
+   "brand": "",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "358",
+   "comuna": "",
+   "lat": -33.3554374,
+   "lon": -70.7281656
+  },
+  {
+   "id": "osm/node/8949763080",
+   "name": "Farmacias del Dr. Simi",
+   "brand": "Farmacias del Dr. Simi",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "308",
+   "comuna": "",
+   "lat": -33.3574088,
+   "lon": -70.7286429
+  },
+  {
+   "id": "osm/node/8033063604",
+   "name": "SalcoBrand",
+   "brand": "SalcoBrand",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "358",
+   "comuna": "",
+   "lat": -33.355068,
+   "lon": -70.7287354
+  },
+  {
+   "id": "osm/node/7545674668",
+   "name": "FarmaTout",
+   "brand": "",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "201",
+   "comuna": "",
+   "lat": -33.3593616,
+   "lon": -70.7295303
+  },
+  {
+   "id": "osm/way/975114878",
+   "name": "Nueva Real",
+   "brand": "",
+   "street": "Avenida Las Torres Norte",
+   "number": "306",
+   "comuna": "",
+   "lat": -33.3563693,
+   "lon": -70.729416
+  },
+  {
+   "id": "osm/node/9525500598",
+   "name": "SalcoBrand",
+   "brand": "SalcoBrand",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "800",
+   "comuna": "Quilicura",
+   "lat": -33.3574516,
+   "lon": -70.7299768
+  },
+  {
+   "id": "osm/node/11367128466",
+   "name": "BlueFarma",
+   "brand": "",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "041",
+   "comuna": "",
+   "lat": -33.3642179,
+   "lon": -70.7301092
+  },
+  {
+   "id": "osm/node/9970100445",
+   "name": "Farmacias EsSalud",
+   "brand": "",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "037",
+   "comuna": "",
+   "lat": -33.3647555,
+   "lon": -70.7301545
+  },
+  {
+   "id": "osm/node/12293775923",
+   "name": "Farmacias del Dr. Simi",
+   "brand": "Farmacias del Dr. Simi",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "581",
+   "comuna": "Quilicura",
+   "lat": -33.3681891,
+   "lon": -70.7300592
+  },
+  {
+   "id": "osm/node/10996558492",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "Avenida Manuel Antonio Matta",
+   "number": "437",
+   "comuna": "",
+   "lat": -33.3650576,
+   "lon": -70.7306919
+  },
+  {
+   "id": "osm/node/4434909442",
+   "name": "Farmacias Nueva Real",
+   "brand": "",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "276",
+   "comuna": "",
+   "lat": -33.3671332,
+   "lon": -70.7305042
+  },
+  {
+   "id": "osm/node/8952447944",
+   "name": "Cruz Verde",
+   "brand": "Cruz Verde",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "581",
+   "comuna": "",
+   "lat": -33.3684151,
+   "lon": -70.7307794
+  },
+  {
+   "id": "osm/node/11229720952",
+   "name": "SalcoBrand",
+   "brand": "SalcoBrand",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "581",
+   "comuna": "",
+   "lat": -33.3684912,
+   "lon": -70.7308304
+  },
+  {
+   "id": "osm/node/9051683269",
+   "name": "Farmaxal",
+   "brand": "",
+   "street": "Lo Marcoleta",
+   "number": "221",
+   "comuna": "Quilicura",
+   "lat": -33.3580489,
+   "lon": -70.7329172
+  },
+  {
+   "id": "osm/node/4435182072",
+   "name": "Farmacia Municipal Solidaria de Quilicura",
+   "brand": "",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "481",
+   "comuna": "Quilicura",
+   "lat": -33.3696943,
+   "lon": -70.7324293
+  },
+  {
+   "id": "osm/node/11832106483",
+   "name": "Su Farmacia",
+   "brand": "",
+   "street": "Avenida Bernardo O'Higgins",
+   "number": "491",
+   "comuna": "Quilicura",
+   "lat": -33.3697411,
+   "lon": -70.7325022
+  },
+  {
+   "id": "osm/node/11419396355",
+   "name": "Farmacia Mediahorro",
+   "brand": "",
+   "street": "Los Duraznos",
+   "number": "02",
+   "comuna": "Quilicura",
+   "lat": -33.3641944,
+   "lon": -70.7342124
+  },
+  {
+   "id": "osm/node/4435010250",
+   "name": "Farmacias del Dr. Simi",
+   "brand": "Farmacias del Dr. Simi",
+   "street": "José Francisco Vergara",
+   "number": "",
+   "comuna": "",
+   "lat": -33.3670365,
+   "lon": -70.734149
+  },
+  {
+   "id": "osm/node/4434941449",
+   "name": "Belén",
+   "brand": "",
+   "street": "José Francisco Vergara",
+   "number": "199",
+   "comuna": "",
+   "lat": -33.3672762,
+   "lon": -70.7342144
+  },
+  {
+   "id": "osm/node/4435010253",
+   "name": "Farmax",
+   "brand": "",
+   "street": "José Francisco Vergara",
+   "number": "190",
+   "comuna": "",
+   "lat": -33.3669867,
+   "lon": -70.7342981
+  },
+  {
+   "id": "osm/way/1304001943",
+   "name": "Farmalu",
+   "brand": "",
+   "street": "General San Martín",
+   "number": "022",
+   "comuna": "Quilicura",
+   "lat": -33.3639961,
+   "lon": -70.7371159
+  },
+  {
+   "id": "osm/node/4435220314",
+   "name": "Farmavida",
+   "brand": "",
+   "street": "Avenida Santa Luisa",
+   "number": "226",
+   "comuna": "Quilicura",
+   "lat": -33.3551493,
+   "lon": -70.7379673
+  },
+  {
+   "id": "osm/node/7235739785",
+   "name": "Belén",
+   "brand": "",
+   "street": "",
+   "number": "",
+   "comuna": "",
+   "lat": -33.3509691,
+   "lon": -70.7392065
+  }
+ ]
+}

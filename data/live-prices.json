@@ -1,0 +1,2656 @@
+{
+  "generatedAt": "2026-11-21T19:51:15.321Z",
+  "note": "Respaldo de precios online. Se usa cuando la consulta en vivo no está disponible.",
+  "values": {
+    "ibuprofeno-400": {
+      "medId": "ibuprofeno-400",
+      "checkedAt": "2026-11-21T19:50:24.656Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Ibuprofeno 400 mg 20 comprimidos",
+          "price": 920,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 46,
+          "url": "https://www.drsimi.cl/ibuprofeno-400-mg-20-comprimidos-recubiertos/p/p",
+          "checkedAt": "2026-11-21T19:50:24.656Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Ibuprofeno 400mg x 20 Comp. (Ascend) (Cenabast)",
+          "price": 650,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 32.5,
+          "url": "https://www.ecofarmacias.cl/producto/ibuprofeno-400mg-x-20-2/",
+          "checkedAt": "2026-11-21T19:50:24.656Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Ibuprofeno 400 mg x 20 comprimidos. (Chile)",
+          "price": 790,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 39.5,
+          "url": "https://farmacia.araucomed.com/bioequivalentes/ibuprofeno-400mg-x20com-chile",
+          "checkedAt": "2026-11-21T19:50:24.656Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 6
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 15
+        }
+      ]
+    },
+    "paracetamol-500": {
+      "medId": "paracetamol-500",
+      "checkedAt": "2026-11-21T19:50:24.330Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Paracetamol 500 mg SINFLU x 20 Comprimidos,",
+          "price": 990,
+          "listPrice": 1489,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 49.5,
+          "url": "https://www.farmaciasahumada.cl/paracetamol-500-mg-sinflu-x-20-comprimidos-96710.html",
+          "checkedAt": "2026-11-21T19:50:24.330Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Paracetamol 500 mg 16 comprimidos",
+          "price": 480,
+          "listPrice": null,
+          "packCount": 16,
+          "packUnit": "comprimidos",
+          "unitPrice": 30,
+          "url": "https://www.drsimi.cl/paracetamol-500-mg-16-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:24.330Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Paracetamol 500 Mg X 16 comprimidos (Andrómaco)",
+          "price": 350,
+          "listPrice": null,
+          "packCount": 16,
+          "packUnit": "comprimidos",
+          "unitPrice": 21.9,
+          "url": "https://www.ecofarmacias.cl/producto/paracetamol-500mg-x-16/",
+          "checkedAt": "2026-11-21T19:50:24.330Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Paracetamol 500 mg x 16 comprimidos. (Andromaco)",
+          "price": 450,
+          "listPrice": null,
+          "packCount": 16,
+          "packUnit": "comprimidos",
+          "unitPrice": 28.1,
+          "url": "https://farmacia.araucomed.com/bioequivalentes/paracetamol-500mg-x16com-andromaco",
+          "checkedAt": "2026-11-21T19:50:24.330Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 11
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 9
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 7
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "paracetamol-1000": {
+      "medId": "paracetamol-1000",
+      "checkedAt": "2026-11-21T19:50:24.650Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Dropol paracetamol 1 g 20 comprimidos",
+          "price": 5960,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 298,
+          "url": "https://www.drsimi.cl/paracetamol-1-g-20-comprimidos-recubiertos-1-g--be0268-1/p/p",
+          "checkedAt": "2026-11-21T19:50:24.650Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Dropol Paracetamol 1 Gr x 20 Comprimidos Efervecentes",
+          "price": 4980,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 249,
+          "url": "https://www.ecofarmacias.cl/producto/dropol-paracetamol-1-gr-x-20-comprimidos-efervecentes/",
+          "checkedAt": "2026-11-21T19:50:24.650Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 24
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "araucomed",
+          "status": "empty",
+          "found": 0
+        }
+      ]
+    },
+    "aspirina-100": {
+      "medId": "aspirina-100",
+      "checkedAt": "2026-11-21T19:50:28.913Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Acido Acetilsalicilico 100 mg x 100 Comprimidos,",
+          "price": 2020,
+          "listPrice": null,
+          "packCount": 100,
+          "packUnit": "comprimidos",
+          "unitPrice": 20.2,
+          "url": "https://www.farmaciasahumada.cl/acido-acetilsalicilico-100-mg-x-100-comprimidos-91488.html",
+          "checkedAt": "2026-11-21T19:50:28.913Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Ácido acetilsalicílico 100 mg 100 comprimidos",
+          "price": 2240,
+          "listPrice": null,
+          "packCount": 100,
+          "packUnit": "comprimidos",
+          "unitPrice": 22.4,
+          "url": "https://www.drsimi.cl/acido-acetilsalicilico-100-mg-100-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:28.913Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Cardioaspirina 100 EC Ácido Acetilsalicílico 100 mg 50 comprimidos DESCUENTO",
+          "price": 8600,
+          "listPrice": 9390,
+          "packCount": 50,
+          "packUnit": "comprimidos",
+          "unitPrice": 172,
+          "url": "https://www.ecofarmacias.cl/producto/cardioaspirina-100-mg-x-50-comprimidos-bayer-descuento/",
+          "checkedAt": "2026-11-21T19:50:28.913Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Aspirina Niños 100 mg x 98 comprimidos",
+          "price": 6590,
+          "listPrice": null,
+          "packCount": 98,
+          "packUnit": "comprimidos",
+          "unitPrice": 67.2,
+          "url": "https://farmacia.araucomed.com/analgesicos-y-antinflamatorios/aspirina-ninos-100mg-x98com",
+          "checkedAt": "2026-11-21T19:50:28.913Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 8
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 5
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 7
+        }
+      ]
+    },
+    "ibuprofeno-600": {
+      "medId": "ibuprofeno-600",
+      "checkedAt": "2026-11-21T19:50:28.847Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Ibuprofeno 600 mg 20 comprimidos recubiertos",
+          "price": 1200,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 60,
+          "url": "https://www.drsimi.cl/ibuprofeno-600-mg-20-comprimidos-recubiertos/p/p",
+          "checkedAt": "2026-11-21T19:50:28.847Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Ibuprofeno 600 mg X 20 comprimidos (LCH)",
+          "price": 850,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 42.5,
+          "url": "https://www.ecofarmacias.cl/producto/ibuprofeno-600mg-x-20/",
+          "checkedAt": "2026-11-21T19:50:28.847Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 7
+        },
+        {
+          "chain": "araucomed",
+          "status": "empty",
+          "found": 0
+        }
+      ]
+    },
+    "naproxeno-550": {
+      "medId": "naproxeno-550",
+      "checkedAt": "2026-11-21T19:50:28.954Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Naproxeno 550 mg 10 comprimidos recubiertos",
+          "price": 1960,
+          "listPrice": null,
+          "packCount": 10,
+          "packUnit": "comprimidos",
+          "unitPrice": 196,
+          "url": "https://www.drsimi.cl/triox-n-f-forte-naproxeno-sodico-550-mg-10-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:28.954Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Naproxeno 550 mg x 10 comp. recubiertos Andrómaco DESCUENTO",
+          "price": 1150,
+          "listPrice": 1450,
+          "packCount": 10,
+          "packUnit": "comprimidos",
+          "unitPrice": 115,
+          "url": "https://www.ecofarmacias.cl/producto/naproxeno-550-mg-x-10-comp-recubiertos-andromaco-descuento-3/",
+          "checkedAt": "2026-11-21T19:50:28.954Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Naproxeno 550 mg x 10 comprimidos. (Mintlab)",
+          "price": 1390,
+          "listPrice": null,
+          "packCount": 10,
+          "packUnit": "comprimidos",
+          "unitPrice": 139,
+          "url": "https://farmacia.araucomed.com/bioequivalentes/naproxeno-550mg-x10com-mintlab",
+          "checkedAt": "2026-11-21T19:50:28.954Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 6
+        }
+      ]
+    },
+    "diclofenaco-gel": {
+      "medId": "diclofenaco-gel",
+      "checkedAt": "2026-11-21T19:50:32.583Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Lertus 1 % x 60 g Gel Tópico,",
+          "price": 12517,
+          "listPrice": 16689,
+          "packCount": 60,
+          "packUnit": "g",
+          "unitPrice": 208.6,
+          "url": "https://www.farmaciasahumada.cl/lertus-1-x-60-g-gel-topico-7253.html",
+          "checkedAt": "2026-11-21T19:50:32.583Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Diclofenaco dietilamina 1,16 % gel tópico 30 g",
+          "price": 1520,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "g",
+          "unitPrice": 50.7,
+          "url": "https://www.drsimi.cl/diclofenaco-dietilamina-gel-topico-1-30-gr-ch0292/p/p",
+          "checkedAt": "2026-11-21T19:50:32.583Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Diclofenaco Gel 1,16% x30g (Ascend)",
+          "price": 700,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "g",
+          "unitPrice": 23.3,
+          "url": "https://farmacia.araucomed.com/analgesicos-y-antinflamatorios/diclofenaco-gel-116-x30g-ascend",
+          "checkedAt": "2026-11-21T19:50:32.583Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 7
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 11
+        }
+      ]
+    },
+    "amoxicilina-500": {
+      "medId": "amoxicilina-500",
+      "checkedAt": "2026-11-21T19:50:32.599Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Amoxicilina 500 mg 21 cápsulas",
+          "price": 2800,
+          "listPrice": null,
+          "packCount": 21,
+          "packUnit": "cápsulas",
+          "unitPrice": 133.3,
+          "url": "https://www.drsimi.cl/amoxicilina-500-mg-21-capsulas/p/p",
+          "checkedAt": "2026-11-21T19:50:32.599Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Amoxicilina 500 mg x 21 cápsulas (DFM)",
+          "price": 1690,
+          "listPrice": null,
+          "packCount": 21,
+          "packUnit": "cápsulas",
+          "unitPrice": 80.5,
+          "url": "https://www.ecofarmacias.cl/producto/amoxicilina-500-mg-x-21-capsulas-opko/",
+          "checkedAt": "2026-11-21T19:50:32.599Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Amoxicilina 500 mg x 21 cápsulas. (Mintlab)",
+          "price": 1690,
+          "listPrice": null,
+          "packCount": 21,
+          "packUnit": "cápsulas",
+          "unitPrice": 80.5,
+          "url": "https://farmacia.araucomed.com/antibioticos/amoxicilina-500mg-x21cap-mintlab",
+          "checkedAt": "2026-11-21T19:50:32.599Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 18
+        }
+      ]
+    },
+    "amoxicilina-clavulanico": {
+      "medId": "amoxicilina-clavulanico",
+      "checkedAt": "2026-11-21T19:50:32.728Z",
+      "offers": [
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Amoxicilina Acido Clavulanico 875/125 x 20 comprimidos. (Ethon)",
+          "price": 5990,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 299.5,
+          "url": "https://farmacia.araucomed.com/antibioticos/amoxicilina-acido-clavulanico-875-125-x20com-ethon",
+          "checkedAt": "2026-11-21T19:50:32.728Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 18
+        }
+      ]
+    },
+    "azitromicina-500": {
+      "medId": "azitromicina-500",
+      "checkedAt": "2026-11-21T19:50:36.553Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Azitromicina 500 mg Caja 6 Comprimidos,",
+          "price": 19072,
+          "listPrice": 25429,
+          "packCount": 6,
+          "packUnit": "comprimidos",
+          "unitPrice": 3178.7,
+          "url": "https://www.farmaciasahumada.cl/azitromicina-500-mg-caja-6-comprimidos-49754.html",
+          "checkedAt": "2026-11-21T19:50:36.553Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Azithral Azitromicina 500 mg 6 comprimidos recubiertos",
+          "price": 2400,
+          "listPrice": null,
+          "packCount": 6,
+          "packUnit": "comprimidos",
+          "unitPrice": 400,
+          "url": "https://www.drsimi.cl/azitromicina-500-mg-6-comprimidos-recubiertos/p/p",
+          "checkedAt": "2026-11-21T19:50:36.553Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Azitromicina 500 mg x 6 comprimidos",
+          "price": 1790,
+          "listPrice": null,
+          "packCount": 6,
+          "packUnit": "comprimidos",
+          "unitPrice": 298.3,
+          "url": "https://www.ecofarmacias.cl/producto/azitromicina-500-mg-x-6-comprimidos-2/",
+          "checkedAt": "2026-11-21T19:50:36.553Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Azitromicina 500 mg x 6 comprimidos. (Mintlab)",
+          "price": 1990,
+          "listPrice": null,
+          "packCount": 6,
+          "packUnit": "comprimidos",
+          "unitPrice": 331.7,
+          "url": "https://farmacia.araucomed.com/antibioticos/azitromicina-500mg-x6com-mintlab",
+          "checkedAt": "2026-11-21T19:50:36.553Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 7
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 4
+        }
+      ]
+    },
+    "metronidazol-500": {
+      "medId": "metronidazol-500",
+      "checkedAt": "2026-11-21T19:50:36.624Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Metronidazol 500 mg Caja x 20 Comprimidos,",
+          "price": 10299,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 515,
+          "url": "https://www.farmaciasahumada.cl/metronidazol-500-mg-caja-x-20-comprimidos-93580.html",
+          "checkedAt": "2026-11-21T19:50:36.624Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Metropast metronidazol 500 mg 20 comprimidos",
+          "price": 7800,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 390,
+          "url": "https://www.drsimi.cl/metropast-metronidazol-500-mg-20-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:36.624Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Metronidazol 500 mg x 30 Comprimidos recubiertos (cenabast)",
+          "price": 2490,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 83,
+          "url": "https://www.ecofarmacias.cl/producto/metronidazol-500-mg-x-30-comprimidos-recubiertos-cenabast/",
+          "checkedAt": "2026-11-21T19:50:36.624Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Metronidazol 500 mg x 30 comprimidos. Pinnacle (Cenabast)",
+          "price": 2490,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 83,
+          "url": "https://farmacia.araucomed.com/antibioticos/metronidazol-500-mg-x-30-comprimidos-pinnacle-cenabast",
+          "checkedAt": "2026-11-21T19:50:36.624Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 5
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 5
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 14
+        }
+      ]
+    },
+    "cefalexina-500": {
+      "medId": "cefalexina-500",
+      "checkedAt": "2026-11-21T19:50:36.597Z",
+      "offers": [],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "empty",
+          "found": 0
+        }
+      ]
+    },
+    "fluconazol-150": {
+      "medId": "fluconazol-150",
+      "checkedAt": "2026-11-21T19:50:40.413Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Fluconazol 150 mg 2 cápsulas",
+          "price": 2000,
+          "listPrice": null,
+          "packCount": 2,
+          "packUnit": "cápsulas",
+          "unitPrice": 1000,
+          "url": "https://www.drsimi.cl/fluconazol-150-mg-2-capsulas/p/p",
+          "checkedAt": "2026-11-21T19:50:40.413Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Felsol Fluconazol 150 mg 10 Capsulas (Pasteur) (Cenabast)",
+          "price": 2270,
+          "listPrice": null,
+          "packCount": 10,
+          "packUnit": "cápsulas",
+          "unitPrice": 227,
+          "url": "https://www.ecofarmacias.cl/producto/felsol-fluconazol-150-mg-10-capsulas/",
+          "checkedAt": "2026-11-21T19:50:40.413Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Fluconazol 150 mg x 4 cápsulas. Opko (Cenabast)",
+          "price": 1290,
+          "listPrice": null,
+          "packCount": 4,
+          "packUnit": "cápsulas",
+          "unitPrice": 322.5,
+          "url": "https://farmacia.araucomed.com/antimicoticos/fluconazol-150-mg-x-4-capsulas-opko-cenabast",
+          "checkedAt": "2026-11-21T19:50:40.413Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 7
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 8
+        }
+      ]
+    },
+    "omeprazol-20": {
+      "medId": "omeprazol-20",
+      "checkedAt": "2026-11-21T19:50:40.718Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "LOMEX Omeprazol 20 mg 28 cápsulas,",
+          "price": 4990,
+          "listPrice": 20299,
+          "packCount": 28,
+          "packUnit": "cápsulas",
+          "unitPrice": 178.2,
+          "url": "https://www.farmaciasahumada.cl/lomex-omeprazol-20-mg-28-capsulas-87769.html",
+          "checkedAt": "2026-11-21T19:50:40.718Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Omeprazol 20 mg 30 cápsulas con gránulos con recubrimiento entérico",
+          "price": 1560,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "cápsulas",
+          "unitPrice": 52,
+          "url": "https://www.drsimi.cl/omeprazol-20-mg-30-capsulas/p/p",
+          "checkedAt": "2026-11-21T19:50:40.718Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Omeprazol 20 mg x 30 Cápsulas Opko Cenabast DESCUENTO",
+          "price": 750,
+          "listPrice": 1080,
+          "packCount": 30,
+          "packUnit": "cápsulas",
+          "unitPrice": 25,
+          "url": "https://www.ecofarmacias.cl/producto/omeprazol-20-mg-x-30-capsulas-opko-cenabast-descuento/",
+          "checkedAt": "2026-11-21T19:50:40.718Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Omeprazol 20 mg x 60 cápsulas. (Opko)",
+          "price": 1790,
+          "listPrice": null,
+          "packCount": 60,
+          "packUnit": "cápsulas",
+          "unitPrice": 29.8,
+          "url": "https://farmacia.araucomed.com/bioequivalentes/omeprazol-20mg-x60com-opko",
+          "checkedAt": "2026-11-21T19:50:40.718Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 13
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 12
+        }
+      ]
+    },
+    "pantoprazol-40": {
+      "medId": "pantoprazol-40",
+      "checkedAt": "2026-11-21T19:50:40.849Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Pantocal 40 mg x 28 Comprimidos Recubiertos,",
+          "price": 21292,
+          "listPrice": 28389,
+          "packCount": 28,
+          "packUnit": "comprimidos",
+          "unitPrice": 760.4,
+          "url": "https://www.farmaciasahumada.cl/pantocal-40-mg-x-28-comprimidos-recubiertos-83501.html",
+          "checkedAt": "2026-11-21T19:50:40.849Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Pantab pantoprazol 40 mg 30 comprimidos con recubrimiento entérico",
+          "price": 15400,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 513.3,
+          "url": "https://www.drsimi.cl/pantab-pantoprazol-40-mg-30-comprimidos-recubiertos-be0278/p/p",
+          "checkedAt": "2026-11-21T19:50:40.849Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Pantocal Pantoprazol 40mg x 28 comprimidos (Eurofarma)",
+          "price": 10970,
+          "listPrice": null,
+          "packCount": 28,
+          "packUnit": "comprimidos",
+          "unitPrice": 391.8,
+          "url": "https://www.ecofarmacias.cl/producto/pantocal-pantoprazol-40mg-x-28-comprimidos/",
+          "checkedAt": "2026-11-21T19:50:40.849Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Pantab 40 mg x 30 comprimidos.",
+          "price": 8990,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 299.7,
+          "url": "https://farmacia.araucomed.com/antiulcerosos/pantab-40-mg-x-30-comprimidos",
+          "checkedAt": "2026-11-21T19:50:40.849Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 2
+        }
+      ]
+    },
+    "losartan-50": {
+      "medId": "losartan-50",
+      "checkedAt": "2026-11-21T19:50:44.155Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Losartan Potasico 50 mg x 30 Comprimidos Recubiertos,",
+          "price": 1349,
+          "listPrice": 1528,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 45,
+          "url": "https://www.farmaciasahumada.cl/losartan-potasico-50-mg-x-30-comprimidos-recubiertos-92800.html",
+          "checkedAt": "2026-11-21T19:50:44.155Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Losartán potásico 50 mg 30 comprimidos recubiertos",
+          "price": 1560,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 52,
+          "url": "https://www.drsimi.cl/losartan-potasico-50-mg-30-comprimidos-recubiertos/p/p",
+          "checkedAt": "2026-11-21T19:50:44.155Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Losartan 50 mg x 30 comprimidos (LCH) DESCUENTO",
+          "price": 490,
+          "listPrice": 750,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 16.3,
+          "url": "https://www.ecofarmacias.cl/producto/losartan-50-mg-x-30-comprimidos-lch-descuento/",
+          "checkedAt": "2026-11-21T19:50:44.155Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Losartan Potasico 50 mg x 30 comprimidos. (Opko)",
+          "price": 800,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 26.7,
+          "url": "https://farmacia.araucomed.com/antihipertensivos/losartan-potasico-50-mg-x30com-opko",
+          "checkedAt": "2026-11-21T19:50:44.155Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 8
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "enalapril-10": {
+      "medId": "enalapril-10",
+      "checkedAt": "2026-11-21T19:50:44.431Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Enalapril 10 mg 20 comprimidos",
+          "price": 800,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 40,
+          "url": "https://www.drsimi.cl/enalapril-maleato-10-mg-20-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:44.431Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Enalapril 10 mg x 20 comprimidos recubiertos",
+          "price": 560,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 28,
+          "url": "https://www.ecofarmacias.cl/producto/enalapril-10-mg-x-20/",
+          "checkedAt": "2026-11-21T19:50:44.431Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Enalapril 10 mg x 20 comprimidos. (Andromaco)",
+          "price": 800,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 40,
+          "url": "https://farmacia.araucomed.com/antihipertensivos/enalapril-10mg-x20com-andromaco",
+          "checkedAt": "2026-11-21T19:50:44.431Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 11
+        }
+      ]
+    },
+    "valsartan-160": {
+      "medId": "valsartan-160",
+      "checkedAt": "2026-11-21T19:50:44.484Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Valsartán 160 mg 30 comprimidos recubiertos",
+          "price": 9600,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 320,
+          "url": "https://www.drsimi.cl/valsartan-160-mg-30-comprimidos-be0079-1/p/p",
+          "checkedAt": "2026-11-21T19:50:44.484Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Valsartan 160mg por 30 comprimidos Hetero DESCUENTO",
+          "price": 4690,
+          "listPrice": 5690,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 156.3,
+          "url": "https://www.ecofarmacias.cl/producto/valsartan-160mg-por-30-comprimidos-seven-pharma-descuento/",
+          "checkedAt": "2026-11-21T19:50:44.484Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Valsartan 160 mg x 30 comprimidos. Sevenpharma (Cenabast)",
+          "price": 3990,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 133,
+          "url": "https://farmacia.araucomed.com/antihipertensivos/valsartan-160-mg-x-30-comprimidos-sevenpharma-cenabast",
+          "checkedAt": "2026-11-21T19:50:44.484Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 8
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 5
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "carvedilol-6": {
+      "medId": "carvedilol-6",
+      "checkedAt": "2026-11-21T19:50:48.103Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Carvedilol 6.25 mg x 30 Comprimidos CHILE,",
+          "price": 1490,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 49.7,
+          "url": "https://www.farmaciasahumada.cl/carvedilol-6.25-mg-x-30-comprimidos-chile-87295.html",
+          "checkedAt": "2026-11-21T19:50:48.103Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Carvedilol 6,25 mg 30 comprimidos",
+          "price": 3920,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 130.7,
+          "url": "https://www.drsimi.cl/carvedilol-6-25-mg-30-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:48.103Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Carvedilol 6,25 mg x 30 comprimidos. (Ethon)",
+          "price": 1490,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 49.7,
+          "url": "https://farmacia.araucomed.com/antihipertensivos/carvedilol-625-mg-x-30-comprimidos-ethon",
+          "checkedAt": "2026-11-21T19:50:48.103Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 6
+        }
+      ]
+    },
+    "furosemida-40": {
+      "medId": "furosemida-40",
+      "checkedAt": "2026-11-21T19:50:48.297Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Furosemida 40 mg 12 comprimidos",
+          "price": 520,
+          "listPrice": null,
+          "packCount": 12,
+          "packUnit": "comprimidos",
+          "unitPrice": 43.3,
+          "url": "https://www.drsimi.cl/furosemida-40-mg-12-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:48.297Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Furosemida 40 mg x 12 comprimidos (Andromaco) (Cenabast)",
+          "price": 450,
+          "listPrice": null,
+          "packCount": 12,
+          "packUnit": "comprimidos",
+          "unitPrice": 37.5,
+          "url": "https://www.ecofarmacias.cl/producto/furosemida-40-mg-x-12-comprimidos-andromaco-cenabast-2/",
+          "checkedAt": "2026-11-21T19:50:48.297Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Furosemida 40 mg x 12 comprimidos. (Chile)",
+          "price": 450,
+          "listPrice": null,
+          "packCount": 12,
+          "packUnit": "comprimidos",
+          "unitPrice": 37.5,
+          "url": "https://farmacia.araucomed.com/diureticos/furosemida-40mg-x12com-chile",
+          "checkedAt": "2026-11-21T19:50:48.297Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 5
+        }
+      ]
+    },
+    "atorvastatina-20": {
+      "medId": "atorvastatina-20",
+      "checkedAt": "2026-11-21T19:50:48.458Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Atorvastatina 20 mg 30 comprimidos recubiertos",
+          "price": 1680,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 56,
+          "url": "https://www.drsimi.cl/atorvastatina-20-mg-30-comprimidos-recubiertos/p/p",
+          "checkedAt": "2026-11-21T19:50:48.458Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Atorvastatina 20 mg x 30 comprimidos DESCUENTO",
+          "price": 750,
+          "listPrice": 980,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 25,
+          "url": "https://www.ecofarmacias.cl/producto/atorvastatina-20-mg-x-30-comprimidos-descuento/",
+          "checkedAt": "2026-11-21T19:50:48.458Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Atorvastatina 20 mg x 30 comprimidos. (Seven Pharma)",
+          "price": 790,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 26.3,
+          "url": "https://farmacia.araucomed.com/colesterol-y-trigliceridos/atorvastatina-20-mg-x-30-comprimidos-seven-pharma",
+          "checkedAt": "2026-11-21T19:50:48.458Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 5
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 19
+        }
+      ]
+    },
+    "rosuvastatina-10": {
+      "medId": "rosuvastatina-10",
+      "checkedAt": "2026-11-21T19:50:51.721Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Rosuvastatina 10 mg 30 comprimidos recubiertos",
+          "price": 8000,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 266.7,
+          "url": "https://www.drsimi.cl/rosuvastatina-10-mg-30-comprimidos-recubiertos/p/p",
+          "checkedAt": "2026-11-21T19:50:51.721Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Rosuvastatina 10 mg x 30 comp recubiertos Seven Pharma DESCUENTO",
+          "price": 2400,
+          "listPrice": 3490,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 80,
+          "url": "https://www.ecofarmacias.cl/producto/rosuvastatina/",
+          "checkedAt": "2026-11-21T19:50:51.721Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Rosuvastatina 10mg x 60 comprimidos. Pinnacle (Cenabast)",
+          "price": 4490,
+          "listPrice": null,
+          "packCount": 60,
+          "packUnit": "comprimidos",
+          "unitPrice": 74.8,
+          "url": "https://farmacia.araucomed.com/colesterol-y-trigliceridos/rosuvastatina-10mg-x-60-comprimidos-pinnacle-cenabast",
+          "checkedAt": "2026-11-21T19:50:51.721Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 9
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "gliclazida-30": {
+      "medId": "gliclazida-30",
+      "checkedAt": "2026-11-21T19:50:52.623Z",
+      "offers": [],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "empty",
+          "found": 0
+        }
+      ]
+    },
+    "metformina-850": {
+      "medId": "metformina-850",
+      "checkedAt": "2026-11-21T19:50:52.036Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Metformina 850 mg 60 comprimidos",
+          "price": 3529,
+          "listPrice": null,
+          "packCount": 60,
+          "packUnit": "comprimidos",
+          "unitPrice": 58.8,
+          "url": "https://www.drsimi.cl/metformina-850-mg-60-comprimidos-be0294/p/p",
+          "checkedAt": "2026-11-21T19:50:52.036Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Metformina 850 mg x 60 comprimidos (Cenabast)",
+          "price": 1930,
+          "listPrice": null,
+          "packCount": 60,
+          "packUnit": "comprimidos",
+          "unitPrice": 32.2,
+          "url": "https://www.ecofarmacias.cl/producto/metformina-850-mg-x-60-comprimidos-cenabast/",
+          "checkedAt": "2026-11-21T19:50:52.036Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Metformina 850 mg x 30 comprimidos. Opko (Cenabast)",
+          "price": 800,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 26.7,
+          "url": "https://farmacia.araucomed.com/hipoglicemiantes/metformina-850-mg-x-30-comprimidos-opko-cenabast",
+          "checkedAt": "2026-11-21T19:50:52.036Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 10
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "gliclazida-60": {
+      "medId": "gliclazida-60",
+      "checkedAt": "2026-11-21T19:50:55.598Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Glikem gliclazida 60 mg 30 comprimidos de liberación prolongada",
+          "price": 26000,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 866.7,
+          "url": "https://www.drsimi.cl/gliclazida-60mg-30comp-be0264-1/p/p",
+          "checkedAt": "2026-11-21T19:50:55.598Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Glikem 60 mg x 30 comprimidos de liberación prolongada.",
+          "price": 16990,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 566.3,
+          "url": "https://farmacia.araucomed.com/hipoglicemiantes/glikem-60-mg-x-30-comprimidos-de-liberacion-prolongada",
+          "checkedAt": "2026-11-21T19:50:55.598Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 2
+        }
+      ]
+    },
+    "levotiroxina-50": {
+      "medId": "levotiroxina-50",
+      "checkedAt": "2026-11-21T19:50:56.217Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Levotiroxina 50 mcg 56 comprimidos",
+          "price": 4920,
+          "listPrice": null,
+          "packCount": 56,
+          "packUnit": "comprimidos",
+          "unitPrice": 87.9,
+          "url": "https://www.drsimi.cl/levotiroxina-50-mcg-56-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:56.217Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Levotiroxina 50 mcg x 50 Comprimidos (Cenabast)",
+          "price": 2290,
+          "listPrice": null,
+          "packCount": 50,
+          "packUnit": "comprimidos",
+          "unitPrice": 45.8,
+          "url": "https://www.ecofarmacias.cl/producto/levotiroxina-50-mcg-x-50-comprimidos-cenabast/",
+          "checkedAt": "2026-11-21T19:50:56.217Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 16
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "araucomed",
+          "status": "empty",
+          "found": 0
+        }
+      ]
+    },
+    "sertralina-50": {
+      "medId": "sertralina-50",
+      "checkedAt": "2026-11-21T19:50:56.421Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Sertralina 50 mg 30 comprimidos recubiertos",
+          "price": 2400,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 80,
+          "url": "https://www.drsimi.cl/sertralina-50-mg-30-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:56.421Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Sertralina 50 mg x 30 comprimidos LCh DESCUENTO",
+          "price": 990,
+          "listPrice": 1250,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 33,
+          "url": "https://www.ecofarmacias.cl/producto/sertralina-50-mg-x-30-comprimidos-lch-descuento/",
+          "checkedAt": "2026-11-21T19:50:56.421Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Sertralina 50 mg x 30 comprimidos. (Opko)",
+          "price": 990,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 33,
+          "url": "https://farmacia.araucomed.com/antidepresivos/sertralina-50-mg-x-30-comprimidos-opko",
+          "checkedAt": "2026-11-21T19:50:56.421Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 6
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 12
+        }
+      ]
+    },
+    "escitalopram-10": {
+      "medId": "escitalopram-10",
+      "checkedAt": "2026-11-21T19:50:59.178Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Celtium Escitalopram 10 mg 60 comprimidos,",
+          "price": 38887,
+          "listPrice": 51849,
+          "packCount": 60,
+          "packUnit": "comprimidos",
+          "unitPrice": 648.1,
+          "url": "https://www.farmaciasahumada.cl/celtium-escitalopram-10-mg-60-comprimidos-72640.html",
+          "checkedAt": "2026-11-21T19:50:59.178Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Escitalopram 10 mg 30 comprimidos recubiertos",
+          "price": 3800,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 126.7,
+          "url": "https://www.drsimi.cl/escitalopram-10-mg-30-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:50:59.178Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Escitalopram 10mg x 30 comp. recubiertos (Cenabast) DESCUENTO",
+          "price": 1290,
+          "listPrice": 1990,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 43,
+          "url": "https://www.ecofarmacias.cl/producto/escitalopram-10mg-30-comprimidos-recubiertos-hetero-cenabast-descuento/",
+          "checkedAt": "2026-11-21T19:50:59.178Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Escitalopram 10 mg x 30 comprimidos. (Opko)",
+          "price": 1490,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 49.7,
+          "url": "https://farmacia.araucomed.com/antidepresivos/escitalopram-10mg-x30com-opko",
+          "checkedAt": "2026-11-21T19:50:59.178Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 10
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 9
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 18
+        }
+      ]
+    },
+    "loratadina-10": {
+      "medId": "loratadina-10",
+      "checkedAt": "2026-11-21T19:51:00.170Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Loratadina 10 mg 30 comprimidos",
+          "price": 800,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 26.7,
+          "url": "https://www.drsimi.cl/loratadina-10-mg-30-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:51:00.170Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Loratadina 10 mg por 30 comprimidos DESCUENTO",
+          "price": 499,
+          "listPrice": 690,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 16.6,
+          "url": "https://www.ecofarmacias.cl/producto/loratadina-10-mg-por-30-comprimidos-descuento/",
+          "checkedAt": "2026-11-21T19:51:00.170Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Loratadina 10 mg x 30 comprimidos. (Chile)",
+          "price": 700,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 23.3,
+          "url": "https://farmacia.araucomed.com/bioequivalentes/loratadina-10mg-x30com-chile",
+          "checkedAt": "2026-11-21T19:51:00.170Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 15
+        }
+      ]
+    },
+    "cetirizina-10": {
+      "medId": "cetirizina-10",
+      "checkedAt": "2026-11-21T19:51:00.191Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Rigotax cetirizina 10 mg 30 comprimidos recubiertos",
+          "price": 4000,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 133.3,
+          "url": "https://www.drsimi.cl/cetirizina-10-mg-30-comprimidos-recubiertos-be0059/p/p",
+          "checkedAt": "2026-11-21T19:51:00.191Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Cetirizina 10 mg x 30 Comprimidos",
+          "price": 2990,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 99.7,
+          "url": "https://www.ecofarmacias.cl/producto/cetirizina-10-mg-x-30-comprimidos/",
+          "checkedAt": "2026-11-21T19:51:00.191Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Cetirizina 10 mg x 30 comprimidos (Pasteur)",
+          "price": 1200,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 40,
+          "url": "https://farmacia.araucomed.com/antihistaminicos/cetirizina-10-mg-x-30-comprimidos-pasteur",
+          "checkedAt": "2026-11-21T19:51:00.191Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 2
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "salbutamol-aerosol": {
+      "medId": "salbutamol-aerosol",
+      "checkedAt": "2026-11-21T19:51:03.184Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Salbutamol 100 mcg/dosis aerosol para inhalación 200 dosis",
+          "price": 2800,
+          "listPrice": null,
+          "packCount": 200,
+          "packUnit": "dosis",
+          "unitPrice": 14,
+          "url": "https://www.drsimi.cl/salbutamol-100-mcg-spray-200-dosis/p/p",
+          "checkedAt": "2026-11-21T19:51:03.184Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Salbutamol 100Mcg inhalador 200 dosis (Hospifarma)",
+          "price": 1590,
+          "listPrice": null,
+          "packCount": 200,
+          "packUnit": "dosis",
+          "unitPrice": 8,
+          "url": "https://farmacia.araucomed.com/asma/salbutamol-100mcg-inhalador-200-dosis-hospifarma",
+          "checkedAt": "2026-11-21T19:51:03.184Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 17
+        }
+      ]
+    },
+    "budesonida-aerosol": {
+      "medId": "budesonida-aerosol",
+      "checkedAt": "2026-11-21T19:51:04.033Z",
+      "offers": [
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Neumocort budesonida 200 mcg/dosis aerosol para inhalación 200 dosis",
+          "price": 9000,
+          "listPrice": null,
+          "packCount": 200,
+          "packUnit": "dosis",
+          "unitPrice": 45,
+          "url": "https://www.drsimi.cl/budesonida-200mcg-200dosis-ch0294-1/p/p",
+          "checkedAt": "2026-11-21T19:51:04.033Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Budesonida inhalador 200 mcg x 200 dosis. Faes Farma (Cenabast)",
+          "price": 2990,
+          "listPrice": null,
+          "packCount": 200,
+          "packUnit": "dosis",
+          "unitPrice": 15,
+          "url": "https://farmacia.araucomed.com/asma/budesonida-inhalador-200-mcg-x-200-dosis-faes-farma-cenabast",
+          "checkedAt": "2026-11-21T19:51:04.033Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 8
+        }
+      ]
+    },
+    "vitamina-d-1000": {
+      "medId": "vitamina-d-1000",
+      "checkedAt": "2026-11-21T19:51:04.106Z",
+      "offers": [],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "empty",
+          "found": 0
+        }
+      ]
+    },
+    "vitamina-d-800": {
+      "medId": "vitamina-d-800",
+      "checkedAt": "2026-11-21T19:51:07.178Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Vitamina D3 Nutrazul 800Ui Efervescente 20 Tabletas,",
+          "price": 4989,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 249.5,
+          "url": "https://www.farmaciasahumada.cl/vitamina-d3-nutrazul-800ui-efervescente-20-tabletas-95086.html",
+          "checkedAt": "2026-11-21T19:51:07.178Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Vitamina D3 800 UI 30 comprimidos",
+          "price": 4400,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 146.7,
+          "url": "https://www.drsimi.cl/vitamina-d3-vitamina-d3-colecalciferol-800-ui-30-comprimidos/p/p",
+          "checkedAt": "2026-11-21T19:51:07.178Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Vitamina D 800 UI x 90 Comprimidos N7",
+          "price": 8900,
+          "listPrice": null,
+          "packCount": 90,
+          "packUnit": "comprimidos",
+          "unitPrice": 98.9,
+          "url": "https://www.ecofarmacias.cl/producto/vitamina-d-800-ui-x-90-comprimidos-n7/",
+          "checkedAt": "2026-11-21T19:51:07.178Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Vitamina D3 800 UI x 100 comprimidos (Nutrapharm)",
+          "price": 4990,
+          "listPrice": null,
+          "packCount": 100,
+          "packUnit": "comprimidos",
+          "unitPrice": 49.9,
+          "url": "https://farmacia.araucomed.com/vitaminas-y-minerales/vitamina-d3-800-ui-x100com-nutrapharm",
+          "checkedAt": "2026-11-21T19:51:07.178Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 23
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 24
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "complejo-b": {
+      "medId": "complejo-b",
+      "checkedAt": "2026-11-21T19:51:07.704Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Vitamina B12 12Mcg 60 Cápsulas,",
+          "price": 6799,
+          "listPrice": null,
+          "packCount": 60,
+          "packUnit": "comprimidos",
+          "unitPrice": 113.3,
+          "url": "https://www.farmaciasahumada.cl/vitamina-b12-12mcg-60-capsulas-89951.html",
+          "checkedAt": "2026-11-21T19:51:07.704Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Complejo B 60 cápsulas",
+          "price": 5600,
+          "listPrice": null,
+          "packCount": 60,
+          "packUnit": "comprimidos",
+          "unitPrice": 93.3,
+          "url": "https://www.drsimi.cl/multivitaminico-complejo-b-60-capsulas/p/p",
+          "checkedAt": "2026-11-21T19:51:07.704Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Magnesio+Complejo B Efervecente X 20 Tabletas",
+          "price": 3980,
+          "listPrice": null,
+          "packCount": 20,
+          "packUnit": "comprimidos",
+          "unitPrice": 199,
+          "url": "https://www.ecofarmacias.cl/producto/magnesiocomplejo-b-efervecente-x-20-tabletas/",
+          "checkedAt": "2026-11-21T19:51:07.704Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Complejo B x 60 cápsulas. (Aura Vitalis)",
+          "price": 3490,
+          "listPrice": null,
+          "packCount": 60,
+          "packUnit": "comprimidos",
+          "unitPrice": 58.2,
+          "url": "https://farmacia.araucomed.com/suplementos-de-vitamina-b/complejo-b-x60cap-aura-vitalis",
+          "checkedAt": "2026-11-21T19:51:07.704Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 9
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 5
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 3
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "hierro-100": {
+      "medId": "hierro-100",
+      "checkedAt": "2026-11-21T19:51:08.006Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Eritrofer 100 mg x 30 Comprimidos Recubiertos,",
+          "price": 19762,
+          "listPrice": 26349,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 658.7,
+          "url": "https://www.farmaciasahumada.cl/eritrofer-100-mg-x-30-comprimidos-recubiertos-90800.html",
+          "checkedAt": "2026-11-21T19:51:08.006Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Maltofer hierro 3 100 mg 30 comprimidos masticables",
+          "price": 17920,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 597.3,
+          "url": "https://www.drsimi.cl/maltofer-comprimidos-masticables-100mg-ch6085-1/p/p",
+          "checkedAt": "2026-11-21T19:51:08.006Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Hemoval Hierro 100 Mg x 40 Comprimidos Masticables (Cenabast)",
+          "price": 13990,
+          "listPrice": null,
+          "packCount": 40,
+          "packUnit": "comprimidos",
+          "unitPrice": 349.8,
+          "url": "https://www.ecofarmacias.cl/producto/hemoval-hierro-100-mg-40-comprimidos-masticables-cenabast/",
+          "checkedAt": "2026-11-21T19:51:08.006Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Hemoval Masticable 100 mg x 40 comprimidos. (Cenabast)",
+          "price": 9990,
+          "listPrice": null,
+          "packCount": 40,
+          "packUnit": "comprimidos",
+          "unitPrice": 249.8,
+          "url": "https://farmacia.araucomed.com/antianemicos/hemoval-masticable-100mg-x30com-cenabast",
+          "checkedAt": "2026-11-21T19:51:08.006Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 20
+        }
+      ]
+    },
+    "suero-oral": {
+      "medId": "suero-oral",
+      "checkedAt": "2026-11-21T19:51:11.076Z",
+      "offers": [],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "drsimi",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "empty",
+          "found": 0
+        },
+        {
+          "chain": "araucomed",
+          "status": "empty",
+          "found": 0
+        }
+      ]
+    },
+    "melatonina-3": {
+      "medId": "melatonina-3",
+      "checkedAt": "2026-11-21T19:51:11.588Z",
+      "offers": [
+        {
+          "chain": "ahumada",
+          "chainName": "Farmacias Ahumada",
+          "chainShort": "Ahumada",
+          "type": "cadena",
+          "productName": "Melatonina 3mg x 60 Cápsulas,",
+          "price": 12129,
+          "listPrice": null,
+          "packCount": 60,
+          "packUnit": "comprimidos",
+          "unitPrice": 202.2,
+          "url": "https://www.farmaciasahumada.cl/melatonina-3mg-x-60-capsulas-96541.html",
+          "checkedAt": "2026-11-21T19:51:11.588Z",
+          "source": "live"
+        },
+        {
+          "chain": "drsimi",
+          "chainName": "Dr. Simi",
+          "chainShort": "Dr. Simi",
+          "type": "cadena",
+          "productName": "Melatonina 3 mg 30 cápsulas",
+          "price": 3920,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 130.7,
+          "url": "https://www.drsimi.cl/melatonina-3-mg-30-capsulas/p/p",
+          "checkedAt": "2026-11-21T19:51:11.588Z",
+          "source": "live"
+        },
+        {
+          "chain": "ecofarmacias",
+          "chainName": "EcoFarmacias",
+          "chainShort": "EcoFarmacias",
+          "type": "economica",
+          "productName": "Melatonina 3 mg x 30 cápsulas Cenabast DESCUENTO",
+          "price": 1400,
+          "listPrice": 2000,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 46.7,
+          "url": "https://www.ecofarmacias.cl/producto/melatonina-3-mg-x-30-capsulas-cenabast-descuento/",
+          "checkedAt": "2026-11-21T19:51:11.588Z",
+          "source": "live"
+        },
+        {
+          "chain": "araucomed",
+          "chainName": "Araucomed",
+          "chainShort": "Araucomed",
+          "type": "economica",
+          "productName": "Melatonina 3 mg x 30 cápsulas.(CuraeSpring (Cenabast)",
+          "price": 1490,
+          "listPrice": null,
+          "packCount": 30,
+          "packUnit": "comprimidos",
+          "unitPrice": 49.7,
+          "url": "https://farmacia.araucomed.com/hipnoticos-y-sedantes/melatonina-3-mg-x-30-capsulascuraespring-cenabast",
+          "checkedAt": "2026-11-21T19:51:11.588Z",
+          "source": "live"
+        }
+      ],
+      "sources": [
+        {
+          "chain": "ahumada",
+          "status": "ok",
+          "found": 4
+        },
+        {
+          "chain": "drsimi",
+          "status": "ok",
+          "found": 1
+        },
+        {
+          "chain": "ecofarmacias",
+          "status": "ok",
+          "found": 11
+        },
+        {
+          "chain": "araucomed",
+          "status": "ok",
+          "found": 16
+        }
+      ]
+    }
+  }
+}
