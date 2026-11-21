@@ -126,6 +126,22 @@ export async function getNearby(location, radius = 5000, { force = false } = {})
   if (inflight.has(inFlightKey)) return inflight.get(inFlightKey);
 
   const promise = (async () => {
+    await preloadBundled();
+    if (!force) {
+      const bundledNow = preparedBundled(location, radius);
+      if (bundledNow.length) {
+        return {
+          pharmacies: bundledNow,
+          meta: {
+            source: 'Datos guardados',
+            cached: true,
+            count: bundledNow.length,
+            fetchedAt: bundled?.generatedAt || null
+          },
+          source: 'bundled'
+        };
+      }
+    }
     try {
       const value = await fetchNearby(location.lat, location.lon, radius);
       const live = prepareList(value.pharmacies, location);
