@@ -117,6 +117,7 @@ El respaldo `data/live-prices.json` permite mostrar el último precio conocido s
 - El precio online puede no coincidir con el precio de la sucursal física.
 - Cruz Verde muestra precios solo después de elegir comuna e iniciar sesión en su sitio; por eso queda como enlace directo y no como precio en vivo.
 - El buscador online devuelve el nombre y la presentación tal como los publica cada cadena; si el nombre no indica el tamaño de la caja, la app no inventa el precio por unidad.
+- La búsqueda entiende nombres completos como `diclofenaco de sodio`: si una cadena no encuentra la frase, reintenta con el principio activo (`diclofenaco`) y descarta resultados sin relación.
 - Las farmacias del mapa vienen de OpenStreetMap (registro comunitario): puede haber locales sin registrar, direcciones incompletas o cerrados.
 - La app no reemplaza la receta ni la indicación de un profesional de la salud.
 

@@ -798,11 +798,24 @@ function renderOnline(main, route, token) {
 
       const status = $('#online-status', main);
       if (status) {
-        status.innerHTML = value.offers?.length
-          ? `<div class="note-strip">${icon(
+        const notes = [];
+        if (value.offers?.length) {
+          notes.push(
+            `<div class="note-strip">${icon(
               'info'
             )}<span>Ordenado por <strong>precio por unidad</strong>. El nombre y la presentación son los que publica cada farmacia.</span></div>`
-          : '';
+          );
+        }
+        if (value.broadenedTo) {
+          notes.push(
+            `<div class="note-strip">${icon(
+              'search'
+            )}<span>Ampliamos la búsqueda a <strong>“${h(
+              value.broadenedTo
+            )}”</strong> para incluir todas las presentaciones.</span></div>`
+          );
+        }
+        status.innerHTML = notes.join('');
       }
 
       const results = $('#online-results', main);

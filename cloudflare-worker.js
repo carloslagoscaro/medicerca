@@ -200,420 +200,6 @@ function selectBestOffer(med, offers) {
   return matched[0] || null;
 }
 
-// shared/adapters/ahumada.js
-var ahumada_exports = {};
-__export(ahumada_exports, {
-  search: () => search
-});
-
-// shared/adapters/common.js
-var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36";
-var ENTITIES = {
-  amp: "&",
-  quot: '"',
-  apos: "'",
-  lt: "<",
-  gt: ">",
-  nbsp: " ",
-  aacute: "\xE1",
-  eacute: "\xE9",
-  iacute: "\xED",
-  oacute: "\xF3",
-  uacute: "\xFA",
-  Aacute: "\xC1",
-  Eacute: "\xC9",
-  Iacute: "\xCD",
-  Oacute: "\xD3",
-  Uacute: "\xDA",
-  ntilde: "\xF1",
-  Ntilde: "\xD1",
-  uuml: "\xFC",
-  Uuml: "\xDC",
-  ordm: "\xBA",
-  deg: "\xB0",
-  times: "\xD7"
-};
-function decodeEntities(value) {
-  return String(value ?? "").replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code))).replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16))).replace(/&([a-zA-Z]+);/g, (match, name) => ENTITIES[name] ?? match).replace(/\s+/g, " ").trim();
-}
-function stripTags(value) {
-  return decodeEntities(String(value ?? "").replace(/<[^>]*>/g, " "));
-}
-function parseClp(value) {
-  const digits = String(value ?? "").replace(/[^\d]/g, "");
-  const number = Number(digits);
-  return Number.isFinite(number) && number > 0 ? number : null;
-}
-function absoluteUrl(value, base) {
-  try {
-    const url = new URL(value, base);
-    return url.protocol === "https:" ? url.href : null;
-  } catch {
-    return null;
-  }
-}
-async function fetchWithTimeout(url, options = {}, timeoutMs = 12e3) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    return await fetch(url, {
-      redirect: "follow",
-      ...options,
-      signal: controller.signal,
-      headers: {
-        "user-agent": UA,
-        "accept-language": "es-CL,es;q=0.9,en;q=0.5",
-        ...options.headers || {}
-      }
-    });
-  } finally {
-    clearTimeout(timer);
-  }
-}
-async function fetchText(url, options = {}, timeoutMs = 12e3) {
-  const response = await fetchWithTimeout(url, options, timeoutMs);
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.text();
-}
-async function fetchJson(url, options = {}, timeoutMs = 12e3) {
-  const response = await fetchWithTimeout(
-    url,
-    { ...options, headers: { accept: "application/json", ...options.headers || {} } },
-    timeoutMs
-  );
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.json();
-}
-
-// shared/adapters/ahumada.js
-var BASE = "https://www.farmaciasahumada.cl";
-function pricesFromTile(chunk) {
-  const start = chunk.search(/<div class="price">/i);
-  const block = start >= 0 ? chunk.slice(start, start + 900) : chunk;
-  const text = stripTags(block);
-  const amounts = [...text.matchAll(/\$\s*([\d.]{3,})/g)].map((match) => parseClp(match[1])).filter(Boolean);
-  const listMatch = chunk.match(/class="value"[^>]*content="(\d+)"/i);
-  const listPrice = listMatch ? parseClp(listMatch[1]) : null;
-  const price = amounts[0] || listPrice;
-  return {
-    price,
-    listPrice: listPrice && price && listPrice > price ? listPrice : null
-  };
-}
-async function search(query) {
-  const url = `${BASE}/search?q=${encodeURIComponent(query)}`;
-  const html = await fetchText(url);
-  const chunks = html.split('class="product product-tile-wrapper');
-  const offers = [];
-  for (const chunk of chunks.slice(1, 30)) {
-    const linkMatch = chunk.match(/<a[^>]+href="([^"]+\.html)"[^>]*>/i);
-    const imageMatch = chunk.match(/<img[^>]+(?:alt|title)="([^"]{3,160})"/i);
-    if (!linkMatch) continue;
-    const { price, listPrice } = pricesFromTile(chunk);
-    if (!price) continue;
-    const name = decodeEntities(imageMatch?.[1] || "");
-    if (!name) continue;
-    const productUrl = absoluteUrl(linkMatch[1], BASE);
-    if (!productUrl) continue;
-    offers.push({
-      name,
-      price,
-      listPrice,
-      url: productUrl
-    });
-  }
-  return offers;
-}
-
-// shared/adapters/drsimi.js
-var drsimi_exports = {};
-__export(drsimi_exports, {
-  search: () => search2
-});
-async function search2(query) {
-  const url = "https://www.drsimi.cl/api/catalog_system/pub/products/search?ft=" + encodeURIComponent(query) + "&_from=0&_to=23";
-  const products = await fetchJson(url);
-  if (!Array.isArray(products)) return [];
-  const offers = [];
-  for (const product of products) {
-    const item = product.items?.[0];
-    const seller = item?.sellers?.find((entry) => entry.commertialOffer?.Price > 0) || item?.sellers?.[0];
-    const price = Number(seller?.commertialOffer?.Price);
-    if (!Number.isFinite(price) || price <= 0) continue;
-    const listPrice = Number(seller?.commertialOffer?.ListPrice);
-    offers.push({
-      name: product.productName || item?.name || "",
-      price,
-      listPrice: Number.isFinite(listPrice) && listPrice > price ? listPrice : null,
-      url: product.link ? product.link.endsWith("/p") ? product.link : `${product.link}/p` : null,
-      image: item?.images?.[0]?.imageUrl || null,
-      available: seller?.commertialOffer?.IsAvailable !== false
-    });
-  }
-  return offers;
-}
-
-// shared/adapters/salcobrand.js
-var salcobrand_exports = {};
-__export(salcobrand_exports, {
-  search: () => search3
-});
-var APP_ID = "GM3RP06HJG";
-var SEARCH_KEY = "0259fe250b3be4b1326eb85e47aa7d81";
-var INDEX = "sb_variant_production";
-var BASE2 = "https://salcobrand.cl";
-async function search3(query) {
-  const data = await fetchJson(
-    `https://${APP_ID.toLowerCase()}-dsn.algolia.net/1/indexes/${INDEX}/query`,
-    {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-algolia-api-key": SEARCH_KEY,
-        "x-algolia-application-id": APP_ID,
-        referer: `${BASE2}/`,
-        origin: BASE2
-      },
-      body: JSON.stringify({ query, hitsPerPage: 24 })
-    }
-  );
-  if (!Array.isArray(data?.hits)) return [];
-  const offers = [];
-  for (const hit of data.hits) {
-    if (hit.has_stock === false) continue;
-    const normal = Number(hit.normal_price);
-    const discounted = Number(hit.direct_discount);
-    const price = Number.isFinite(discounted) && discounted > 0 ? discounted : normal;
-    if (!Number.isFinite(price) || price <= 0) continue;
-    offers.push({
-      name: hit.name || "",
-      price,
-      listPrice: Number.isFinite(normal) && normal > price ? normal : null,
-      url: hit.slug ? absoluteUrl(`/products/${hit.slug}`, BASE2) : null,
-      image: hit.catalog_image_url || hit.thumbnail_image_url || null,
-      available: true
-    });
-  }
-  return offers;
-}
-
-// shared/adapters/ecofarmacias.js
-var ecofarmacias_exports = {};
-__export(ecofarmacias_exports, {
-  search: () => search4
-});
-async function search4(query) {
-  const url = "https://www.ecofarmacias.cl/wp-json/wc/store/v1/products?search=" + encodeURIComponent(query) + "&per_page=24&orderby=price&order=asc";
-  const products = await fetchJson(url);
-  if (!Array.isArray(products)) return [];
-  return products.map((product) => {
-    const prices = product.prices || {};
-    const minor = Number(prices.currency_minor_unit ?? 0);
-    const price = Number(prices.price) / 10 ** minor;
-    const regular = Number(prices.regular_price) / 10 ** minor;
-    return {
-      name: product.name || "",
-      price,
-      listPrice: Number.isFinite(regular) && regular > price ? regular : null,
-      url: product.permalink || null,
-      image: product.images?.[0]?.src || null
-    };
-  }).filter((offer) => Number.isFinite(offer.price) && offer.price > 0);
-}
-
-// shared/adapters/araucomed.js
-var araucomed_exports = {};
-__export(araucomed_exports, {
-  search: () => search5
-});
-var BASE3 = "https://farmacia.araucomed.com";
-async function search5(query) {
-  const url = `${BASE3}/busqueda?s=${encodeURIComponent(query)}`;
-  const html = await fetchText(url);
-  const chunks = html.split('<article class="product-miniature');
-  const offers = [];
-  for (const chunk of chunks.slice(1, 30)) {
-    const linkMatch = chunk.match(/<a[^>]+href="([^"]+)"[^>]*class="thumbnail/i);
-    const titleMatch = chunk.match(/class="[^"]*product-title[^"]*"[^>]*>[\s\S]{0,220}?<a[^>]*>([\s\S]*?)<\/a>/i) || chunk.match(/<img[^>]+alt="([^"]{3,160})"/i);
-    const priceMatch = chunk.match(/class="price\s*"[^>]*>\s*\$?\s*([\d.]+)/i);
-    if (!linkMatch || !priceMatch) continue;
-    const price = parseClp(priceMatch[1]);
-    if (!price) continue;
-    const name = decodeEntities(String(titleMatch?.[1] || "").replace(/<[^>]*>/g, " "));
-    if (!name) continue;
-    const productUrl = absoluteUrl(linkMatch[1], BASE3);
-    if (!productUrl) continue;
-    const imageMatch = chunk.match(/data-src="([^"]+\.(?:jpg|jpeg|png|webp))"/i);
-    offers.push({
-      name,
-      price,
-      url: productUrl,
-      image: imageMatch ? absoluteUrl(imageMatch[1], BASE3) : null
-    });
-  }
-  return offers;
-}
-
-// shared/adapters/knop.js
-var knop_exports = {};
-__export(knop_exports, {
-  search: () => search6
-});
-var BASE4 = "https://www.farmaciasknop.com";
-var MAX_RESULTS = 24;
-async function search6(query) {
-  const url = `${BASE4}/products.json?q=${encodeURIComponent(query)}&per_page=${MAX_RESULTS}`;
-  const data = await fetchJson(url);
-  if (!Array.isArray(data?.products)) return [];
-  const offers = [];
-  for (const product of data.products) {
-    const price = Number(product.sale_price ?? product.price);
-    if (!Number.isFinite(price) || price <= 0) continue;
-    if (product.available === false) continue;
-    const regular = Number(product.regular_price ?? product.price);
-    offers.push({
-      name: product.name || "",
-      price,
-      listPrice: Number.isFinite(regular) && regular > price ? regular : null,
-      url: absoluteUrl(product.url || `/products/${product.slug}`, BASE4),
-      image: product.images?.[0]?.src || product.images?.[0]?.url || null,
-      available: true
-    });
-  }
-  return offers;
-}
-
-// shared/compare.js
-var ADAPTERS = { ahumada: ahumada_exports, drsimi: drsimi_exports, salcobrand: salcobrand_exports, ecofarmacias: ecofarmacias_exports, araucomed: araucomed_exports, knop: knop_exports };
-var ALLOWED_HOSTS = {
-  ahumada: ["www.farmaciasahumada.cl"],
-  drsimi: ["www.drsimi.cl"],
-  salcobrand: ["salcobrand.cl", "www.salcobrand.cl"],
-  ecofarmacias: ["www.ecofarmacias.cl"],
-  araucomed: ["farmacia.araucomed.com"],
-  knop: ["www.farmaciasknop.com"]
-};
-function safeProductUrl(chainKey, value) {
-  try {
-    const url = new URL(value);
-    if (url.protocol !== "https:") return null;
-    if (!ALLOWED_HOSTS[chainKey]?.includes(url.hostname)) return null;
-    return url.href;
-  } catch {
-    return null;
-  }
-}
-async function compareMed(med) {
-  const checkedAt = (/* @__PURE__ */ new Date()).toISOString();
-  const entries = await Promise.all(
-    Object.entries(ADAPTERS).map(async ([key, adapter]) => {
-      try {
-        const raw = await adapter.search(med.query);
-        const best = selectBestOffer(med, raw);
-        if (!best) {
-          return {
-            key,
-            source: { chain: key, status: raw.length ? "empty" : "empty", found: 0 },
-            offer: null
-          };
-        }
-        const chain = chainByKey(key);
-        return {
-          key,
-          source: { chain: key, status: "ok", found: raw.length },
-          offer: {
-            chain: key,
-            chainName: chain.name,
-            chainShort: chain.short,
-            type: chain.type,
-            productName: best.name,
-            price: best.price,
-            listPrice: best.listPrice || null,
-            packCount: best.packCount,
-            packUnit: med.packUnit,
-            unitPrice: best.unitPrice,
-            url: safeProductUrl(key, best.url),
-            checkedAt,
-            source: "live"
-          }
-        };
-      } catch (error) {
-        return {
-          key,
-          source: { chain: key, status: "error", found: 0, message: String(error?.message || "sin respuesta") },
-          offer: null
-        };
-      }
-    })
-  );
-  return {
-    medId: med.id,
-    checkedAt,
-    offers: entries.map((entry) => entry.offer).filter(Boolean),
-    sources: entries.map((entry) => entry.source)
-  };
-}
-var MAX_RAW_PER_CHAIN = 12;
-var MAX_RAW_TOTAL = 60;
-function inferPackUnit(name) {
-  const normalized = normalizeText(name);
-  if (/\bcapsulas?\b/.test(normalized)) return "c\xE1psulas";
-  if (/\bcomprimidos?\b|\btabletas?\b|\bgrajeas?\b/.test(normalized)) return "comprimidos";
-  if (/\bml\b|\bcc\b/.test(normalized)) return "ml";
-  if (/\bg\b/.test(normalized)) return "g";
-  if (/\bdosis\b|\bpuff\b|\bdisparos?\b/.test(normalized)) return "dosis";
-  return null;
-}
-async function searchProducts(query) {
-  const checkedAt = (/* @__PURE__ */ new Date()).toISOString();
-  const entries = await Promise.all(
-    Object.entries(ADAPTERS).map(async ([key, adapter]) => {
-      try {
-        const raw = await adapter.search(query);
-        const chain = chainByKey(key);
-        const offers = raw.slice(0, MAX_RAW_PER_CHAIN).map((item) => {
-          const price = Number(item.price);
-          const name = item.name || "";
-          const packUnit = inferPackUnit(name);
-          const packCount = packUnit ? extractPackCount(name, packUnit) : null;
-          return {
-            chain: key,
-            chainName: chain.name,
-            chainShort: chain.short,
-            type: chain.type,
-            productName: name,
-            price,
-            listPrice: item.listPrice || null,
-            packCount,
-            packUnit,
-            unitPrice: unitPrice(price, packCount),
-            url: safeProductUrl(key, item.url),
-            checkedAt,
-            source: "live"
-          };
-        });
-        return {
-          source: { chain: key, status: offers.length ? "ok" : "empty", found: raw.length },
-          offers: offers.filter((offer) => Number.isFinite(offer.price) && offer.price > 0 && offer.url)
-        };
-      } catch (error) {
-        return {
-          source: { chain: key, status: "error", found: 0, message: String(error?.message || "sin respuesta") },
-          offers: []
-        };
-      }
-    })
-  );
-  const allOffers = entries.flatMap((entry) => entry.offers).sort((a, b) => (a.unitPrice ?? a.price) - (b.unitPrice ?? b.price) || a.price - b.price);
-  return {
-    query,
-    checkedAt,
-    total: allOffers.length,
-    offers: allOffers.slice(0, MAX_RAW_TOTAL),
-    sources: entries.map((entry) => entry.source)
-  };
-}
-
 // shared/meds.js
 var solid = /comprimid|comp\b|tablet|tab\b|gragea|recubiert/;
 var caps = /capsul|cap\b|gragea/;
@@ -736,13 +322,46 @@ var MEDS = [
     packUnit: "g",
     popular: true,
     query: "diclofenaco gel 1%",
-    aliases: ["voltaren", "diclofenaco", "gel", "dolor muscular"],
+    aliases: [
+      "voltaren",
+      "diclofenaco",
+      "diclofenaco de sodio",
+      "diclofenaco sodico",
+      "gel",
+      "dolor muscular"
+    ],
     rules: {
       include: [/diclofenaco/],
       brands: ["lertus"],
       exclude: [/comprimid|inyectable|supositorio|gotas|parche/],
       dose: [/\b1(?:[.,]16)?\s*%/],
       forms: [/gel/]
+    }
+  },
+  {
+    id: "diclofenaco-50",
+    name: "Diclofenaco",
+    strength: "50 mg",
+    form: "Comprimidos",
+    category: "Antiinflamatorio",
+    pack: 20,
+    packUnit: "comprimidos",
+    popular: false,
+    query: "diclofenaco 50",
+    aliases: [
+      "diclofenaco de sodio",
+      "diclofenaco sodico",
+      "diclofenaco",
+      "lertus",
+      "antiinflamatorio",
+      "dolor"
+    ],
+    rules: {
+      include: [/diclofenaco|diclofenac/],
+      brands: ["lertus"],
+      exclude: [/gel|crema|emulgel|inyect|supositor|parche|gotas|solucion|topico|spray|1(?:[.,]16)?\s*%/],
+      dose: [/\b50\s*(?:mg|miligramos?)\b/],
+      forms: [solid]
     }
   },
   {
@@ -1309,8 +928,614 @@ var MEDS = [
     }
   }
 ];
+var normalize = (value) => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9%.,/\s-]+/g, " ").replace(/\s+/g, " ").trim();
 function medById(id) {
   return MEDS.find((med) => med.id === id) || null;
+}
+var SEARCH_FILLERS = /* @__PURE__ */ new Set([
+  "de",
+  "del",
+  "la",
+  "el",
+  "los",
+  "las",
+  "con",
+  "para",
+  "por",
+  "y",
+  "o",
+  "en",
+  "sodio",
+  "sodico",
+  "sodica",
+  "disodico",
+  "potasico",
+  "potasica",
+  "calcico",
+  "calcica",
+  "hidrocloruro",
+  "clorhidrato",
+  "diclorhidrato",
+  "hidrato",
+  "monohidrato",
+  "comprimidos",
+  "comprimido",
+  "tabletas",
+  "tableta",
+  "capsulas",
+  "capsula"
+]);
+function scoreMeds(q, limit) {
+  const scored = [];
+  for (const med of MEDS) {
+    const haystacks = [med.name, med.strength, med.form, med.category, ...med.aliases].map(normalize);
+    let score = 0;
+    if (normalize(med.name).startsWith(q)) score += 60;
+    if (normalize(`${med.name} ${med.strength}`).includes(q)) score += 50;
+    for (const h of haystacks) {
+      if (h === q) score += 40;
+      else if (h.includes(q)) score += 20;
+    }
+    if (q.split(" ").every((part) => haystacks.some((h) => h.includes(part)))) score += 15;
+    const topical = /gel|crema|emulgel|topico|spray|locion/;
+    if (!topical.test(q) && topical.test(normalize(med.form))) score -= 6;
+    if (score > 0) scored.push({ med, score: score + (med.popular ? 3 : 0) });
+  }
+  return scored.sort((a, b) => b.score - a.score || a.med.name.localeCompare(b.med.name)).slice(0, limit).map((entry) => entry.med);
+}
+function searchMeds(query, limit = 8) {
+  const q = normalize(query);
+  if (!q) {
+    return MEDS.filter((med) => med.popular).slice(0, limit);
+  }
+  const direct = scoreMeds(q, limit);
+  if (direct.length) return direct;
+  const core = q.split(" ").filter((part) => part && !SEARCH_FILLERS.has(part));
+  const simplified = core.join(" ").trim();
+  if (simplified && simplified !== q) {
+    return scoreMeds(simplified, limit);
+  }
+  return [];
+}
+
+// shared/adapters/ahumada.js
+var ahumada_exports = {};
+__export(ahumada_exports, {
+  search: () => search
+});
+
+// shared/adapters/common.js
+var UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36";
+var ENTITIES = {
+  amp: "&",
+  quot: '"',
+  apos: "'",
+  lt: "<",
+  gt: ">",
+  nbsp: " ",
+  aacute: "\xE1",
+  eacute: "\xE9",
+  iacute: "\xED",
+  oacute: "\xF3",
+  uacute: "\xFA",
+  Aacute: "\xC1",
+  Eacute: "\xC9",
+  Iacute: "\xCD",
+  Oacute: "\xD3",
+  Uacute: "\xDA",
+  ntilde: "\xF1",
+  Ntilde: "\xD1",
+  uuml: "\xFC",
+  Uuml: "\xDC",
+  ordm: "\xBA",
+  deg: "\xB0",
+  times: "\xD7"
+};
+function decodeEntities(value) {
+  return String(value ?? "").replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code))).replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16))).replace(/&([a-zA-Z]+);/g, (match, name) => ENTITIES[name] ?? match).replace(/\s+/g, " ").trim();
+}
+function stripTags(value) {
+  return decodeEntities(String(value ?? "").replace(/<[^>]*>/g, " "));
+}
+function parseClp(value) {
+  const digits = String(value ?? "").replace(/[^\d]/g, "");
+  const number = Number(digits);
+  return Number.isFinite(number) && number > 0 ? number : null;
+}
+function absoluteUrl(value, base) {
+  try {
+    const url = new URL(value, base);
+    return url.protocol === "https:" ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+async function fetchWithTimeout(url, options = {}, timeoutMs = 12e3) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, {
+      redirect: "follow",
+      ...options,
+      signal: controller.signal,
+      headers: {
+        "user-agent": UA,
+        "accept-language": "es-CL,es;q=0.9,en;q=0.5",
+        ...options.headers || {}
+      }
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+async function fetchText(url, options = {}, timeoutMs = 12e3) {
+  const response = await fetchWithTimeout(url, options, timeoutMs);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.text();
+}
+async function fetchJson(url, options = {}, timeoutMs = 12e3) {
+  const response = await fetchWithTimeout(
+    url,
+    { ...options, headers: { accept: "application/json", ...options.headers || {} } },
+    timeoutMs
+  );
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
+// shared/adapters/ahumada.js
+var BASE = "https://www.farmaciasahumada.cl";
+function pricesFromTile(chunk) {
+  const start = chunk.search(/<div class="price">/i);
+  const block = start >= 0 ? chunk.slice(start, start + 900) : chunk;
+  const text = stripTags(block);
+  const amounts = [...text.matchAll(/\$\s*([\d.]{3,})/g)].map((match) => parseClp(match[1])).filter(Boolean);
+  const listMatch = chunk.match(/class="value"[^>]*content="(\d+)"/i);
+  const listPrice = listMatch ? parseClp(listMatch[1]) : null;
+  const price = amounts[0] || listPrice;
+  return {
+    price,
+    listPrice: listPrice && price && listPrice > price ? listPrice : null
+  };
+}
+async function search(query) {
+  const url = `${BASE}/search?q=${encodeURIComponent(query)}`;
+  const html = await fetchText(url);
+  const chunks = html.split('class="product product-tile-wrapper');
+  const offers = [];
+  for (const chunk of chunks.slice(1, 30)) {
+    const linkMatch = chunk.match(/<a[^>]+href="([^"]+\.html)"[^>]*>/i);
+    const imageMatch = chunk.match(/<img[^>]+(?:alt|title)="([^"]{3,160})"/i);
+    if (!linkMatch) continue;
+    const { price, listPrice } = pricesFromTile(chunk);
+    if (!price) continue;
+    const name = decodeEntities(imageMatch?.[1] || "");
+    if (!name) continue;
+    const productUrl = absoluteUrl(linkMatch[1], BASE);
+    if (!productUrl) continue;
+    offers.push({
+      name,
+      price,
+      listPrice,
+      url: productUrl
+    });
+  }
+  return offers;
+}
+
+// shared/adapters/drsimi.js
+var drsimi_exports = {};
+__export(drsimi_exports, {
+  search: () => search2
+});
+async function search2(query) {
+  const url = "https://www.drsimi.cl/api/catalog_system/pub/products/search?ft=" + encodeURIComponent(query) + "&_from=0&_to=23";
+  const products = await fetchJson(url);
+  if (!Array.isArray(products)) return [];
+  const offers = [];
+  for (const product of products) {
+    const item = product.items?.[0];
+    const seller = item?.sellers?.find((entry) => entry.commertialOffer?.Price > 0) || item?.sellers?.[0];
+    const price = Number(seller?.commertialOffer?.Price);
+    if (!Number.isFinite(price) || price <= 0) continue;
+    const listPrice = Number(seller?.commertialOffer?.ListPrice);
+    offers.push({
+      name: product.productName || item?.name || "",
+      price,
+      listPrice: Number.isFinite(listPrice) && listPrice > price ? listPrice : null,
+      url: product.link ? product.link.endsWith("/p") ? product.link : `${product.link}/p` : null,
+      image: item?.images?.[0]?.imageUrl || null,
+      available: seller?.commertialOffer?.IsAvailable !== false
+    });
+  }
+  return offers;
+}
+
+// shared/adapters/salcobrand.js
+var salcobrand_exports = {};
+__export(salcobrand_exports, {
+  search: () => search3
+});
+var APP_ID = "GM3RP06HJG";
+var SEARCH_KEY = "0259fe250b3be4b1326eb85e47aa7d81";
+var INDEX = "sb_variant_production";
+var BASE2 = "https://salcobrand.cl";
+async function search3(query) {
+  const data = await fetchJson(
+    `https://${APP_ID.toLowerCase()}-dsn.algolia.net/1/indexes/${INDEX}/query`,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-algolia-api-key": SEARCH_KEY,
+        "x-algolia-application-id": APP_ID,
+        referer: `${BASE2}/`,
+        origin: BASE2
+      },
+      body: JSON.stringify({ query, hitsPerPage: 24 })
+    }
+  );
+  if (!Array.isArray(data?.hits)) return [];
+  const offers = [];
+  for (const hit of data.hits) {
+    if (hit.has_stock === false) continue;
+    const normal = Number(hit.normal_price);
+    const discounted = Number(hit.direct_discount);
+    const price = Number.isFinite(discounted) && discounted > 0 ? discounted : normal;
+    if (!Number.isFinite(price) || price <= 0) continue;
+    offers.push({
+      name: hit.name || "",
+      price,
+      listPrice: Number.isFinite(normal) && normal > price ? normal : null,
+      url: hit.slug ? absoluteUrl(`/products/${hit.slug}`, BASE2) : null,
+      image: hit.catalog_image_url || hit.thumbnail_image_url || null,
+      available: true
+    });
+  }
+  return offers;
+}
+
+// shared/adapters/ecofarmacias.js
+var ecofarmacias_exports = {};
+__export(ecofarmacias_exports, {
+  search: () => search4
+});
+async function search4(query) {
+  const url = "https://www.ecofarmacias.cl/wp-json/wc/store/v1/products?search=" + encodeURIComponent(query) + "&per_page=24&orderby=price&order=asc";
+  const products = await fetchJson(url);
+  if (!Array.isArray(products)) return [];
+  return products.map((product) => {
+    const prices = product.prices || {};
+    const minor = Number(prices.currency_minor_unit ?? 0);
+    const price = Number(prices.price) / 10 ** minor;
+    const regular = Number(prices.regular_price) / 10 ** minor;
+    return {
+      name: product.name || "",
+      price,
+      listPrice: Number.isFinite(regular) && regular > price ? regular : null,
+      url: product.permalink || null,
+      image: product.images?.[0]?.src || null
+    };
+  }).filter((offer) => Number.isFinite(offer.price) && offer.price > 0);
+}
+
+// shared/adapters/araucomed.js
+var araucomed_exports = {};
+__export(araucomed_exports, {
+  search: () => search5
+});
+var BASE3 = "https://farmacia.araucomed.com";
+async function search5(query) {
+  const url = `${BASE3}/busqueda?s=${encodeURIComponent(query)}`;
+  const html = await fetchText(url);
+  const chunks = html.split('<article class="product-miniature');
+  const offers = [];
+  for (const chunk of chunks.slice(1, 30)) {
+    const linkMatch = chunk.match(/<a[^>]+href="([^"]+)"[^>]*class="thumbnail/i);
+    const titleMatch = chunk.match(/class="[^"]*product-title[^"]*"[^>]*>[\s\S]{0,220}?<a[^>]*>([\s\S]*?)<\/a>/i) || chunk.match(/<img[^>]+alt="([^"]{3,160})"/i);
+    const priceMatch = chunk.match(/class="price\s*"[^>]*>\s*\$?\s*([\d.]+)/i);
+    if (!linkMatch || !priceMatch) continue;
+    const price = parseClp(priceMatch[1]);
+    if (!price) continue;
+    const name = decodeEntities(String(titleMatch?.[1] || "").replace(/<[^>]*>/g, " "));
+    if (!name) continue;
+    const productUrl = absoluteUrl(linkMatch[1], BASE3);
+    if (!productUrl) continue;
+    const imageMatch = chunk.match(/data-src="([^"]+\.(?:jpg|jpeg|png|webp))"/i);
+    offers.push({
+      name,
+      price,
+      url: productUrl,
+      image: imageMatch ? absoluteUrl(imageMatch[1], BASE3) : null
+    });
+  }
+  return offers;
+}
+
+// shared/adapters/knop.js
+var knop_exports = {};
+__export(knop_exports, {
+  search: () => search6
+});
+var BASE4 = "https://www.farmaciasknop.com";
+var MAX_RESULTS = 24;
+async function search6(query) {
+  const url = `${BASE4}/products.json?q=${encodeURIComponent(query)}&per_page=${MAX_RESULTS}`;
+  const data = await fetchJson(url);
+  if (!Array.isArray(data?.products)) return [];
+  const offers = [];
+  for (const product of data.products) {
+    const price = Number(product.sale_price ?? product.price);
+    if (!Number.isFinite(price) || price <= 0) continue;
+    if (product.available === false) continue;
+    const regular = Number(product.regular_price ?? product.price);
+    offers.push({
+      name: product.name || "",
+      price,
+      listPrice: Number.isFinite(regular) && regular > price ? regular : null,
+      url: absoluteUrl(product.url || `/products/${product.slug}`, BASE4),
+      image: product.images?.[0]?.src || product.images?.[0]?.url || null,
+      available: true
+    });
+  }
+  return offers;
+}
+
+// shared/compare.js
+var ADAPTERS = { ahumada: ahumada_exports, drsimi: drsimi_exports, salcobrand: salcobrand_exports, ecofarmacias: ecofarmacias_exports, araucomed: araucomed_exports, knop: knop_exports };
+var ALLOWED_HOSTS = {
+  ahumada: ["www.farmaciasahumada.cl"],
+  drsimi: ["www.drsimi.cl"],
+  salcobrand: ["salcobrand.cl", "www.salcobrand.cl"],
+  ecofarmacias: ["www.ecofarmacias.cl"],
+  araucomed: ["farmacia.araucomed.com"],
+  knop: ["www.farmaciasknop.com"]
+};
+function safeProductUrl(chainKey, value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") return null;
+    if (!ALLOWED_HOSTS[chainKey]?.includes(url.hostname)) return null;
+    return url.href;
+  } catch {
+    return null;
+  }
+}
+async function compareMed(med) {
+  const checkedAt = (/* @__PURE__ */ new Date()).toISOString();
+  const entries = await Promise.all(
+    Object.entries(ADAPTERS).map(async ([key, adapter]) => {
+      try {
+        const raw = await adapter.search(med.query);
+        const best = selectBestOffer(med, raw);
+        if (!best) {
+          return {
+            key,
+            source: { chain: key, status: raw.length ? "empty" : "empty", found: 0 },
+            offer: null
+          };
+        }
+        const chain = chainByKey(key);
+        return {
+          key,
+          source: { chain: key, status: "ok", found: raw.length },
+          offer: {
+            chain: key,
+            chainName: chain.name,
+            chainShort: chain.short,
+            type: chain.type,
+            productName: best.name,
+            price: best.price,
+            listPrice: best.listPrice || null,
+            packCount: best.packCount,
+            packUnit: med.packUnit,
+            unitPrice: best.unitPrice,
+            url: safeProductUrl(key, best.url),
+            checkedAt,
+            source: "live"
+          }
+        };
+      } catch (error) {
+        return {
+          key,
+          source: { chain: key, status: "error", found: 0, message: String(error?.message || "sin respuesta") },
+          offer: null
+        };
+      }
+    })
+  );
+  return {
+    medId: med.id,
+    checkedAt,
+    offers: entries.map((entry) => entry.offer).filter(Boolean),
+    sources: entries.map((entry) => entry.source)
+  };
+}
+var MAX_RAW_PER_CHAIN = 24;
+var MAX_RAW_TOTAL = 120;
+var QUERY_FILLERS = /* @__PURE__ */ new Set([
+  "de",
+  "del",
+  "la",
+  "el",
+  "los",
+  "las",
+  "con",
+  "para",
+  "por",
+  "y",
+  "o",
+  "en",
+  "sodio",
+  "sodico",
+  "sodica",
+  "disodico",
+  "potasico",
+  "potasica",
+  "calcico",
+  "calcica",
+  "hidrocloruro",
+  "clorhidrato",
+  "diclorhidrato",
+  "hidrato",
+  "monohidrato",
+  "comprimidos",
+  "comprimido",
+  "tabletas",
+  "tableta",
+  "capsulas",
+  "capsula"
+]);
+function coreQuery(query) {
+  const parts = normalizeText(query).split(" ").filter(Boolean);
+  const core = parts.filter((part) => !QUERY_FILLERS.has(part));
+  return (core.length ? core : parts).join(" ");
+}
+var GENERIC_ALIASES = /* @__PURE__ */ new Set([
+  "dolor",
+  "fiebre",
+  "antiinflamatorio",
+  "presion",
+  "colesterol",
+  "diabetes",
+  "estomago",
+  "reflujo",
+  "alergia",
+  "asma",
+  "tiroides",
+  "corazon",
+  "diuretico",
+  "antibiotico",
+  "vitamina",
+  "sueno",
+  "animo",
+  "ansiedad",
+  "depresion",
+  "azucar",
+  "anemia",
+  "deshidratacion",
+  "hongos",
+  "inflamacion",
+  "muscular",
+  "pediatrico",
+  "adulto",
+  "cuidado"
+]);
+function relevanceTokens(query, core) {
+  const tokens = /* @__PURE__ */ new Set();
+  for (const word of `${core} ${query}`.split(/\s+/)) {
+    const token = normalizeText(word);
+    if (token.length >= 3 && !QUERY_FILLERS.has(token)) tokens.add(token);
+  }
+  for (const med of searchMeds(query, 4)) {
+    for (const brand of med.rules?.brands || []) {
+      const token = normalizeText(brand);
+      if (token.length >= 4) tokens.add(token);
+    }
+    for (const alias of med.aliases || []) {
+      const token = normalizeText(alias);
+      if (token.length >= 5 && !GENERIC_ALIASES.has(token)) tokens.add(token);
+    }
+  }
+  return [...tokens];
+}
+function isRelevant(name, tokens) {
+  const normalized = normalizeText(name);
+  if (!normalized) return false;
+  const words = tokens.filter((token) => /[a-z]/.test(token));
+  const pool = words.length ? words : tokens;
+  return pool.some(
+    (token) => normalized.includes(token) || token.length >= 7 && normalized.includes(token.slice(0, 6))
+  );
+}
+function mergeRaw(primary, secondary) {
+  const seen = /* @__PURE__ */ new Set();
+  const merged = [];
+  for (const item of [...primary, ...secondary]) {
+    const key = `${item.url || ""}|${item.name || ""}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push(item);
+  }
+  return merged;
+}
+function inferPackUnit(name) {
+  const normalized = normalizeText(name);
+  if (/\bcapsulas?\b/.test(normalized)) return "c\xE1psulas";
+  if (/\bcomprimidos?\b|\btabletas?\b|\bgrajeas?\b/.test(normalized)) return "comprimidos";
+  if (/\bml\b|\bcc\b/.test(normalized)) return "ml";
+  if (/\bg\b/.test(normalized)) return "g";
+  if (/\bdosis\b|\bpuff\b|\bdisparos?\b/.test(normalized)) return "dosis";
+  return null;
+}
+async function searchProducts(query) {
+  const checkedAt = (/* @__PURE__ */ new Date()).toISOString();
+  const core = coreQuery(query);
+  const broadened = core && core !== normalizeText(query) ? core : null;
+  const tokens = relevanceTokens(query, core);
+  const entries = await Promise.all(
+    Object.entries(ADAPTERS).map(async ([key, adapter]) => {
+      let failed = null;
+      let raw = [];
+      try {
+        const [primary, secondary] = await Promise.all([
+          adapter.search(query).catch((error) => {
+            failed = error;
+            return [];
+          }),
+          broadened ? adapter.search(core).catch((error) => {
+            failed = failed || error;
+            return [];
+          }) : Promise.resolve([])
+        ]);
+        raw = mergeRaw(primary, secondary);
+      } catch (error) {
+        failed = error;
+      }
+      if (failed && !raw.length) {
+        return {
+          source: { chain: key, status: "error", found: 0, message: String(failed?.message || "sin respuesta") },
+          offers: []
+        };
+      }
+      const relevant = raw.filter((item) => isRelevant(item.name || "", tokens));
+      const chain = chainByKey(key);
+      const offers = relevant.slice(0, MAX_RAW_PER_CHAIN).map((item) => {
+        const price = Number(item.price);
+        const name = item.name || "";
+        const packUnit = inferPackUnit(name);
+        const packCount = packUnit ? extractPackCount(name, packUnit) : null;
+        return {
+          chain: key,
+          chainName: chain.name,
+          chainShort: chain.short,
+          type: chain.type,
+          productName: name,
+          price,
+          listPrice: item.listPrice || null,
+          packCount,
+          packUnit,
+          unitPrice: unitPrice(price, packCount),
+          url: safeProductUrl(key, item.url),
+          checkedAt,
+          source: "live"
+        };
+      });
+      return {
+        source: { chain: key, status: offers.length ? "ok" : "empty", found: relevant.length },
+        offers: offers.filter((offer) => Number.isFinite(offer.price) && offer.price > 0 && offer.url)
+      };
+    })
+  );
+  const allOffers = entries.flatMap((entry) => entry.offers).sort((a, b) => (a.unitPrice ?? a.price) - (b.unitPrice ?? b.price) || a.price - b.price);
+  return {
+    query,
+    broadenedTo: broadened,
+    checkedAt,
+    total: allOffers.length,
+    offers: allOffers.slice(0, MAX_RAW_TOTAL),
+    sources: entries.map((entry) => entry.source)
+  };
 }
 
 // functions/api/compare.js

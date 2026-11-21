@@ -136,13 +136,46 @@ export const MEDS = [
     packUnit: 'g',
     popular: true,
     query: 'diclofenaco gel 1%',
-    aliases: ['voltaren', 'diclofenaco', 'gel', 'dolor muscular'],
+    aliases: [
+      'voltaren',
+      'diclofenaco',
+      'diclofenaco de sodio',
+      'diclofenaco sodico',
+      'gel',
+      'dolor muscular'
+    ],
     rules: {
       include: [/diclofenaco/],
       brands: ['lertus'],
       exclude: [/comprimid|inyectable|supositorio|gotas|parche/],
       dose: [/\b1(?:[.,]16)?\s*%/],
       forms: [/gel/]
+    }
+  },
+  {
+    id: 'diclofenaco-50',
+    name: 'Diclofenaco',
+    strength: '50 mg',
+    form: 'Comprimidos',
+    category: 'Antiinflamatorio',
+    pack: 20,
+    packUnit: 'comprimidos',
+    popular: false,
+    query: 'diclofenaco 50',
+    aliases: [
+      'diclofenaco de sodio',
+      'diclofenaco sodico',
+      'diclofenaco',
+      'lertus',
+      'antiinflamatorio',
+      'dolor'
+    ],
+    rules: {
+      include: [/diclofenaco|diclofenac/],
+      brands: ['lertus'],
+      exclude: [/gel|crema|emulgel|inyect|supositor|parche|gotas|solucion|topico|spray|1(?:[.,]16)?\s*%/],
+      dose: [/\b50\s*(?:mg|miligramos?)\b/],
+      forms: [solid]
     }
   },
   {
@@ -731,11 +764,41 @@ export function medPackLabel(med) {
   return `${med.pack} ${med.packUnit}`;
 }
 
-export function searchMeds(query, limit = 8) {
-  const q = normalize(query);
-  if (!q) {
-    return MEDS.filter((med) => med.popular).slice(0, limit);
-  }
+const SEARCH_FILLERS = new Set([
+  'de',
+  'del',
+  'la',
+  'el',
+  'los',
+  'las',
+  'con',
+  'para',
+  'por',
+  'y',
+  'o',
+  'en',
+  'sodio',
+  'sodico',
+  'sodica',
+  'disodico',
+  'potasico',
+  'potasica',
+  'calcico',
+  'calcica',
+  'hidrocloruro',
+  'clorhidrato',
+  'diclorhidrato',
+  'hidrato',
+  'monohidrato',
+  'comprimidos',
+  'comprimido',
+  'tabletas',
+  'tableta',
+  'capsulas',
+  'capsula'
+]);
+
+function scoreMeds(q, limit) {
   const scored = [];
   for (const med of MEDS) {
     const haystacks = [med.name, med.strength, med.form, med.category, ...med.aliases].map(normalize);
@@ -747,10 +810,28 @@ export function searchMeds(query, limit = 8) {
       else if (h.includes(q)) score += 20;
     }
     if (q.split(' ').every((part) => haystacks.some((h) => h.includes(part)))) score += 15;
+    const topical = /gel|crema|emulgel|topico|spray|locion/;
+    if (!topical.test(q) && topical.test(normalize(med.form))) score -= 6;
     if (score > 0) scored.push({ med, score: score + (med.popular ? 3 : 0) });
   }
   return scored
     .sort((a, b) => b.score - a.score || a.med.name.localeCompare(b.med.name))
     .slice(0, limit)
     .map((entry) => entry.med);
+}
+
+export function searchMeds(query, limit = 8) {
+  const q = normalize(query);
+  if (!q) {
+    return MEDS.filter((med) => med.popular).slice(0, limit);
+  }
+  const direct = scoreMeds(q, limit);
+  if (direct.length) return direct;
+
+  const core = q.split(' ').filter((part) => part && !SEARCH_FILLERS.has(part));
+  const simplified = core.join(' ').trim();
+  if (simplified && simplified !== q) {
+    return scoreMeds(simplified, limit);
+  }
+  return [];
 }
