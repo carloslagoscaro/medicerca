@@ -262,6 +262,29 @@ function nearbyCardMarkup(pharmacy, index = 0) {
   </article>`;
 }
 
+function nearbySourceLabel(location) {
+  if (location.source === 'gps') return 'Ordenadas desde tu GPS · OpenStreetMap';
+  if (location.source === 'manual') return `Ordenadas desde ${location.label} · OpenStreetMap`;
+  return 'Ejemplo: Huechuraba. Activa tu GPS para tu comuna · OpenStreetMap';
+}
+
+function gpsCalloutMarkup() {
+  const location = store.getLocation();
+  if (store.hasRealLocation(location)) return '';
+  return `<div class="gps-callout" data-gps-callout>
+    <span class="gps-callout-art">${icon('locate')}</span>
+    <div class="gps-callout-copy">
+      <strong>Activa tu ubicación</strong>
+      <p data-gps-hint>Verás las farmacias más cercanas a ti en cualquier comuna de Chile.</p>
+      <button class="gps-callout-link" type="button" data-gps-help>¿No aparece el permiso? Ver cómo activarlo</button>
+    </div>
+    <div class="gps-callout-actions">
+      <button class="btn btn-primary btn-sm" type="button" data-gps-quick>${icon('locate')} Usar mi GPS</button>
+      <button class="btn btn-ghost btn-sm" type="button" data-comuna-quick>Elegir comuna</button>
+    </div>
+  </div>`;
+}
+
 function homeTemplate() {
   const nearbyCount = nearbyData.bundledMeta().count || '—';
   return `<div class="page">
@@ -277,6 +300,7 @@ function homeTemplate() {
               <span class="hero-note">${icon('map')} Mapa con GPS</span>
               <span class="hero-note">${icon('shield')} Sin registro</span>
             </div>
+            ${gpsCalloutMarkup()}
             <form class="search-card" id="search-form" role="search" autocomplete="off">
               <label class="search-label" for="med-search">¿Qué medicamento buscas?</label>
               <div class="search-box">
@@ -352,6 +376,7 @@ function homeTemplate() {
 function renderHome(main, token) {
   state.homeCategory = '__popular';
   main.innerHTML = homeTemplate();
+  bindGpsCallout(main);
   bindHomeSearch(main);
   bindHomeCategory(main);
   renderPopular(main);
@@ -362,6 +387,40 @@ function renderHome(main, token) {
     const stat = $('#stat-nearby');
     if (stat) stat.textContent = String(nearbyData.bundledMeta().count || '—');
   });
+}
+
+function bindGpsCallout(main) {
+  const callout = $('[data-gps-callout]', main);
+  if (!callout) return;
+  const gpsButton = $('[data-gps-quick]', callout);
+  const comunaButton = $('[data-comuna-quick]', callout);
+  const helpButton = $('[data-gps-help]', callout);
+  const hint = $('[data-gps-hint]', callout);
+
+  store.geolocationState().then((permission) => {
+    if (!callout.isConnected || !hint) return;
+    if (permission === 'denied') {
+      hint.textContent = 'La ubicación está bloqueada en este navegador. Revisa “Ver cómo activarlo” o elige tu comuna.';
+    } else if (permission === 'prompt') {
+      hint.textContent = 'Te pediremos permiso una vez. Si no aparece el aviso, elige tu comuna.';
+    }
+  });
+
+  gpsButton?.addEventListener('click', async () => {
+    ui.setButtonLoading(gpsButton, true, 'Ubicando…');
+    try {
+      await store.requestLocation();
+      store.setPref('gpsAuto', true);
+      ui.toast('GPS activado.', { type: 'success' });
+      renderRoute();
+    } catch (error) {
+      if (/permiso/i.test(error.message)) store.setPref('gpsAuto', false);
+      ui.setButtonLoading(gpsButton, false);
+      openLocationSheet({ error: error.message, focusComuna: true });
+    }
+  });
+  comunaButton?.addEventListener('click', () => openLocationSheet({ focusComuna: true }));
+  helpButton?.addEventListener('click', () => openLocationSheet({ helpOpen: true }));
 }
 
 function bindHomeCategory(main) {
@@ -525,10 +584,7 @@ function renderNearbyPreview(token) {
     wrap.innerHTML = homeNearbySkeleton();
   }
   if (source) {
-    source.textContent =
-      location.source === 'gps'
-        ? 'Ordenadas desde tu GPS · OpenStreetMap'
-        : 'Ejemplo: Huechuraba. Activa tu GPS para tu comuna · OpenStreetMap';
+    source.textContent = nearbySourceLabel(location);
   }
 
   nearbyData.preloadBundled().then(() => {
@@ -542,15 +598,10 @@ function renderNearbyPreview(token) {
         .map((pharmacy, index) => nearbyCardMarkup(pharmacy, index))
         .join('');
       const note = $('#home-nearby-source');
-      if (note) {
-        note.textContent =
-          location.source === 'gps'
-            ? 'Ordenadas desde tu GPS · OpenStreetMap'
-            : 'Ejemplo: Huechuraba. Activa tu GPS para tu comuna · OpenStreetMap';
-      }
+      if (note) note.textContent = nearbySourceLabel(location);
       return;
     }
-    if (location.source !== 'gps') {
+    if (!store.hasRealLocation(location)) {
       target.innerHTML = `<div class="map-empty"><span>${icon(
         'map'
       )}</span><strong>Activa tu GPS para ver farmacias cercanas</strong><p>El mapa usa tu ubicación para ordenar las farmacias por distancia.</p><a class="btn btn-ghost btn-sm" href="#/mapa">Abrir mapa</a></div>`;
@@ -1255,7 +1306,7 @@ async function fillNearbyChains(main, med, offers, token) {
   if (physical.length) {
     const location = store.getLocation();
     pharmacies = nearbyData.bundledNearby(location, 5000);
-    if (location.source === 'gps' || !pharmacies.length) {
+    if (store.hasRealLocation(location) || !pharmacies.length) {
       try {
         const result = await nearbyData.getNearby(location, 5000);
         pharmacies = result.pharmacies;
@@ -1385,16 +1436,22 @@ function renderDetail(main, route, token) {
 
 /* ---------- Map ---------- */
 
+function mapSourceCopy(location) {
+  if (location.source === 'gps') return 'Estás usando tu GPS.';
+  if (location.source === 'manual') return `Usando ${location.label}.`;
+  return 'Ves Huechuraba como ejemplo; activa tu GPS o elige tu comuna.';
+}
+
 function mapTemplate(location, radius) {
   return `<div class="page map-page">
     <div class="container">
       <div class="section-head">
         <div class="section-title-wrap">
-          <span class="section-kicker">GPS + OpenStreetMap</span>
+          <span class="section-kicker">Ubicación + OpenStreetMap</span>
           <h1 class="section-title">Farmacias cerca de ti</h1>
-          <p class="section-sub">Activa tu ubicación para ordenar las farmacias por distancia. ${
-            location.source === 'gps' ? 'Estás usando tu GPS.' : 'Ves Huechuraba como ejemplo; activa tu GPS para tu comuna de Chile.'
-          }</p>
+          <p class="section-sub">Activa tu ubicación para ordenar las farmacias por distancia. ${h(
+            mapSourceCopy(location)
+          )}</p>
         </div>
         <button class="btn btn-ghost btn-sm" type="button" id="map-refresh">${icon(
           'refresh'
@@ -1474,12 +1531,14 @@ function mapEmptyMarkup(location, error) {
     <p>${
       error
         ? 'Revisa tu conexión e intenta de nuevo. Tus datos guardados siguen disponibles.'
-        : 'Prueba con un radio más amplio o activa tu GPS en cualquier comuna de Chile.'
+        : store.hasRealLocation(location)
+          ? 'Prueba con un radio más amplio.'
+          : 'Prueba con un radio más amplio o activa tu GPS en cualquier comuna de Chile.'
     }</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
       <button class="btn btn-ghost btn-sm" type="button" data-map-retry>${icon('refresh')} Reintentar</button>
       ${
-        location.source === 'gps'
+        store.hasRealLocation(location)
           ? `<button class="btn btn-soft btn-sm" type="button" data-use-home>Usar Huechuraba</button>`
           : ''
       }
@@ -1580,7 +1639,12 @@ function renderMap(main, token) {
     renderList(visible, loading);
 
     if (statusElement) {
-      const sourceLabel = location.source === 'gps' ? 'tu GPS' : 'ref. Huechuraba';
+      const sourceLabel =
+        location.source === 'gps'
+          ? 'tu GPS'
+          : location.source === 'manual'
+            ? location.label
+            : 'ref. Huechuraba';
       const text = loading
         ? visible.length
           ? `${visible.length} guardadas · actualizando…`
@@ -2222,21 +2286,54 @@ function openManualSheet({ medId = null, pharmacy = null } = {}) {
 
 /* ---------- Location sheet ---------- */
 
-function openLocationSheet() {
+function openLocationSheet({ error = '', focusComuna = false, helpOpen = false } = {}) {
   const location = store.getLocation();
+  const comunas = nearbyData.comunaOptions();
+  const known = store.hasRealLocation(location);
+  const title =
+    location.source === 'gps'
+      ? 'Ubicación GPS activa'
+      : location.source === 'manual'
+        ? `Comuna: ${location.label}`
+        : 'Referencia: Huechuraba';
+  const text =
+    location.source === 'gps'
+      ? 'Ordenaremos las farmacias desde donde estás.'
+      : location.source === 'manual'
+        ? 'Ordenaremos las farmacias desde el centro de esa comuna.'
+        : 'El Sauce 1850, Huechuraba. Es solo un ejemplo: activa tu GPS o elige tu comuna.';
   const body = `<div class="location-status">
-      <span class="location-status-icon">${icon(location.source === 'gps' ? 'locate' : 'pin')}</span>
+      <span class="location-status-icon">${icon(known ? 'locate' : 'pin')}</span>
       <div>
-        <strong>${location.source === 'gps' ? 'Ubicación GPS activa' : 'Referencia: Huechuraba'}</strong>
-        <p>${
-          location.source === 'gps'
-            ? 'Ordenaremos las farmacias desde donde estás.'
-            : 'El Sauce 1850, Huechuraba. Es solo un ejemplo: activa tu GPS para ver farmacias de tu comuna.'
-        }</p>
+        <strong>${h(title)}</strong>
+        <p>${h(text)}</p>
       </div>
     </div>
+    <p class="location-perm" id="location-perm"></p>
+    <div class="comuna-block">
+      <label class="field-label" for="comuna-input">O elige tu comuna</label>
+      <div class="comuna-row">
+        <input class="input" id="comuna-input" type="text" list="comuna-list" placeholder="Ej: Concepción" autocomplete="off" spellcheck="false" />
+        <datalist id="comuna-list">${comunas
+          .map((comuna) => `<option value="${h(comuna.name)}"></option>`)
+          .join('')}</datalist>
+        <button class="btn btn-soft" type="button" data-comuna-use>Usar comuna</button>
+      </div>
+      <p class="field-error" id="comuna-error" role="alert"></p>
+    </div>
     <p class="sheet-note">Usamos tu ubicación solo para buscar farmacias cercanas en OpenStreetMap. No guardamos tu ubicación en una base de datos.</p>
-    <p class="field-error" id="location-error" role="alert"></p>`;
+    <details class="gps-help"${helpOpen || error ? ' open' : ''}>
+      <summary>No aparece el permiso de ubicación</summary>
+      <p>Si abres MediCerca con un acceso directo, el permiso se controla en el navegador: no aparece como permiso de una app.</p>
+      <ol>
+        <li><strong>Android con Chrome:</strong> toca el candado junto a la dirección → Permisos → Ubicación → Permitir. Luego recarga la página.</li>
+        <li>Revisa que la ubicación del teléfono esté encendida en Ajustes → Ubicación.</li>
+        <li>Revisa Ajustes → Aplicaciones → Chrome → Permisos → Ubicación → Permitir.</li>
+        <li><strong>iPhone:</strong> Ajustes → Privacidad y seguridad → Localización → Safari (o MediCerca) → Permitir.</li>
+        <li>Si instalaste MediCerca como app: Ajustes → Aplicaciones → MediCerca → Permisos → Ubicación.</li>
+      </ol>
+    </details>
+    <p class="field-error" id="location-error" role="alert">${h(error)}</p>`;
   const sheet = ui.openSheet({
     kicker: 'Ubicación',
     title: '¿Dónde estás?',
@@ -2249,6 +2346,54 @@ function openLocationSheet() {
   const gpsButton = sheet.footer?.querySelector('[data-gps]');
   const referenceButton = sheet.footer?.querySelector('[data-reference]');
   const errorElement = $('#location-error', sheet.sheet);
+  const permElement = $('#location-perm', sheet.sheet);
+  const helpElement = $('.gps-help', sheet.sheet);
+  const comunaInput = $('#comuna-input', sheet.sheet);
+  const comunaError = $('#comuna-error', sheet.sheet);
+
+  store.geolocationState().then((state) => {
+    if (!permElement || !sheet.sheet.isConnected) return;
+    if (state === 'denied') {
+      permElement.textContent = 'La ubicación está bloqueada en este navegador.';
+      permElement.className = 'location-perm is-blocked';
+    } else if (state === 'granted') {
+      permElement.textContent = 'El navegador ya tiene permiso de ubicación.';
+    } else if (state === 'prompt') {
+      permElement.textContent = 'El navegador pedirá permiso al usar el GPS.';
+    }
+  });
+
+  if (comunaInput) {
+    if (focusComuna) window.setTimeout(() => comunaInput.focus({ preventScroll: false }), 120);
+    comunaInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        useComuna();
+      }
+    });
+  }
+
+  async function useComuna() {
+    const value = String(comunaInput?.value || '').trim();
+    if (comunaError) comunaError.textContent = '';
+    await nearbyData.preloadBundled();
+    const comuna = nearbyData.findComuna(value);
+    if (!comuna) {
+      if (comunaError) {
+        comunaError.textContent = value
+          ? 'No encontramos esa comuna. Escribe solo el nombre, por ejemplo: Concepción.'
+          : 'Escribe tu comuna, por ejemplo: Concepción.';
+      }
+      return;
+    }
+    store.setPref('gpsAuto', false);
+    store.setManualLocation({ lat: comuna.lat, lon: comuna.lon, label: comuna.name });
+    sheet.close();
+    ui.toast(`Usando ${comuna.name}.`, { type: 'success' });
+    renderRoute();
+  }
+
+  $('[data-comuna-use]', sheet.sheet)?.addEventListener('click', useComuna);
 
   referenceButton?.addEventListener('click', () => {
     store.setPref('gpsAuto', false);
@@ -2269,13 +2414,14 @@ function openLocationSheet() {
       renderRoute();
     } catch (error) {
       if (/permiso/i.test(error.message)) store.setPref('gpsAuto', false);
+      if (helpElement) helpElement.open = true;
       if (errorElement) errorElement.textContent = error.message;
       ui.setButtonLoading(gpsButton, false);
     }
   });
 }
 
-/* ---------- GPS in the installed app ---------- */
+/* ---------- GPS ---------- */
 
 function gpsAutoEnabled() {
   return store.getPref('gpsAuto', true) !== false;
@@ -2291,39 +2437,54 @@ function paintLocationChip() {
 
 function refreshAfterLocation() {
   paintLocationChip();
-  if (state.route?.name === 'home') {
-    renderNearbyPreview(state.navToken);
+  const callout = $('[data-gps-callout]');
+  if (callout && store.hasRealLocation(store.getLocation())) callout.remove();
+  const active = document.activeElement;
+  const typing =
+    (active && ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName)) ||
+    ($('#med-search')?.value.trim() || '') !== '';
+  if (typing) {
+    if (state.route?.name === 'home') renderNearbyPreview(state.navToken);
     return;
   }
-  const active = document.activeElement;
-  const busyInput =
-    active && ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName);
-  if (!busyInput) renderRoute();
+  renderRoute();
 }
+
+const GPS_ASK_KEY = 'gpsAskAt';
+const GPS_ASK_COOLDOWN = 24 * 60 * 60 * 1000;
 
 let autoLocateStarted = false;
 
-function autoLocateIfInstalled() {
-  if (autoLocateStarted || !store.isInstalled() || !gpsAutoEnabled()) return;
+async function autoLocateIfNeeded() {
+  if (autoLocateStarted) return;
   autoLocateStarted = true;
-  if (store.getLocation().source === 'gps') {
+  const location = store.getLocation();
+  if (location.source === 'gps') {
     refreshGpsQuietly();
     return;
   }
-  store
-    .requestLocation()
-    .then(() => {
-      store.setPref('gpsAuto', true);
-      ui.toast('GPS activado. Farmacias ordenadas desde tu ubicación.', { type: 'success' });
-      refreshAfterLocation();
-    })
-    .catch((error) => {
-      if (/permiso/i.test(error.message)) store.setPref('gpsAuto', false);
-    });
+  if (store.hasRealLocation(location) || !gpsAutoEnabled()) return;
+
+  const permission = await store.geolocationState();
+  if (permission === 'denied') return;
+  const askedAt = Number(store.getPref(GPS_ASK_KEY, 0));
+  const recentlyAsked = Number.isFinite(askedAt) && Date.now() - askedAt < GPS_ASK_COOLDOWN;
+  if (permission !== 'granted' && !store.isInstalled() && recentlyAsked) return;
+
+  store.setPref(GPS_ASK_KEY, Date.now());
+  try {
+    await store.requestLocation();
+    store.setPref('gpsAuto', true);
+    ui.toast('GPS activado. Farmacias ordenadas desde tu ubicación.', { type: 'success' });
+    refreshAfterLocation();
+  } catch (error) {
+    if (/permiso/i.test(error.message)) store.setPref('gpsAuto', false);
+  }
 }
 
 async function refreshGpsQuietly() {
   const location = store.getLocation();
+  if (location.source !== 'gps') return;
   const at = Date.parse(location.at || '');
   const stale = !Number.isFinite(at) || Date.now() - at > 30 * 60 * 1000;
   if (!stale) return;
@@ -2337,11 +2498,23 @@ async function refreshGpsQuietly() {
 }
 
 function watchForegroundLocation() {
-  document.addEventListener('visibilitychange', () => {
+  document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState !== 'visible') return;
-    if (!store.isInstalled() || !gpsAutoEnabled()) return;
-    if (store.getLocation().source !== 'gps') return;
-    refreshGpsQuietly();
+    if (!gpsAutoEnabled()) return;
+    const location = store.getLocation();
+    if (location.source === 'gps') {
+      refreshGpsQuietly();
+      return;
+    }
+    if (store.hasRealLocation(location)) return;
+    if ((await store.geolocationState()) === 'granted') {
+      try {
+        await store.requestLocation();
+        refreshAfterLocation();
+      } catch {
+        /* the banner still offers GPS and comuna */
+      }
+    }
   });
 }
 
@@ -2374,7 +2547,7 @@ function init() {
   setupServiceWorker();
   renderRoute();
   watchForegroundLocation();
-  autoLocateIfInstalled();
+  autoLocateIfNeeded();
 }
 
 function setupServiceWorker() {

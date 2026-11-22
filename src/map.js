@@ -72,6 +72,22 @@ function userIcon() {
   });
 }
 
+function userPopup(location) {
+  const title =
+    location.source === 'gps'
+      ? 'Estás aquí'
+      : location.source === 'manual'
+        ? `Comuna: ${location.label}`
+        : 'Ubicación de referencia';
+  const text =
+    location.source === 'gps'
+      ? 'Ubicación entregada por tu teléfono'
+      : location.source === 'manual'
+        ? 'Centro aproximado de la comuna elegida'
+        : 'El Sauce 1850, Huechuraba (ejemplo)';
+  return `<strong class="popup-title">${escapeHtml(title)}</strong><div class="popup-address">${escapeHtml(text)}</div>`;
+}
+
 function zoomForRadius(radius) {
   if (radius <= 1200) return 15;
   if (radius <= 3200) return 14;
@@ -116,16 +132,7 @@ export function mountMap(container, options) {
     title: 'Tu ubicación'
   }).addTo(map);
 
-  userMarker.bindPopup(
-    `<strong class="popup-title">${
-      options.location.source === 'gps' ? 'Estás aquí' : 'Ubicación de referencia'
-    }</strong><div class="popup-address">${
-      options.location.source === 'gps'
-        ? 'Ubicación entregada por tu teléfono'
-        : 'El Sauce 1850, Huechuraba (ejemplo)'
-    }</div>`,
-    { closeButton: false, maxWidth: 220 }
-  );
+  userMarker.bindPopup(userPopup(options.location), { closeButton: false, maxWidth: 220 });
 
   function draw() {
     pharmacyLayer.clearLayers();
@@ -159,15 +166,7 @@ export function mountMap(container, options) {
       options.location = next.location;
       const { lat, lon } = next.location;
       userMarker.setLatLng([lat, lon]);
-      userMarker.setPopupContent(
-        `<strong class="popup-title">${
-          next.location.source === 'gps' ? 'Estás aquí' : 'Ubicación de referencia'
-        }</strong><div class="popup-address">${
-          next.location.source === 'gps'
-            ? 'Ubicación entregada por tu teléfono'
-            : 'El Sauce 1850, Huechuraba (ejemplo)'
-        }</div>`
-      );
+      userMarker.setPopupContent(userPopup(next.location));
       const moved =
         !lastLocation || Math.abs(lastLocation.lat - lat) > 0.0002 || Math.abs(lastLocation.lon - lon) > 0.0002;
       if (moved) {

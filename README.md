@@ -17,9 +17,9 @@ Comparador de precios de medicamentos para Chile. Muestra ofertas de farmacias o
 3. Si no aparece en el catálogo, pulsa **Buscar … en farmacias online** (o Enter) para consultar las 6 cadenas en vivo.
 4. Abre el medicamento y revisa la oferta recomendada y el precio por unidad.
 5. Toca **Anotar precio** si compraste o viste un precio en una farmacia de barrio.
-6. Toca **Mapa** para ver farmacias cerca y activa el GPS con **Usar mi ubicación**. Funciona en cualquier comuna de Chile.
+6. Toca **Mapa** para ver farmacias cerca y activa el GPS con **Usar mi ubicación**. Funciona en cualquier comuna de Chile. Si el navegador bloquea la ubicación, elige tu comuna en la hoja de ubicación y la app ordena las farmacias desde su centro.
 7. Para instalarla: en Android abre el menú ⋮ y elige **Instalar aplicación** o **Agregar a pantalla principal**; en iPhone toca **Compartir** y luego **Añadir a pantalla de inicio**.
-8. La app instalada recupera el GPS sola: al abrirla vuelve a pedir tu ubicación si todavía no está activa. Si rechazaste el permiso, actívalo en los ajustes del teléfono y toca el botón con el nombre de tu ubicación.
+8. La app instalada recupera el GPS sola al abrirla. Si usas un acceso directo, el permiso de ubicación se controla en el navegador: candado junto a la dirección → Permisos → Ubicación → Permitir.
 
 ## Publicarla en Cloudflare (sin programar)
 

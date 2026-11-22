@@ -3204,6 +3204,142 @@ ol {
   line-height: 1.45;
 }
 
+.location-perm {
+  margin-top: 9px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f5f0e4;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.location-perm:empty {
+  display: none;
+}
+
+.location-perm.is-blocked {
+  background: #fdeae4;
+  color: #a63f21;
+}
+
+.comuna-block {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.comuna-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.comuna-row .btn {
+  height: 47px;
+  white-space: nowrap;
+}
+
+.gps-help {
+  margin-top: 11px;
+  padding: 10px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 12px;
+  background: #fbf7ee;
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  line-height: 1.55;
+}
+
+.gps-help summary {
+  color: var(--ink);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.gps-help p {
+  margin-top: 7px;
+}
+
+.gps-help ol {
+  display: grid;
+  gap: 5px;
+  margin: 7px 0 0 16px;
+}
+
+.gps-callout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px 12px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.gps-callout-art {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--lime);
+  color: var(--navy);
+}
+
+.gps-callout-art .icon {
+  width: 19px;
+  height: 19px;
+}
+
+.gps-callout-copy {
+  min-width: 0;
+}
+
+.gps-callout-copy strong {
+  display: block;
+  color: var(--cream);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.gps-callout-copy p {
+  margin-top: 3px;
+  color: #c3cbd8;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.gps-callout-link {
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--lime);
+  font: inherit;
+  font-size: 10.5px;
+  font-weight: 750;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.gps-callout-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gps-callout-actions .btn {
+  flex: 1 1 130px;
+  justify-content: center;
+}
+
 .show-more-row {
   display: grid;
   place-items: center;

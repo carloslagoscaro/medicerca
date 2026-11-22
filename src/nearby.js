@@ -83,6 +83,48 @@ export function bundledMeta() {
   };
 }
 
+let comunaIndex = null;
+
+export function comunaOptions() {
+  if (!bundled) return [];
+  if (!comunaIndex) {
+    const groups = new Map();
+    for (const pharmacy of bundledRaw()) {
+      const name = String(pharmacy.comuna || '').trim();
+      const lat = Number(pharmacy.lat);
+      const lon = Number(pharmacy.lon);
+      if (!name || !Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+      const key = normalizeName(name);
+      const entry = groups.get(key) || { name, lat: 0, lon: 0, count: 0 };
+      entry.lat += lat;
+      entry.lon += lon;
+      entry.count += 1;
+      groups.set(key, entry);
+    }
+    comunaIndex = [...groups.values()]
+      .map((entry) => ({
+        name: entry.name,
+        lat: entry.lat / entry.count,
+        lon: entry.lon / entry.count,
+        count: entry.count
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'es'));
+  }
+  return comunaIndex;
+}
+
+export function findComuna(value) {
+  const query = normalizeName(value);
+  if (!query) return null;
+  const list = comunaOptions();
+  return (
+    list.find((comuna) => normalizeName(comuna.name) === query) ||
+    list.find((comuna) => normalizeName(comuna.name).startsWith(query)) ||
+    list.find((comuna) => normalizeName(comuna.name).includes(query)) ||
+    null
+  );
+}
+
 function isDuplicate(a, b) {
   if (normalizeName(a.name) !== normalizeName(b.name)) return false;
   if (a.address && b.address && normalizeName(a.address) === normalizeName(b.address)) return true;

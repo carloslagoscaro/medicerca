@@ -1,5 +1,3 @@
-import { distanceKm } from '../shared/geo.js';
-
 export const HOME_LOCATION = Object.freeze({
   lat: -33.3616,
   lon: -70.6704,
@@ -59,7 +57,7 @@ export function getLocation() {
       lat: stored.lat,
       lon: stored.lon,
       label: stored.label,
-      source: stored.source === 'gps' ? 'gps' : 'home',
+      source: stored.source === 'gps' || stored.source === 'manual' ? stored.source : 'home',
       at: stored.at || null,
       accuracy: Number.isFinite(stored.accuracy) ? stored.accuracy : null
     };
@@ -67,12 +65,16 @@ export function getLocation() {
   return { ...HOME_LOCATION };
 }
 
+export function hasRealLocation(location) {
+  return location?.source === 'gps' || location?.source === 'manual';
+}
+
 export function setLocation(location) {
   const value = {
     lat: Number(location.lat),
     lon: Number(location.lon),
     label: location.label || 'Mi ubicación',
-    source: location.source === 'gps' ? 'gps' : 'home',
+    source: location.source === 'gps' || location.source === 'manual' ? location.source : 'home',
     at: new Date().toISOString(),
     accuracy: Number.isFinite(location.accuracy) ? location.accuracy : null
   };
@@ -84,6 +86,10 @@ export function setLocation(location) {
   return value;
 }
 
+export function setManualLocation({ lat, lon, label }) {
+  return setLocation({ lat, lon, label, source: 'manual' });
+}
+
 export function useHomeLocation() {
   const value = { ...HOME_LOCATION, at: new Date().toISOString() };
   writeJson(LOCATION_KEY, value);
@@ -92,7 +98,7 @@ export function useHomeLocation() {
 }
 
 export function isHomeLocation(location) {
-  return distanceKm(location, HOME_LOCATION) < 0.7;
+  return !location || location.source === 'home';
 }
 
 export function locationLabel(location) {
@@ -144,7 +150,7 @@ function locationError(error) {
     return new Error(
       installed
         ? 'Falta el permiso de ubicación. En Ajustes del teléfono abre Aplicaciones → MediCerca → Permisos → Ubicación y elige Permitir. Luego pulsa “Usar mi GPS”.'
-        : 'No diste permiso de ubicación. Puedes activarlo en los ajustes del navegador o explorar Huechuraba como referencia.'
+        : 'El navegador tiene bloqueada la ubicación para esta página. Toca el candado junto a la dirección → Permisos → Ubicación → Permitir, y recarga. Si abres MediCerca con un acceso directo, el permiso se controla en el navegador, no como permiso de una app. También puedes elegir tu comuna.'
     );
   }
   if (error?.code === 3) {
