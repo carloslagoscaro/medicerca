@@ -19,6 +19,7 @@ Comparador de precios de medicamentos para Chile. Muestra ofertas de farmacias o
 5. Toca **Anotar precio** si compraste o viste un precio en una farmacia de barrio.
 6. Toca **Mapa** para ver farmacias cerca y activa el GPS con **Usar mi ubicación**. Funciona en cualquier comuna de Chile.
 7. Para instalarla: en Android abre el menú ⋮ y elige **Instalar aplicación** o **Agregar a pantalla principal**; en iPhone toca **Compartir** y luego **Añadir a pantalla de inicio**.
+8. La app instalada recupera el GPS sola: al abrirla vuelve a pedir tu ubicación si todavía no está activa. Si rechazaste el permiso, actívalo en los ajustes del teléfono y toca el botón con el nombre de tu ubicación.
 
 ## Publicarla en Cloudflare (sin programar)
 

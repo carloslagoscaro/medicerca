@@ -1630,9 +1630,11 @@ function renderMap(main, token) {
     ui.setButtonLoading(locateButton, true, 'Ubicando…');
     try {
       await store.requestLocation();
+      store.setPref('gpsAuto', true);
       ui.toast('Ubicación actualizada.', { type: 'success' });
       renderRoute();
     } catch (error) {
+      if (/permiso/i.test(error.message)) store.setPref('gpsAuto', false);
       ui.toast(error.message, { type: 'error', duration: 6500 });
       ui.setButtonLoading(locateButton, false);
     }
@@ -1833,9 +1835,7 @@ function chainStatusMarkup(key) {
 }
 
 function installCardMarkup() {
-  const standalone =
-    window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  if (standalone) {
+  if (store.isInstalled()) {
     return `<div class="install-card"><div><h2>Ya tienes MediCerca instalada</h2><p>Puedes abrirla desde tu pantalla de inicio como cualquier app.</p></div><span class="summary-pill">${icon(
       'check'
     )} Lista</span></div>`;
@@ -2141,6 +2141,7 @@ function openManualSheet({ medId = null, pharmacy = null } = {}) {
     gpsButton.innerHTML = `${icon('locate', 'spin')} Ubicando…`;
     try {
       const location = await store.requestLocation();
+      store.setPref('gpsAuto', true);
       coords = { lat: location.lat, lon: location.lon };
       gpsButton.classList.add('is-on');
       gpsButton.innerHTML = `${icon('check')} Ubicación agregada`;
@@ -2250,6 +2251,7 @@ function openLocationSheet() {
   const errorElement = $('#location-error', sheet.sheet);
 
   referenceButton?.addEventListener('click', () => {
+    store.setPref('gpsAuto', false);
     store.useHomeLocation();
     sheet.close();
     ui.toast('Usando Huechuraba como referencia.', { type: 'success' });
@@ -2261,13 +2263,85 @@ function openLocationSheet() {
     if (errorElement) errorElement.textContent = '';
     try {
       await store.requestLocation();
+      store.setPref('gpsAuto', true);
       sheet.close();
       ui.toast('Ubicación actualizada.', { type: 'success' });
       renderRoute();
     } catch (error) {
+      if (/permiso/i.test(error.message)) store.setPref('gpsAuto', false);
       if (errorElement) errorElement.textContent = error.message;
       ui.setButtonLoading(gpsButton, false);
     }
+  });
+}
+
+/* ---------- GPS in the installed app ---------- */
+
+function gpsAutoEnabled() {
+  return store.getPref('gpsAuto', true) !== false;
+}
+
+function paintLocationChip() {
+  const chip = $('[data-location]');
+  if (!chip) return;
+  const label = store.locationLabel(store.getLocation());
+  chip.setAttribute('aria-label', `Cambiar ubicación: ${label}`);
+  chip.innerHTML = `${icon('pin')}<span>${h(label)}</span>`;
+}
+
+function refreshAfterLocation() {
+  paintLocationChip();
+  if (state.route?.name === 'home') {
+    renderNearbyPreview(state.navToken);
+    return;
+  }
+  const active = document.activeElement;
+  const busyInput =
+    active && ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName);
+  if (!busyInput) renderRoute();
+}
+
+let autoLocateStarted = false;
+
+function autoLocateIfInstalled() {
+  if (autoLocateStarted || !store.isInstalled() || !gpsAutoEnabled()) return;
+  autoLocateStarted = true;
+  if (store.getLocation().source === 'gps') {
+    refreshGpsQuietly();
+    return;
+  }
+  store
+    .requestLocation()
+    .then(() => {
+      store.setPref('gpsAuto', true);
+      ui.toast('GPS activado. Farmacias ordenadas desde tu ubicación.', { type: 'success' });
+      refreshAfterLocation();
+    })
+    .catch((error) => {
+      if (/permiso/i.test(error.message)) store.setPref('gpsAuto', false);
+    });
+}
+
+async function refreshGpsQuietly() {
+  const location = store.getLocation();
+  const at = Date.parse(location.at || '');
+  const stale = !Number.isFinite(at) || Date.now() - at > 30 * 60 * 1000;
+  if (!stale) return;
+  if ((await store.geolocationState()) !== 'granted') return;
+  try {
+    await store.requestLocation();
+    refreshAfterLocation();
+  } catch {
+    /* keep the last known location */
+  }
+}
+
+function watchForegroundLocation() {
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') return;
+    if (!store.isInstalled() || !gpsAutoEnabled()) return;
+    if (store.getLocation().source !== 'gps') return;
+    refreshGpsQuietly();
   });
 }
 
@@ -2299,6 +2373,8 @@ function init() {
   nearbyData.preloadBundled();
   setupServiceWorker();
   renderRoute();
+  watchForegroundLocation();
+  autoLocateIfInstalled();
 }
 
 function setupServiceWorker() {

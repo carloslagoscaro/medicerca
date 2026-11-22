@@ -100,43 +100,86 @@ export function locationLabel(location) {
   return location.label || 'Mi ubicación';
 }
 
-export function requestLocation() {
-  return new Promise((resolve, reject) => {
-    if (!('geolocation' in navigator)) {
-      reject(new Error('Este navegador no entrega ubicación. Puedes explorar Huechuraba como referencia.'));
+export function isInstalled() {
+  const matches = (query) => {
+    try {
+      return window.matchMedia?.(query)?.matches === true;
+    } catch {
+      return false;
+    }
+  };
+  return (
+    matches('(display-mode: standalone)') ||
+    matches('(display-mode: minimal-ui)') ||
+    window.navigator.standalone === true
+  );
+}
+
+export function geolocationState() {
+  return new Promise((resolve) => {
+    if (typeof navigator.permissions?.query !== 'function') {
+      resolve('unknown');
       return;
     }
+    try {
+      navigator.permissions
+        .query({ name: 'geolocation' })
+        .then((status) => resolve(status.state))
+        .catch(() => resolve('unknown'));
+    } catch {
+      resolve('unknown');
+    }
+  });
+}
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        try {
-          const location = setLocation({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-            accuracy: position.coords.accuracy,
-            label: 'Mi ubicación',
-            source: 'gps'
-          });
-          resolve(location);
-        } catch (error) {
-          reject(error);
-        }
-      },
-      (error) => {
-        if (error.code === error.PERMISSION_DENIED) {
-          reject(
-            new Error(
-              'No diste permiso de ubicación. Puedes activarlo en los ajustes del navegador o explorar Huechuraba como referencia.'
-            )
-          );
-        } else if (error.code === error.TIMEOUT) {
-          reject(new Error('La ubicación tardó demasiado. Intenta otra vez o usa Huechuraba como referencia.'));
-        } else {
-          reject(new Error('No pudimos obtener tu ubicación. Intenta al aire libre o usa la referencia.'));
-        }
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 300000 }
+function positionOnce(options) {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+}
+
+function locationError(error) {
+  const installed = isInstalled();
+  if (error?.code === 1) {
+    return new Error(
+      installed
+        ? 'Falta el permiso de ubicación. En Ajustes del teléfono abre Aplicaciones → MediCerca → Permisos → Ubicación y elige Permitir. Luego pulsa “Usar mi GPS”.'
+        : 'No diste permiso de ubicación. Puedes activarlo en los ajustes del navegador o explorar Huechuraba como referencia.'
     );
+  }
+  if (error?.code === 3) {
+    return new Error('La ubicación tardó demasiado. Intenta otra vez o usa Huechuraba como referencia.');
+  }
+  return new Error(
+    installed
+      ? 'No pudimos obtener tu ubicación. Revisa que la ubicación del teléfono esté encendida e intenta cerca de una ventana.'
+      : 'No pudimos obtener tu ubicación. Intenta al aire libre o usa la referencia.'
+  );
+}
+
+export async function requestLocation() {
+  if (!('geolocation' in navigator)) {
+    throw new Error('Este navegador no entrega ubicación. Puedes explorar Huechuraba como referencia.');
+  }
+
+  let position;
+  try {
+    position = await positionOnce({ enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
+  } catch (error) {
+    if (error?.code === 1) throw locationError(error);
+    try {
+      position = await positionOnce({ enableHighAccuracy: false, timeout: 12000, maximumAge: 0 });
+    } catch (fallback) {
+      throw locationError(fallback?.code === 1 ? fallback : error);
+    }
+  }
+
+  return setLocation({
+    lat: position.coords.latitude,
+    lon: position.coords.longitude,
+    accuracy: position.coords.accuracy,
+    label: 'Mi ubicación',
+    source: 'gps'
   });
 }
 
