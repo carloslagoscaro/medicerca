@@ -148,7 +148,7 @@ function preparedBundled(location, radius) {
 
 const inflight = new Map();
 
-export async function getNearby(location, radius = 5000, { force = false } = {}) {
+export async function getNearby(location, radius = 5000, { force = false, live = false } = {}) {
   const key = nearbyCacheKey(location, radius);
   if (!force) {
     const cached = getNearbyCache(key);
@@ -163,12 +163,12 @@ export async function getNearby(location, radius = 5000, { force = false } = {})
     }
   }
 
-  const inFlightKey = `${key}:${force ? 'force' : 'normal'}`;
+  const inFlightKey = `${key}:${force ? 'force' : 'normal'}:${live ? 'live' : 'bundled'}`;
   if (inflight.has(inFlightKey)) return inflight.get(inFlightKey);
 
   const promise = (async () => {
     await preloadBundled();
-    if (!force) {
+    if (!force && !live) {
       const bundledNow = preparedBundled(location, radius);
       if (bundledNow.length) {
         return {
@@ -216,11 +216,22 @@ export async function getNearby(location, radius = 5000, { force = false } = {})
 }
 
 export function nearestForChain(pharmacies, chainKey) {
-  return (
-    pharmacies
-      .filter((pharmacy) => pharmacy.chain === chainKey)
-      .sort((a, b) => a.distance - b.distance)[0] || null
-  );
+  const list = pharmacies
+    .filter((pharmacy) => pharmacy.chain === chainKey)
+    .sort((a, b) => a.distance - b.distance);
+  const nearest = list[0] || null;
+  if (!nearest || nearest.address) return nearest;
+  // Prefer a branch con dirección a menos de 1 km: sirve más que una más cercana sin calle.
+  return list.find((pharmacy) => pharmacy.address && pharmacy.distance <= nearest.distance + 1) || nearest;
+}
+
+export function nearestByChain(pharmacies, chainKeys) {
+  const map = new Map();
+  for (const key of chainKeys) {
+    const nearest = nearestForChain(pharmacies, key);
+    if (nearest) map.set(key, nearest);
+  }
+  return map;
 }
 
 export function nearbyCoverageLabel(pharmacies, location) {

@@ -1658,6 +1658,37 @@ ol {
   -webkit-box-orient: vertical;
 }
 
+.offer-branch,
+.best-branch {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin-top: 7px;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.offer-branch {
+  color: var(--muted);
+}
+
+.best-branch {
+  color: #c3cfdd;
+}
+
+.offer-branch:empty,
+.best-branch:empty {
+  display: none;
+}
+
+.offer-branch .icon,
+.best-branch .icon {
+  width: 13px;
+  height: 13px;
+  margin-top: 1px;
+}
+
 .offer-foot {
   display: flex;
   flex-wrap: wrap;

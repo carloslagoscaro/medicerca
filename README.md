@@ -6,6 +6,7 @@ Comparador de precios de medicamentos para Chile. Muestra ofertas de farmacias o
 - Precios en vivo de 7 cadenas: Ahumada, Dr. Simi, Salcobrand, Cruz Verde, EcoFarmacias, Araucomed y Farmacia Knop.
 - Buscador online (`#/online?q=…`): si el medicamento no está en el catálogo, busca el nombre en las 7 cadenas sin entrar a sus sitios.
 - Comparación por **precio por unidad** (comprimido, cápsula, gramo, ml o dosis), no solo por caja.
+- Cada precio muestra la **sucursal más cercana** de esa cadena con dirección (cuando OpenStreetMap la registra) y distancia desde tu GPS.
 - Precios de barrio guardados solo en tu teléfono.
 - GPS + mapa con **2706 farmacias de todo Chile** (OpenStreetMap), no solo Huechuraba.
 - Instalable como aplicación (PWA) y funciona sin conexión con el último respaldo.

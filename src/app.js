@@ -764,6 +764,7 @@ function onlineTemplate(query) {
         </form>
         <div class="online-meta" id="online-meta">${icon('clock')} Consultando farmacias…</div>
       </section>
+      ${gpsCalloutMarkup()}
       <div id="online-status"></div>
       <div id="online-results">${Array.from(
         { length: 3 },
@@ -788,6 +789,7 @@ function onlineOfferMarkup(offer, index) {
       <span class="offer-price">${h(formatClp(offer.price))}<small>${h(unit)}</small></span>
     </div>
     <p class="offer-name">${h(offer.productName || chain.name)}</p>
+    <p class="offer-branch" data-branch="${h(offer.chain)}"></p>
     <div class="offer-foot">
       <span>${h(pack)}${
         offer.listPrice ? ` · Antes ${h(formatClp(offer.listPrice))}` : ''
@@ -803,6 +805,7 @@ function onlineOfferMarkup(offer, index) {
 function renderOnline(main, route, token) {
   const query = String(route.query || '').trim();
   main.innerHTML = onlineTemplate(query || 'Medicamento');
+  bindGpsCallout(main);
   const form = $('#online-form', main);
   const input = $('#online-query', main);
   form?.addEventListener('submit', (event) => {
@@ -879,6 +882,7 @@ function renderOnline(main, route, token) {
       results.innerHTML = `<div class="offers-list">${offers
         .map((offer, index) => onlineOfferMarkup(offer, index))
         .join('')}</div>`;
+      fillOfferBranches(main, offers, token);
     })
     .catch((error) => {
       if (!isToken(token)) return;
@@ -938,12 +942,13 @@ function detailTemplate(med) {
             <div class="section-title-wrap">
               <span class="section-kicker">Si prefieres ir</span>
               <h2 class="section-title" id="nearby-chains-title">Dónde comprar cerca</h2>
-              <p class="section-sub">La sucursal más cercana de cada farmacia con precio online.</p>
+              <p class="section-sub" id="nearby-chains-sub">La sucursal más cercana de cada cadena, con dirección y distancia.</p>
             </div>
             <a class="section-link" href="#/mapa">Ver mapa ${icon('arrow-right')}</a>
           </div>
+          ${gpsCalloutMarkup()}
           <div class="chain-stop-grid" id="nearby-chains-slot"></div>
-          <p class="field-help" style="margin-top:8px">Sucursales según OpenStreetMap. Confirma horario y stock antes de ir.</p>
+          <p class="field-help" style="margin-top:8px">El precio es el de la tienda online de la cadena; la dirección es su sucursal más cercana según OpenStreetMap y la distancia es en línea recta. Confirma horario y stock antes de ir.</p>
         </section>
 
         <section class="detail-section" aria-labelledby="manual-title">
@@ -981,6 +986,39 @@ function renderDetailSkeleton(main) {
   if (count) count.textContent = 'Cargando…';
   if (sub) sub.textContent = 'Consultando farmacias online…';
   main.setAttribute('aria-busy', 'true');
+}
+
+function branchLineMarkup(chain, branch) {
+  if (chain.onlineOnly || chain.type === 'economica') {
+    return `${icon('store')}<span>Solo online · despacho a domicilio</span>`;
+  }
+  if (!branch) return '';
+  const address = [branch.address, branch.comuna].filter(Boolean).join(', ');
+  const distance = formatDistance(branch.distance);
+  if (!address) {
+    return distance
+      ? `${icon('pin')}<span>Sucursal más cercana a ${h(distance)} · dirección no registrada</span>`
+      : '';
+  }
+  return `${icon('pin')}<span>Sucursal más cercana: ${h(address)}${
+    distance ? ` · a ${h(distance)}` : ''
+  }</span>`;
+}
+
+function applyBranches(main, branches, location) {
+  const real = store.hasRealLocation(location);
+  for (const el of $$('[data-branch]', main)) {
+    const chain = chainByKey(el.dataset.branch);
+    const onlineOnly = chain.onlineOnly || chain.type === 'economica';
+    let markup = onlineOnly ? branchLineMarkup(chain, null) : '';
+    if (!onlineOnly && real) {
+      markup = branchLineMarkup(chain, branches.get(chain.key));
+    } else if (!onlineOnly && el.classList.contains('best-branch')) {
+      markup = `${icon('locate')}<span>Activa tu ubicación para ver la sucursal más cercana y su distancia.</span>`;
+    }
+    el.innerHTML = markup;
+    el.hidden = !markup;
+  }
 }
 
 function bestCardMarkup(med, offers) {
@@ -1022,6 +1060,7 @@ function bestCardMarkup(med, offers) {
         <div class="best-chain-line">${chainDot(chain)} ${h(chain.short)}${
           saving > 0 ? `<span class="best-savings">-${saving}% vs. la más cara</span>` : ''
         }</div>
+        <p class="best-branch" data-branch="${h(best.chain)}" aria-live="polite"></p>
         <p class="best-saving-line">${h(pack)} · ${h(savingsText)}</p>
       </div>
       <div class="best-side">
@@ -1061,6 +1100,7 @@ function offerCardMarkup(med, offer, best, index) {
       <span class="offer-price">${h(formatClp(offer.price))}<small>${h(unit)}</small></span>
     </div>
     <p class="offer-name">${h(offer.productName || chain.name)}</p>
+    <p class="offer-branch" data-branch="${h(offer.chain)}"></p>
     <div class="offer-foot">
       <span>${h(pack)} · Precio online</span>
       <span class="offer-foot-right${ratio !== null && ratio > 0 ? ' is-higher' : ''}">${h(delta)} ${icon(
@@ -1236,7 +1276,7 @@ function chainStopMarkup(chainKey, pharmacies) {
       <div class="chain-stop-head">
         <span class="chain-stop-name">${chainDot(chain)}<span>${h(chain.short)}</span></span>
       </div>
-      <p class="chain-stop-address">No encontramos sucursal a menos de 5 km.</p>
+      <p class="chain-stop-address">Sin sucursal registrada a menos de 30 km.</p>
       <a class="online-only" href="#/mapa">Ver el mapa ${icon('arrow-right')}</a>
     </article>`;
   }
@@ -1254,7 +1294,43 @@ function chainStopMarkup(chainKey, pharmacies) {
   </article>`;
 }
 
-async function fillNearbyChains(main, med, offers, token) {
+async function fillOfferBranches(main, offers, token, onPharmacies) {
+  const chains = [...new Set(offers.map((offer) => offer.chain))];
+  const location = store.getLocation();
+  const real = store.hasRealLocation(location);
+  applyBranches(main, new Map(), location);
+
+  const physical = chains.some((key) => {
+    const chain = chainByKey(key);
+    return !(chain.onlineOnly || chain.type === 'economica');
+  });
+  if (!real || !physical) {
+    onPharmacies?.([]);
+    return;
+  }
+
+  await nearbyData.preloadBundled();
+  if (!isToken(token) || !document.contains(main)) return;
+
+  const quick = nearbyData.bundledNearby(location, 30000);
+  applyBranches(main, nearbyData.nearestByChain(quick, chains), location);
+  onPharmacies?.(quick);
+
+  try {
+    const result = await nearbyData.getNearby(location, 8000, { live: true });
+    if (!isToken(token) || !document.contains(main)) return;
+    const merged = [...result.pharmacies];
+    for (const pharmacy of quick) {
+      if (!merged.some((other) => other.id === pharmacy.id)) merged.push(pharmacy);
+    }
+    applyBranches(main, nearbyData.nearestByChain(merged, chains), location);
+    onPharmacies?.(merged);
+  } catch {
+    /* keep la referencia guardada si OpenStreetMap no responde */
+  }
+}
+
+async function fillNearbyChains(main, offers, token) {
   const slot = $('#nearby-chains-slot', main);
   if (!slot) return;
   const chains = [...new Set(offers.map((offer) => offer.chain))];
@@ -1263,29 +1339,31 @@ async function fillNearbyChains(main, med, offers, token) {
     return;
   }
 
-  const physical = chains.filter((key) => {
-    const chain = chainByKey(key);
-    return !(chain.onlineOnly || chain.type === 'economica');
-  });
+  const location = store.getLocation();
+  const real = store.hasRealLocation(location);
+  const sub = $('#nearby-chains-sub', main);
+  if (sub) {
+    sub.textContent = real
+      ? location.source === 'gps'
+        ? 'La sucursal más cercana de cada cadena, según tu GPS.'
+        : `La sucursal más cercana de cada cadena, desde ${location.label}.`
+      : 'Activa tu ubicación para ver la sucursal más cercana y la distancia.';
+  }
+
   slot.innerHTML = chains
     .map(() => `<div class="chain-stop"><div class="skeleton" style="width:50%"></div><div class="skeleton" style="width:80%"></div><div class="skeleton" style="width:65%"></div></div>`)
     .join('');
 
-  let pharmacies = [];
-  if (physical.length) {
-    const location = store.getLocation();
-    pharmacies = nearbyData.bundledNearby(location, 5000);
-    if (store.hasRealLocation(location) || !pharmacies.length) {
-      try {
-        const result = await nearbyData.getNearby(location, 5000);
-        pharmacies = result.pharmacies;
-      } catch {
-        pharmacies = pharmacies || [];
-      }
-    }
-  }
-  if (!isToken(token) || !document.contains(slot)) return;
-  slot.innerHTML = chains.map((key) => chainStopMarkup(key, pharmacies)).join('');
+  await fillOfferBranches(main, offers, token, (pharmacies) => {
+    if (!isToken(token) || !document.contains(slot)) return;
+    const visible = real
+      ? chains
+      : chains.filter((key) => {
+          const chain = chainByKey(key);
+          return chain.onlineOnly || chain.type === 'economica';
+        });
+    slot.innerHTML = visible.map((key) => chainStopMarkup(key, pharmacies)).join('');
+  });
 }
 
 function renderDetail(main, route, token) {
@@ -1298,6 +1376,7 @@ function renderDetail(main, route, token) {
   }
 
   main.innerHTML = detailTemplate(med);
+  bindGpsCallout(main);
   renderManualSlot(main, med);
   renderDetailSkeleton(main);
 
@@ -1308,7 +1387,7 @@ function renderDetail(main, route, token) {
     if (!isToken(token) || !document.contains(main)) return;
     painted = true;
     const offers = paintComparison(main, med, value, origin);
-    fillNearbyChains(main, med, offers, token);
+    fillNearbyChains(main, offers, token);
   };
 
   if (cached) paint(cached.value, 'cache');
@@ -1908,6 +1987,7 @@ function renderInfo(main, token) {
           <ul>
             <li>Ahumada, Dr. Simi, Salcobrand, EcoFarmacias, Araucomed, Knop y Cruz Verde: consultamos su tienda online al momento de comparar.</li>
             <li>Cruz Verde entrega el precio nacional de su tienda online; el stock puede variar según la sucursal.</li>
+            <li>La dirección y la distancia corresponden a la sucursal más cercana de cada cadena según OpenStreetMap; el precio sigue siendo el de su tienda online.</li>
             <li>Farmacias de barrio: el precio lo anotas tú y queda guardado en este teléfono.</li>
             <li>Los precios de internet pueden cambiar al pagar o ser distintos en tienda.</li>
           </ul>
