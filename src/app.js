@@ -948,7 +948,7 @@ function detailTemplate(med) {
           </div>
           ${gpsCalloutMarkup()}
           <div class="chain-stop-grid" id="nearby-chains-slot"></div>
-          <p class="field-help" style="margin-top:8px">El precio es el de la tienda online de la cadena; la dirección es su sucursal más cercana según OpenStreetMap y la distancia es en línea recta. Confirma horario y stock antes de ir.</p>
+          <p class="field-help" style="margin-top:8px">El precio es el de la tienda online de la cadena; la dirección es de su sucursal más cercana según OpenStreetMap, los listados de las cadenas y el MINSAL; la distancia es en línea recta. Confirma horario y stock antes de ir.</p>
         </section>
 
         <section class="detail-section" aria-labelledby="manual-title">
@@ -997,10 +997,10 @@ function branchLineMarkup(chain, branch) {
   const distance = formatDistance(branch.distance);
   if (!address) {
     return distance
-      ? `${icon('pin')}<span>Sucursal más cercana a ${h(distance)} · dirección no registrada</span>`
+      ? `${icon('pin')}<span>Sucursal cerca de ti a ${h(distance)} · dirección no registrada</span>`
       : '';
   }
-  return `${icon('pin')}<span>Sucursal más cercana: ${h(address)}${
+  return `${icon('pin')}<span>Sucursal cerca de ti: ${h(address)}${
     distance ? ` · a ${h(distance)}` : ''
   }</span>`;
 }
@@ -1987,7 +1987,7 @@ function renderInfo(main, token) {
           <ul>
             <li>Ahumada, Dr. Simi, Salcobrand, EcoFarmacias, Araucomed, Knop y Cruz Verde: consultamos su tienda online al momento de comparar.</li>
             <li>Cruz Verde entrega el precio nacional de su tienda online; el stock puede variar según la sucursal.</li>
-            <li>La dirección y la distancia corresponden a la sucursal más cercana de cada cadena según OpenStreetMap; el precio sigue siendo el de su tienda online.</li>
+            <li>La dirección y la distancia corresponden a la sucursal más cercana de cada cadena según OpenStreetMap, los listados públicos de las cadenas y el registro del MINSAL; el precio sigue siendo el de su tienda online.</li>
             <li>Farmacias de barrio: el precio lo anotas tú y queda guardado en este teléfono.</li>
             <li>Los precios de internet pueden cambiar al pagar o ser distintos en tienda.</li>
           </ul>

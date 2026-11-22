@@ -6,9 +6,9 @@ Comparador de precios de medicamentos para Chile. Muestra ofertas de farmacias o
 - Precios en vivo de 7 cadenas: Ahumada, Dr. Simi, Salcobrand, Cruz Verde, EcoFarmacias, Araucomed y Farmacia Knop.
 - Buscador online (`#/online?q=…`): si el medicamento no está en el catálogo, busca el nombre en las 7 cadenas sin entrar a sus sitios.
 - Comparación por **precio por unidad** (comprimido, cápsula, gramo, ml o dosis), no solo por caja.
-- Cada precio muestra la **sucursal más cercana** de esa cadena con dirección (cuando OpenStreetMap la registra) y distancia desde tu GPS.
+- Cada precio muestra la **sucursal cerca de ti** de esa cadena con dirección (según los listados de las cadenas, OpenStreetMap y el MINSAL) y distancia desde tu GPS.
 - Precios de barrio guardados solo en tu teléfono.
-- GPS + mapa con **2706 farmacias de todo Chile** (OpenStreetMap), no solo Huechuraba.
+- GPS + mapa con **2758 farmacias de todo Chile** (OpenStreetMap y sucursales de las cadenas), no solo Huechuraba.
 - Instalable como aplicación (PWA) y funciona sin conexión con el último respaldo.
 
 ## Cómo usarla
@@ -121,6 +121,7 @@ El respaldo `data/live-prices.json` permite mostrar el último precio conocido s
 - El buscador online devuelve el nombre y la presentación tal como los publica cada cadena; si el nombre no indica el tamaño de la caja, la app no inventa el precio por unidad.
 - La búsqueda entiende nombres completos como `diclofenaco de sodio`: si una cadena no encuentra la frase, reintenta con el principio activo (`diclofenaco`) y descarta resultados sin relación.
 - Las farmacias del mapa vienen de OpenStreetMap (registro comunitario): puede haber locales sin registrar, direcciones incompletas o cerrados.
+- Las direcciones de sucursales se completan con los listados públicos de Cruz Verde, Ahumada, Salcobrand, Dr. Simi y Knop, y el registro de farmacias del MINSAL; pueden estar desactualizadas o no coincidir con el local exacto. Confirma antes de ir.
 - La app no reemplaza la receta ni la indicación de un profesional de la salud.
 
 ## Estructura
@@ -133,9 +134,10 @@ shared/                    catálogo, comparador, buscador online y adaptadores 
 functions/api/             endpoints de Cloudflare Workers: /api/compare, /api/search, /api/nearby
 worker/index.js            código fuente de la entrada de Cloudflare Workers
 cloudflare-worker.js       entrada empaquetada que usa Cloudflare al publicar
-data/                      respaldo de precios y pharmacies-chile.json (2706 farmacias OSM)
+data/                      respaldo de precios y pharmacies-chile.json (2758 farmacias OSM + sucursales Knop)
 scripts/dev.mjs            servidor local con las mismas rutas /api
 scripts/build-pharmacies.mjs  genera data/pharmacies-chile.json desde el GeoJSON de OSM/HDX
+scripts/enrich-addresses.mjs  completa direcciones con los listados de las cadenas y el MINSAL, y agrega las sucursales Knop
 scripts/snapshot.mjs       generador del respaldo de precios
 test/                      pruebas con Node.js
 ```
@@ -148,6 +150,12 @@ test/                      pruebas con Node.js
 - EcoFarmacias: <https://ecofarmacias.cl/>
 - OpenStreetMap, licencia y atribución: <https://www.openstreetmap.org/copyright>
 - Farmacias de Chile (HOT Health Facilities, HDX): <https://data.humdata.org/dataset/hotosm_chl_health_facilities>
+- Farmacias de turno, MINSAL: <https://midas.minsal.cl/farmacia_v2/WS/getLocales.php>
+- Sucursales Cruz Verde: <https://www.cruzverde.cl/>
+- Sucursales Ahumada: <https://www.farmaciasahumada.cl/stores>
+- Sucursales Salcobrand: <https://salcobrand.cl/content/servicios/mapa>
+- Tiendas Dr. Simi: <https://www.drsimi.cl/tiendas>
+- Sucursales Knop: <https://www.farmaciasknop.com/stores>
 - Overpass API: <https://wiki.openstreetmap.org/wiki/Overpass_API>
 - Farmacia Knop: <https://www.farmaciasknop.com/>
 - Salcobrand: <https://salcobrand.cl/>
