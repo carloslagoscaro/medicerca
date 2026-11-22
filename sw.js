@@ -1,4 +1,4 @@
-const VERSION = 'medicerca-v5';
+const VERSION = 'medicerca-v6';
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
@@ -26,6 +26,7 @@ const CORE = [
   './shared/adapters/ecofarmacias.js',
   './shared/adapters/araucomed.js',
   './shared/adapters/knop.js',
+  './shared/adapters/cruzverde.js',
   './vendor/leaflet/leaflet.js',
   './vendor/leaflet/leaflet.css',
   './assets/fonts/manrope-latin.woff2',

@@ -54,7 +54,7 @@ var CHAINS = {
     name: "Cruz Verde",
     short: "Cruz Verde",
     type: "cadena",
-    live: false,
+    live: true,
     color: "#008a5a",
     site: "https://www.cruzverde.cl",
     searchUrl: (q) => `https://www.cruzverde.cl/search?query=${encodeURIComponent(q)}`
@@ -1281,15 +1281,100 @@ async function search6(query) {
   return offers;
 }
 
+// shared/adapters/cruzverde.js
+var cruzverde_exports = {};
+__export(cruzverde_exports, {
+  search: () => search7
+});
+var BASE5 = "https://api.cruzverde.cl";
+var SITE = "https://www.cruzverde.cl";
+var SESSION_TTL = 8 * 60 * 1e3;
+var session = null;
+var sessionPromise = null;
+function readSessionCookie(response) {
+  const values = response.headers.getSetCookie?.();
+  const entries = Array.isArray(values) ? values : [response.headers.get("set-cookie") || ""];
+  for (const entry of entries) {
+    const match = String(entry).match(/connect\.sid=[^;,\s]+/);
+    if (match) return match[0];
+  }
+  return null;
+}
+function createSession() {
+  if (!sessionPromise) {
+    sessionPromise = (async () => {
+      const response = await fetchWithTimeout(
+        `${BASE5}/customer-service/login`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            origin: SITE,
+            referer: `${SITE}/`
+          },
+          body: "{}"
+        },
+        12e3
+      );
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const cookie = readSessionCookie(response);
+      if (!cookie) throw new Error("Sin sesi\xF3n");
+      return { cookie, expiresAt: Date.now() + SESSION_TTL };
+    })().finally(() => {
+      sessionPromise = null;
+    });
+  }
+  return sessionPromise;
+}
+async function currentSession() {
+  if (session && session.expiresAt > Date.now()) return session;
+  session = await createSession();
+  return session;
+}
+async function requestSearch(url, cookie) {
+  const response = await fetchWithTimeout(
+    url,
+    { headers: { cookie, accept: "application/json" } },
+    12e3
+  );
+  if (response.status === 401) return { unauthorized: true };
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return { data: await response.json() };
+}
+async function search7(query) {
+  const url = `${BASE5}/product-service/products/search?limit=20&offset=0&sort=&q=${encodeURIComponent(
+    query
+  )}`;
+  let result = await requestSearch(url, (await currentSession()).cookie);
+  if (result.unauthorized) {
+    session = null;
+    result = await requestSearch(url, (await currentSession()).cookie);
+  }
+  if (result.unauthorized) throw new Error("HTTP 401");
+  return (result.data.hits || []).map((hit) => {
+    const name = decodeEntities(hit?.productName || hit?.image?.title || "");
+    const sale = Number(hit?.prices?.["price-sale-cl"]);
+    const list = Number(hit?.prices?.["price-list-cl"]);
+    const price = Number.isFinite(sale) && sale > 0 ? sale : Number.isFinite(list) && list > 0 ? list : null;
+    return {
+      name,
+      price,
+      listPrice: price && Number.isFinite(list) && list > price ? list : null,
+      url: `${SITE}/search?query=${encodeURIComponent(name)}`
+    };
+  }).filter((offer) => offer.name && offer.price);
+}
+
 // shared/compare.js
-var ADAPTERS = { ahumada: ahumada_exports, drsimi: drsimi_exports, salcobrand: salcobrand_exports, ecofarmacias: ecofarmacias_exports, araucomed: araucomed_exports, knop: knop_exports };
+var ADAPTERS = { ahumada: ahumada_exports, drsimi: drsimi_exports, salcobrand: salcobrand_exports, ecofarmacias: ecofarmacias_exports, araucomed: araucomed_exports, knop: knop_exports, cruzverde: cruzverde_exports };
 var ALLOWED_HOSTS = {
   ahumada: ["www.farmaciasahumada.cl"],
   drsimi: ["www.drsimi.cl"],
   salcobrand: ["salcobrand.cl", "www.salcobrand.cl"],
   ecofarmacias: ["www.ecofarmacias.cl"],
   araucomed: ["farmacia.araucomed.com"],
-  knop: ["www.farmaciasknop.com"]
+  knop: ["www.farmaciasknop.com"],
+  cruzverde: ["www.cruzverde.cl", "cruzverde.cl"]
 };
 function safeProductUrl(chainKey, value) {
   try {

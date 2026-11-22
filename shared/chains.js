@@ -46,7 +46,7 @@ export const CHAINS = {
     name: 'Cruz Verde',
     short: 'Cruz Verde',
     type: 'cadena',
-    live: false,
+    live: true,
     color: '#008a5a',
     site: 'https://www.cruzverde.cl',
     searchUrl: (q) => `https://www.cruzverde.cl/search?query=${encodeURIComponent(q)}`
@@ -102,7 +102,7 @@ export const CHAINS = {
 };
 
 export const LIVE_CHAINS = Object.values(CHAINS).filter((chain) => chain.live);
-export const OFFER_ORDER = ['ahumada', 'drsimi', 'salcobrand', 'ecofarmacias', 'araucomed', 'knop'];
+export const OFFER_ORDER = ['ahumada', 'drsimi', 'salcobrand', 'cruzverde', 'ecofarmacias', 'araucomed', 'knop'];
 
 export function chainByKey(key) {
   return CHAINS[key] || CHAINS.barrio;

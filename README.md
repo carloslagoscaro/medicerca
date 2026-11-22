@@ -3,8 +3,8 @@
 Comparador de precios de medicamentos para Chile. Muestra ofertas de farmacias online, permite anotar precios de farmacias de barrio y ubica las farmacias cercanas en un mapa.
 
 - 38 medicamentos de uso frecuente y 13 categorías, más un buscador libre de cualquier medicamento.
-- Precios en vivo de 6 cadenas: Ahumada, Dr. Simi, Salcobrand, EcoFarmacias, Araucomed y Farmacia Knop.
-- Buscador online (`#/online?q=…`): si el medicamento no está en el catálogo, busca el nombre en las 6 cadenas sin entrar a sus sitios.
+- Precios en vivo de 7 cadenas: Ahumada, Dr. Simi, Salcobrand, Cruz Verde, EcoFarmacias, Araucomed y Farmacia Knop.
+- Buscador online (`#/online?q=…`): si el medicamento no está en el catálogo, busca el nombre en las 7 cadenas sin entrar a sus sitios.
 - Comparación por **precio por unidad** (comprimido, cápsula, gramo, ml o dosis), no solo por caja.
 - Precios de barrio guardados solo en tu teléfono.
 - GPS + mapa con **2706 farmacias de todo Chile** (OpenStreetMap), no solo Huechuraba.
@@ -14,7 +14,7 @@ Comparador de precios de medicamentos para Chile. Muestra ofertas de farmacias o
 
 1. Entra con el navegador de tu teléfono (Chrome en Android, Safari en iPhone).
 2. Busca el remedio por nombre o marca, por ejemplo `paracetamol`, `tapsin` u `omeprazol`.
-3. Si no aparece en el catálogo, pulsa **Buscar … en farmacias online** (o Enter) para consultar las 6 cadenas en vivo.
+3. Si no aparece en el catálogo, pulsa **Buscar … en farmacias online** (o Enter) para consultar las 7 cadenas en vivo.
 4. Abre el medicamento y revisa la oferta recomendada y el precio por unidad.
 5. Toca **Anotar precio** si compraste o viste un precio en una farmacia de barrio.
 6. Toca **Mapa** para ver farmacias cerca y activa el GPS con **Usar mi ubicación**. Funciona en cualquier comuna de Chile. Si el navegador bloquea la ubicación, elige tu comuna en la hoja de ubicación y la app ordena las farmacias desde su centro.
@@ -116,7 +116,7 @@ El respaldo `data/live-prices.json` permite mostrar el último precio conocido s
 
 - Los precios son referenciales y pueden cambiar sin aviso. Confirma siempre en la farmacia o en su sitio antes de comprar.
 - El precio online puede no coincidir con el precio de la sucursal física.
-- Cruz Verde muestra precios solo después de elegir comuna e iniciar sesión en su sitio; por eso queda como enlace directo y no como precio en vivo.
+- Cruz Verde entrega el precio de su tienda online sin pedir comuna; ese precio es nacional, pero el stock y la disponibilidad pueden variar según la sucursal.
 - El buscador online devuelve el nombre y la presentación tal como los publica cada cadena; si el nombre no indica el tamaño de la caja, la app no inventa el precio por unidad.
 - La búsqueda entiende nombres completos como `diclofenaco de sodio`: si una cadena no encuentra la frase, reintenta con el principio activo (`diclofenaco`) y descarta resultados sin relación.
 - Las farmacias del mapa vienen de OpenStreetMap (registro comunitario): puede haber locales sin registrar, direcciones incompletas o cerrados.

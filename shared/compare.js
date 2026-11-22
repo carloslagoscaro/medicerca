@@ -7,8 +7,9 @@ import * as salcobrand from './adapters/salcobrand.js';
 import * as ecofarmacias from './adapters/ecofarmacias.js';
 import * as araucomed from './adapters/araucomed.js';
 import * as knop from './adapters/knop.js';
+import * as cruzverde from './adapters/cruzverde.js';
 
-const ADAPTERS = { ahumada, drsimi, salcobrand, ecofarmacias, araucomed, knop };
+const ADAPTERS = { ahumada, drsimi, salcobrand, ecofarmacias, araucomed, knop, cruzverde };
 
 const ALLOWED_HOSTS = {
   ahumada: ['www.farmaciasahumada.cl'],
@@ -16,7 +17,8 @@ const ALLOWED_HOSTS = {
   salcobrand: ['salcobrand.cl', 'www.salcobrand.cl'],
   ecofarmacias: ['www.ecofarmacias.cl'],
   araucomed: ['farmacia.araucomed.com'],
-  knop: ['www.farmaciasknop.com']
+  knop: ['www.farmaciasknop.com'],
+  cruzverde: ['www.cruzverde.cl', 'cruzverde.cl']
 };
 
 function safeProductUrl(chainKey, value) {

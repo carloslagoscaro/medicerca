@@ -33,7 +33,6 @@ const MANUAL_CHAIN_KEYS = [
   'knop',
   'farmex'
 ];
-const PENDING_CHAIN_KEYS = ['cruzverde'];
 
 const state = {
   navToken: 0,
@@ -874,7 +873,7 @@ function renderOnline(main, route, token) {
       if (!offers.length) {
         results.innerHTML = `<div class="empty-state"><span class="empty-art">${icon(
           'receipt'
-        )}</span><strong>No encontramos “${h(query)}” con precio público</strong><p>Prueba con el nombre genérico, sin marca ni dosis. Cruz Verde no entrega precios abiertos sin elegir comuna, por eso no aparece en esta búsqueda.</p><a class="btn btn-ghost btn-sm" href="#/">Volver al catálogo</a></div>`;
+        )}</span><strong>No encontramos “${h(query)}” con precio público</strong><p>Prueba con el nombre genérico, sin marca ni dosis.</p><a class="btn btn-ghost btn-sm" href="#/">Volver al catálogo</a></div>`;
         return;
       }
       results.innerHTML = `<div class="offers-list">${offers
@@ -959,17 +958,6 @@ function detailTemplate(med) {
           <div id="manual-slot"></div>
         </section>
 
-        <section class="detail-section" aria-labelledby="pending-title">
-          <div class="section-head">
-            <div class="section-title-wrap">
-              <span class="section-kicker">Sin precio abierto</span>
-              <h2 class="section-title" id="pending-title">Revisa tú mismo</h2>
-              <p class="section-sub">Cruz Verde solo muestra precios después de elegir comuna y sesión. Te dejamos el enlace directo.</p>
-            </div>
-          </div>
-          <div class="pending-list" id="pending-slot"></div>
-        </section>
-
         <p class="disclaimer" id="detail-disclaimer"><strong>Importante:</strong> los precios son los publicados en internet y pueden cambiar al momento del pago o variar en tienda. MediCerca no vende medicamentos ni entrega consejo médico. Los medicamentos con receta requieren receta. Verifica siempre precio y stock en la farmacia.</p>
       </div>
     </div>
@@ -997,7 +985,7 @@ function renderDetailSkeleton(main) {
 
 function bestCardMarkup(med, offers) {
   if (!offers.length) {
-    return `<div class="best-card"><div class="best-grid"><div><span class="best-label">Sin precio online</span><div class="best-price" style="font-size:clamp(26px,6vw,38px)">Revisa tu barrio</div><p class="best-saving-line">Hoy no encontramos esta presentación en las farmacias online. Puedes anotar el precio de tu farmacia de barrio o revisar Cruz Verde.</p></div><div class="best-side"><button class="btn btn-primary" type="button" data-add-manual>${icon(
+    return `<div class="best-card"><div class="best-grid"><div><span class="best-label">Sin precio online</span><div class="best-price" style="font-size:clamp(26px,6vw,38px)">Revisa tu barrio</div><p class="best-saving-line">Hoy no encontramos esta presentación en las farmacias online. Puedes anotar el precio de tu farmacia de barrio.</p></div><div class="best-side"><button class="btn btn-primary" type="button" data-add-manual>${icon(
       'plus'
     )} Anotar precio de barrio</button></div></div></div>`;
   }
@@ -1109,7 +1097,7 @@ function statusMarkup(value, origin) {
     )}. Los demás precios están actualizados.</span></div>`);
   }
   if (!value.offers?.length) {
-    parts.push(`<div class="note-strip is-error">${icon('alert')}<span>Hoy no encontramos precios online para esta presentación. Revisa Cruz Verde o anota el precio de tu barrio.</span></div>`);
+    parts.push(`<div class="note-strip is-error">${icon('alert')}<span>Hoy no encontramos precios online para esta presentación. Anota el precio de tu barrio.</span></div>`);
   }
   return parts.join('');
 }
@@ -1137,7 +1125,7 @@ function paintComparison(main, med, value, origin) {
           .join('')}</div>`
       : `<div class="empty-state"><span class="empty-art">${icon(
           'receipt'
-        )}</span><strong>Sin ofertas online ahora</strong><p>Prueba actualizar en unos minutos o revisa Cruz Verde.</p><button class="btn btn-ghost btn-sm" type="button" data-retry>${icon(
+        )}</span><strong>Sin ofertas online ahora</strong><p>Prueba actualizar en unos minutos o anota el precio de tu barrio.</p><button class="btn btn-ghost btn-sm" type="button" data-retry>${icon(
           'refresh'
         )} Reintentar</button></div>`;
   }
@@ -1157,25 +1145,6 @@ function paintComparison(main, med, value, origin) {
     } ${h(formatDateTime(value.checkedAt))}`;
   }
   return offers;
-}
-
-function renderPendingChains(main, med) {
-  const slot = $('#pending-slot', main);
-  if (!slot) return;
-  slot.innerHTML = PENDING_CHAIN_KEYS.map((key) => {
-    const chain = chainByKey(key);
-    const url = safeUrl(chain.searchUrl?.(med.query));
-    return `<div class="pending-row">
-      <div class="pending-chain">${chainDot(chain)}<div style="min-width:0"><span>${h(chain.short)}</span><div class="pending-note">Requiere elegir comuna</div></div></div>
-      ${
-        url
-          ? `<a class="pending-link" href="${h(url)}" target="_blank" rel="noopener noreferrer">Revisar ${icon(
-              'external'
-            )}</a>`
-          : '<span class="pending-note">Revisar en su web</span>'
-      }
-    </div>`;
-  }).join('');
 }
 
 function manualUnit(entry, med) {
@@ -1329,7 +1298,6 @@ function renderDetail(main, route, token) {
   }
 
   main.innerHTML = detailTemplate(med);
-  renderPendingChains(main, med);
   renderManualSlot(main, med);
   renderDetailSkeleton(main);
 
@@ -1938,8 +1906,8 @@ function renderInfo(main, token) {
         <section class="info-card">
           <div class="info-card-head"><span class="info-card-icon">${icon('receipt')}</span><h2>De dónde salen los precios</h2></div>
           <ul>
-            <li>Ahumada, Dr. Simi, EcoFarmacias y Araucomed: consultamos su tienda online al momento de comparar.</li>
-            <li>Cruz Verde, Salcobrand y Knop no publican precios abiertos: te dejamos un enlace para revisarlos tú.</li>
+            <li>Ahumada, Dr. Simi, Salcobrand, EcoFarmacias, Araucomed, Knop y Cruz Verde: consultamos su tienda online al momento de comparar.</li>
+            <li>Cruz Verde entrega el precio nacional de su tienda online; el stock puede variar según la sucursal.</li>
             <li>Farmacias de barrio: el precio lo anotas tú y queda guardado en este teléfono.</li>
             <li>Los precios de internet pueden cambiar al pagar o ser distintos en tienda.</li>
           </ul>
