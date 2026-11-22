@@ -2,7 +2,7 @@
 
 Comparador de precios de medicamentos para Chile. Muestra ofertas de farmacias online, permite anotar precios de farmacias de barrio y ubica las farmacias cercanas en un mapa.
 
-- 38 medicamentos de uso frecuente y 13 categorías, más un buscador libre de cualquier medicamento.
+- 39 medicamentos de uso frecuente y 13 categorías, más un buscador libre de cualquier medicamento.
 - Precios en vivo de 7 cadenas: Ahumada, Dr. Simi, Salcobrand, Cruz Verde, EcoFarmacias, Araucomed y Farmacia Knop.
 - Buscador online (`#/online?q=…`): si el medicamento no está en el catálogo, busca el nombre en las 7 cadenas sin entrar a sus sitios.
 - Comparación por **precio por unidad** (comprimido, cápsula, gramo, ml o dosis), no solo por caja.

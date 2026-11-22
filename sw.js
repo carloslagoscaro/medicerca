@@ -1,4 +1,4 @@
-const VERSION = 'medicerca-v9';
+const VERSION = 'medicerca-v10';
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 

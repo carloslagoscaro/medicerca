@@ -311,7 +311,7 @@ function homeTemplate() {
                 )}</button>
               </div>
               <div class="search-results" id="search-results" role="listbox" aria-label="Medicamentos encontrados"></div>
-              <p class="search-hint">Ej: paracetamol, omeprazol, loratadina. Si no está en el catálogo, Enter lo busca en las farmacias online.</p>
+              <p class="search-hint">Escribe el nombre genérico o de marca. Si no está entre los frecuentes, lo buscamos en las farmacias online.</p>
             </form>
           </div>
           <aside class="compare-preview on-dark" id="featured-preview" aria-label="Comparación destacada"></aside>
@@ -319,7 +319,7 @@ function homeTemplate() {
         <div class="hero-stats">
           <div class="hero-stat"><strong>${LIVE_CHAINS.length}</strong><span>farmacias online<br />con precio en vivo</span></div>
           <div class="hero-stat"><strong id="stat-nearby">${h(String(nearbyCount))}</strong><span>farmacias<br />en todo Chile</span></div>
-          <div class="hero-stat"><strong>${MEDS.length}</strong><span>medicamentos<br />para comparar</span></div>
+          <div class="hero-stat"><strong>${MEDS.length}</strong><span>medicamentos<br />frecuentes</span></div>
         </div>
       </section>
 
@@ -337,6 +337,11 @@ function homeTemplate() {
           </select>
         </div>
         <div class="med-grid" id="popular-grid"></div>
+        <div class="catalog-more">
+          <button class="btn btn-ghost btn-sm" type="button" data-search-more>${icon(
+            'search'
+          )} ¿Buscas otro remedio? Búscalo en las ${LIVE_CHAINS.length} farmacias online</button>
+        </div>
       </section>
 
       <section class="section" aria-labelledby="nearby-home-title">
@@ -424,11 +429,18 @@ function bindGpsCallout(main) {
 
 function bindHomeCategory(main) {
   const select = $('#category-filter', main);
-  if (!select) return;
-  select.value = state.homeCategory;
-  select.addEventListener('change', () => {
-    state.homeCategory = select.value;
-    renderPopular(main);
+  if (select) {
+    select.value = state.homeCategory;
+    select.addEventListener('change', () => {
+      state.homeCategory = select.value;
+      renderPopular(main);
+    });
+  }
+  $('[data-search-more]', main)?.addEventListener('click', () => {
+    const input = $('#med-search', main);
+    if (!input) return;
+    input.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    input.focus({ preventScroll: true });
   });
 }
 
@@ -638,12 +650,17 @@ function renderNearbyPreview(token) {
   });
 }
 
-function onlineSearchMarkup(query) {
-  return `<a class="search-result search-online" href="#/online?q=${encodeURIComponent(query)}">
-    <span class="med-icon" style="background:rgba(22,101,184,.12);color:#1665b8">${icon('search')}</span>
+function onlineSearchMarkup(query, primary = false) {
+  const iconStyle = primary
+    ? 'background:rgba(11,18,32,.14);color:#122007'
+    : 'background:rgba(22,101,184,.12);color:#1665b8';
+  return `<a class="search-result search-online${primary ? ' is-primary' : ''}" href="#/online?q=${encodeURIComponent(query)}">
+    <span class="med-icon" style="${iconStyle}">${icon('search')}</span>
     <span class="med-info">
       <span class="med-name">Buscar “${h(query)}” en farmacias online</span>
-      <span class="med-meta">Precios de ${LIVE_CHAINS.length} cadenas, sin entrar a cada web</span>
+      <span class="med-meta">${
+        primary ? 'No está en el catálogo rápido: lo comparamos igual.' : `Precios de ${LIVE_CHAINS.length} cadenas, sin entrar a cada web`
+      }</span>
     </span>
     <span class="med-go">${icon('chevron')}</span>
   </a>`;
@@ -670,11 +687,9 @@ function bindHomeSearch(main) {
       return;
     }
     if (!meds.length) {
-      results.innerHTML = `<div class="search-empty"><strong>No encontramos “${h(
+      results.innerHTML = `${onlineSearchMarkup(query.trim(), true)}<div class="search-empty">${h(
         query.trim()
-      )}” en el catálogo.</strong><br />Prueba con el nombre genérico o búscalo directo en las farmacias online.</div>${onlineSearchMarkup(
-        query.trim()
-      )}`;
+      )} no está entre las ${MEDS.length} presentaciones frecuentes del catálogo, pero la comparamos igual en las farmacias online.</div>`;
     } else {
       results.innerHTML = `${meds.map((med) => searchResultMarkup(med)).join('')}${onlineSearchMarkup(
         query.trim()
@@ -876,7 +891,7 @@ function renderOnline(main, route, token) {
       if (!offers.length) {
         results.innerHTML = `<div class="empty-state"><span class="empty-art">${icon(
           'receipt'
-        )}</span><strong>No encontramos “${h(query)}” con precio público</strong><p>Prueba con el nombre genérico, sin marca ni dosis.</p><a class="btn btn-ghost btn-sm" href="#/">Volver al catálogo</a></div>`;
+        )}</span><strong>No encontramos “${h(query)}” con precio público</strong><p>Prueba con el nombre genérico, sin marca ni dosis (por ejemplo, “clonazepam” en vez de “Rivotril”).</p><a class="btn btn-ghost btn-sm" href="#/">Volver al catálogo</a></div>`;
         return;
       }
       results.innerHTML = `<div class="offers-list">${offers

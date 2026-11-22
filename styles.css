@@ -3964,6 +3964,37 @@ ol {
   color: #4b6a8a;
 }
 
+.search-online.is-primary {
+  border-bottom: 0;
+  background: var(--lime);
+}
+
+.search-online.is-primary .med-name {
+  color: var(--lime-ink);
+  font-size: 13.5px;
+}
+
+.search-online.is-primary .med-meta {
+  color: #3f5415;
+}
+
+.search-online.is-primary:hover,
+.search-online.is-primary:focus-visible {
+  background: #aee63f;
+}
+
+.catalog-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.catalog-more .btn {
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
+}
+
 .online-head {
   max-width: 760px;
   padding-bottom: 14px;
